@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/components/imports.dart';
+import 'package:socialmedia/baseComponents/imports.dart';
 
 class Forgotscreen extends StatelessWidget {
   Forgotscreen({super.key});
@@ -50,6 +50,7 @@ class Forgotscreen extends StatelessWidget {
                     key: _formKey,
                     child: AutofillGroup(
                       child: TextFieldWidget(
+                        borderRadius: 12,
                         hintText: 'Email',
                         maxLines: 1,
                         autofillHints: const [AutofillHints.email],

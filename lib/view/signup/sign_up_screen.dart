@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/components/imports.dart';
+import 'package:socialmedia/baseComponents/imports.dart';
 
 
 class SignUpScreen extends StatelessWidget {
@@ -57,6 +57,7 @@ class SignUpScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         TextFieldWidget(
+                          borderRadius: 12,
                           hintText: 'UserName',
                           controller: userNameController,
                           maxLines: 1,
@@ -73,6 +74,7 @@ class SignUpScreen extends StatelessWidget {
                         ),
                         SB.h(10),
                         TextFieldWidget(
+                          borderRadius: 12,
                           hintText: 'Email',
                           controller: emailController,
                           autofillHints: const [AutofillHints.email],
@@ -90,6 +92,7 @@ class SignUpScreen extends StatelessWidget {
                         ),
                         SB.h(10),
                         TextFieldWidget(
+                          borderRadius: 12,
                           hintText: 'Password',
                           controller: passwordController,
                           focusNode: passwordFocusNode,

@@ -1,5 +1,5 @@
 import  'package:flutter/material.dart';
-import 'package:socialmedia/components/imports.dart';
+import 'package:socialmedia/baseComponents/imports.dart';
 
 class Editprofile extends StatelessWidget {
   Editprofile({super.key});
@@ -103,6 +103,7 @@ class Editprofile extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFieldWidget(
+                                borderRadius: 12,
                                 hintText: 'Username Name',
                                 keyboardType: TextInputType.name,
                                 controller: nameController,
@@ -116,6 +117,7 @@ class Editprofile extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextFieldWidget(
+                                borderRadius: 12,
                                 readOnly: true,
                                 hintText: 'Email',
                                 keyboardType: TextInputType.emailAddress,

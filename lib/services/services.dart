@@ -51,6 +51,13 @@ static Future<String?> uploadProfileImage(String imagePath, String userUid) asyn
     return null;
   }
 }
+static String getChatroomId(String senderUID, String receiverUID) {
+    if (senderUID.compareTo(receiverUID) < 0) {
+      return "$senderUID\_$receiverUID"; // Alphabetical order
+    } else {
+      return "$receiverUID\_$senderUID";
+    }
+  }
 
 
 

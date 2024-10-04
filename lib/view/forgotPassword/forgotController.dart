@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:socialmedia/components/imports.dart';
+import 'package:socialmedia/baseComponents/imports.dart';
 
 class Forgotcontroller extends GetxController {
   bool _loading = false;

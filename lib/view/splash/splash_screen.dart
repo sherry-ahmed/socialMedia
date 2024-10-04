@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/components/imports.dart';
+import 'package:socialmedia/baseComponents/imports.dart';
 
 
 

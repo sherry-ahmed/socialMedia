@@ -1,4 +1,4 @@
-import 'package:socialmedia/components/imports.dart';
+import 'package:socialmedia/baseComponents/imports.dart';
 
 class Signupcontroller extends GetxController {
   bool _loading = false;

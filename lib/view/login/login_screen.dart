@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:socialmedia/components/custom_elevated_button.dart';
-import 'package:socialmedia/components/formValidation.dart';
-import 'package:socialmedia/components/sb.dart';
-import 'package:socialmedia/components/textFieldWidget.dart';
+import 'package:socialmedia/baseComponents/custom_elevated_button.dart';
+import 'package:socialmedia/baseComponents/formValidation.dart';
+import 'package:socialmedia/baseComponents/sb.dart';
+import 'package:socialmedia/baseComponents/textFieldWidget.dart';
 import 'package:socialmedia/res/color.dart';
 import 'package:socialmedia/view/forgotPassword/forgotScreen.dart';
 import 'package:socialmedia/view/login/loginController.dart';
@@ -54,6 +54,7 @@ class LoginScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           TextFieldWidget(
+                            borderRadius: 12,
                             hintText: 'Email',
                             maxLines: 1,
                             autofillHints: const [AutofillHints.email],
@@ -67,6 +68,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                           SB.h(10),
                           TextFieldWidget(
+                            borderRadius: 12,
                             hintText: 'Password',
                             controller: passwordController,
                             autofillHints: const [AutofillHints.password],

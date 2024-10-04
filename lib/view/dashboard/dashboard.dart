@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:socialmedia/components/imports.dart';
-import 'package:socialmedia/view/User/userList.dart';
+import 'package:socialmedia/baseComponents/imports.dart';
+import 'package:socialmedia/view/User/view/userList.dart';
 
 class Dashboard extends StatelessWidget {
   Dashboard({super.key});

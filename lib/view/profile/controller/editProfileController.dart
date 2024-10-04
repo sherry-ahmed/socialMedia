@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:socialmedia/components/imports.dart';
+import 'package:socialmedia/baseComponents/imports.dart';
 
 class Editprofilecontroller extends GetxController {
   File? imageFile;

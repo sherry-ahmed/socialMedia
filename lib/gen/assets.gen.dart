@@ -40,6 +40,9 @@ class $AssetsImagesGen {
   AssetGenImage get appTextIcon =>
       const AssetGenImage('assets/images/app_text_icon.png');
 
+  /// File path: assets/images/bg.jpg
+  AssetGenImage get bg => const AssetGenImage('assets/images/bg.jpg');
+
   /// File path: assets/images/logo.jpg
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.jpg');
 
@@ -51,7 +54,8 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/women_peeking_out.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [appTextIcon, logo, user, womenPeekingOut];
+  List<AssetGenImage> get values =>
+      [appTextIcon, bg, logo, user, womenPeekingOut];
 }
 
 class Assets {

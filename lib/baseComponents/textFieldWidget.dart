@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -20,7 +22,8 @@ class TextFieldWidget extends StatelessWidget {
     this.autofillHints,
     this.focusNode,
     this.onFieldSubmittedValue,
-    this.onChanged
+    this.onChanged,
+    required this.borderRadius
   });
   List<String>? autofillHints;
   String hintText;
@@ -39,6 +42,8 @@ class TextFieldWidget extends StatelessWidget {
   FormFieldSetter? onFieldSubmittedValue;
   FocusNode? focusNode;
   ValueChanged<String>? onChanged;
+  
+  int borderRadius;
   @override
   Widget build(BuildContext context) {
       return TextFormField(
@@ -66,19 +71,19 @@ class TextFieldWidget extends StatelessWidget {
           hintStyle:
               const TextStyle(color: Colors.grey, fontWeight: FontWeight.w400),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(borderRadius.toDouble()),
             borderSide: const BorderSide(color: Colors.white),
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(borderRadius.toDouble()),
             borderSide: const BorderSide(color: Colors.white),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(borderRadius.toDouble()),
             borderSide: const BorderSide(color: Colors.white),
           ),
           errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(borderRadius.toDouble()),
             borderSide: const BorderSide(color: Colors.red),
           ),
           suffixIcon: suffixIcon,

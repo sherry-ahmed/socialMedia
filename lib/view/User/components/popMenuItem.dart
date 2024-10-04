@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/components/imports.dart';
+import 'package:socialmedia/baseComponents/imports.dart';
 
 class PopMenuitem extends StatelessWidget {
   const PopMenuitem({
@@ -10,22 +10,21 @@ class PopMenuitem extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
       color: Colors.white,
-      icon: const Icon(Icons.more_vert), // Three dots icon
+      icon: const Icon(Icons.more_vert),
       onSelected: (String value) {
-        // Handle menu item click here
         log('Selected: $value');
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         const PopupMenuItem<String>(
-          value: 'Option 1',
+          value: 'Friends',
           child: Text('Friends'),
         ),
         const PopupMenuItem<String>(
-          value: 'Option 2',
+          value: 'Settings',
           child: Text('Setting'),
         ),
         const PopupMenuItem<String>(
-          value: 'Option 3',
+          value: 'Profile',
           child: Text('Profile'),
         ),
       ],
