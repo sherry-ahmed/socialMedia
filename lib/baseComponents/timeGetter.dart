@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
 class Timegetter {
   static String formatTimestamp(String timestamp) {
   // Convert the string timestamp to an integer
@@ -13,7 +16,7 @@ class Timegetter {
   }
 
   // Check if it's yesterday
-  DateTime yesterday = now.subtract(Duration(days: 1));
+  DateTime yesterday = now.subtract(const Duration(days: 1));
   if (_isSameDay(dateTime, yesterday)) {
     return "Yesterday";
   }
@@ -87,5 +90,16 @@ static String _getMonthName(int month) {
       return "";
   }
 }
+  static String getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) {
+      return "Good Morning";
+    } else if (hour < 18) {
+      return "Good Afternoon";
+    } else {
+      return "Good Evening";
+    }
+  }
+    
 
 }

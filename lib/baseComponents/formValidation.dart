@@ -149,6 +149,25 @@ class Validation {
     }
     return null;
   }
+  static String? dateValidator(DateTime? selectedDate) {
+    if (selectedDate == null) {
+      return 'Please select your date of birth';
+    }
+
+    DateTime today = DateTime.now();
+    int age = today.year - selectedDate.year;
+
+    if (today.month < selectedDate.month ||
+        (today.month == selectedDate.month && today.day < selectedDate.day)) {
+      age--;
+    }
+
+    if (age < 18) {
+      return 'You must be at least 18 years old';
+    }
+
+    return null;
+  }
 
   static String? validatePhoneNumber(String? value) {
     if (value!.isEmpty) return "Please enter mobile number";

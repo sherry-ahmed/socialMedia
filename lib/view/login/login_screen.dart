@@ -22,12 +22,12 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     return PopScope(
-       canPop: false,
+      canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) {
           return;
         }
-       Get.offAll;
+        Get.offAll;
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -88,7 +88,7 @@ class LoginScreen extends StatelessWidget {
                 Align(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
-                      onTap: () => Get.to(()=>Forgotscreen()),
+                      onTap: () => Get.to(() => Forgotscreen()),
                       child: Text(
                         "Forgot Password",
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
@@ -104,14 +104,14 @@ class LoginScreen extends StatelessWidget {
                     textColor: Colors.black,
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        controller.loading? null : controller.login(emailController.text.trim(),
-                            passwordController.text.trim());
+                        controller.loading
+                            ? null
+                            : controller.login(emailController.text.trim(),
+                                passwordController.text.trim());
                       }
                     },
                     width: screenWidth,
                     height: 50,
-                    shadowColor: false,
-                    elevation: false,
                     color: Colors.white,
                     radius: 12),
                 SB.h(20),

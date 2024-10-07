@@ -5,17 +5,7 @@ import 'package:socialmedia/view/User/view/userList.dart';
 
 class Dashboard extends StatelessWidget {
   Dashboard({super.key});
-  // void _logout(BuildContext context) async {
-  //   try {
-  //     await FirebaseAuth.instance.signOut(); // Sign out from Firebase
-  //     // Navigate to sign-up/login page after successful logout
-  //     Sessioncontroller.userid = '';
-  //     Get.off(() => LoginScreen());
-  //   } catch (e) {
-  //     // Handle any errors here (e.g., show a Snackbar)
-  //     Get.snackbar('Error', 'Error Logging out: $e');
-  //   }
-  // }
+
   final controller = PersistentTabController(initialIndex: 0);
   List<Widget> _buildScreen() {
     return [

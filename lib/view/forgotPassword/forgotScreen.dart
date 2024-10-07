@@ -81,8 +81,6 @@ class Forgotscreen extends StatelessWidget {
                     },
                     width: screenWidth,
                     height: 50,
-                    shadowColor: false,
-                    elevation: false,
                     color: Colors.white,
                     radius: 12),
                 SB.h(20),

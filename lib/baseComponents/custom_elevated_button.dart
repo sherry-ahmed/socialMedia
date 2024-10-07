@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:socialmedia/baseComponents/imports.dart';
 
 class CustomElevatedButton extends StatelessWidget {
   final String text;
-  final Color textColor;
   final VoidCallback onPressed;
-  final double width;
-  final double height;
-  final bool shadowColor;
-  final bool elevation;
-  final Color color;
-  final int radius;
-  final bool loading;
+  Color? textColor;
+  
+  double? width;
+  double? height;
+   Color? shadowColor;
+   double ? elevation;
+   Color? color;
+   double? radius;
+   final bool loading;
 
-  const CustomElevatedButton({
+   CustomElevatedButton({
     super.key,
-    required this.loading,
-    required this.text,
-    required this.textColor,
-    required this.onPressed,
-    required this.width,
-    required this.height,
-    required this.shadowColor,
-    required this.elevation,
-    required this.color,
-    required this.radius,
+     required this.loading,
+     required this.text,
+     this.textColor,
+     required this.onPressed,
+     this.width,
+     this.height,
+     this.shadowColor,
+     this.elevation,
+     this.color,
+     this.radius,
   });
   @override
   Widget build(BuildContext context) {
@@ -31,14 +33,14 @@ class CustomElevatedButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
-        shadowColor: shadowColor ? Colors.black87 : null,
-        elevation: elevation ? 10 : null,
+        shadowColor: shadowColor,
+        elevation: elevation,
         foregroundColor: Colors.white,
         disabledBackgroundColor: Colors.white,
         disabledForegroundColor: Colors.black,
-        minimumSize: Size(width, height),
+        minimumSize: Size(width?? context.width, height??50),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(radius.toDouble()),
+          borderRadius: BorderRadius.circular(radius?? 12),
         ),
       ),
       child: loading? const Center(child: CircularProgressIndicator(color: Colors.black,)): Text(

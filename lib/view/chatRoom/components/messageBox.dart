@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/timeGetter.dart';
-import 'package:socialmedia/view/chatRoom/controller/chatRoomController.dart';
-import 'package:socialmedia/view/chatRoom/viewModel/messageModel.dart';
 
 import '../../../baseComponents/imports.dart';
 
@@ -10,12 +8,12 @@ class MessageBox extends StatelessWidget {
     super.key,
     required this.isSender,
     required this.message,
-    required this.isMessageSent, // New parameter for single/double tick
+    required this.isMessageSent,
   });
 
   final bool isSender;
   final Message message;
-  final bool isMessageSent; // Track if the message is uploaded to Firebase
+  final bool isMessageSent;
   final Chatroomcontroller chatController = Get.put(Chatroomcontroller());
 
   @override
@@ -36,38 +34,31 @@ class MessageBox extends StatelessWidget {
           crossAxisAlignment:
               isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            // Message content
             Text(message.content,
                 style:
                     TextStyle(color: isSender ? Colors.white : Colors.black)),
-
-            // Time and Tick icons
             Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment:
                   isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
               children: [
-                // Timestamp below the message
                 Text(
                   Timegetter.formatTimestamp(message.timestamp.toString()),
                   style: TextStyle(
                       color: isSender ? Colors.white70 : Colors.black87,
                       fontSize: 10),
                 ),
-
-                // Ticks for message status (Single, Double, Blue)
                 if (isSender) ...[
-                  const SizedBox(width: 3), // Add space between time and tick
+                  const SizedBox(width: 3),
                   Obx(
                     () => Icon(
                       chatController.isMessageSent.value
-                          ? Icons.done_all // Blue double tick when read
-
-                          : Icons.done, // Single tick before upload
+                          ? Icons.done_all
+                          : Icons.done,
                       size: 16,
                       color: chatController.isMessageSent.value
-                          ? Colors.yellow // Blue tick if read
-                          : Colors.white70, // Gray tick if not read
+                          ? Colors.yellow
+                          : Colors.white70,
                     ),
                   ),
                 ],

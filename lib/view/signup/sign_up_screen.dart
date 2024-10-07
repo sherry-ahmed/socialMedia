@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
 
-
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
   final emailController = TextEditingController();
@@ -22,7 +21,7 @@ class SignUpScreen extends StatelessWidget {
         if (didPop) {
           return;
         }
-       Get.back();
+        Get.back();
       },
       child: Scaffold(
         appBar: AppBar(
@@ -113,21 +112,21 @@ class SignUpScreen extends StatelessWidget {
                     textColor: Colors.black,
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        controller.loading? null : controller.signup(
-                            userNameController.text.trim(),
-                            emailController.text.trim(),
-                            passwordController.text.trim());
+                        controller.loading
+                            ? null
+                            : controller.signup(
+                                userNameController.text.trim(),
+                                emailController.text.trim(),
+                                passwordController.text.trim());
                       }
                     },
                     width: screenWidth,
                     height: 50,
-                    shadowColor: false,
-                    elevation: false,
                     color: Colors.white,
                     radius: 12),
                 SB.h(20),
                 GestureDetector(
-                  onTap: () => Get.off(()=>LoginScreen()),
+                  onTap: () => Get.off(() => LoginScreen()),
                   child: Text.rich(TextSpan(children: [
                     TextSpan(
                         text: "Already have an account? ",

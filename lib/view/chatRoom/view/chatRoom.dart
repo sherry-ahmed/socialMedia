@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/baseComponents/timeGetter.dart';
-import 'package:socialmedia/view/chatRoom/components/messageBox.dart';
-import 'package:socialmedia/view/chatRoom/controller/chatRoomController.dart';
-import 'package:socialmedia/view/chatRoom/viewModel/messageModel.dart';
+
 
 class Chatroom extends StatelessWidget {
   final String profile, username, receiverUID;

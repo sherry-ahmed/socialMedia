@@ -39,3 +39,7 @@ export 'package:socialmedia/view/splash/splash_screen.dart';
 export 'package:firebase_database/ui/firebase_animated_list.dart';
 export 'package:socialmedia/view/User/components/popMenuItem.dart';
 export 'package:socialmedia/view/User/controller.dart/userListController.dart';
+export 'package:socialmedia/view/chatRoom/components/messageBox.dart';
+export 'package:socialmedia/view/chatRoom/controller/chatRoomController.dart';
+export 'package:socialmedia/view/chatRoom/viewModel/messageModel.dart';
+export 'package:socialmedia/view/chatRoom/view/chatRoom.dart';

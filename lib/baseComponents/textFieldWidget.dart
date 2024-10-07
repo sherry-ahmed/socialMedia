@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -23,7 +21,9 @@ class TextFieldWidget extends StatelessWidget {
     this.focusNode,
     this.onFieldSubmittedValue,
     this.onChanged,
-    required this.borderRadius
+    required this.borderRadius,
+    this.textColor,
+    this.expands
   });
   List<String>? autofillHints;
   String hintText;
@@ -42,6 +42,8 @@ class TextFieldWidget extends StatelessWidget {
   FormFieldSetter? onFieldSubmittedValue;
   FocusNode? focusNode;
   ValueChanged<String>? onChanged;
+  Color? textColor;
+  bool? expands ;
   
   int borderRadius;
   @override
@@ -59,8 +61,11 @@ class TextFieldWidget extends StatelessWidget {
         keyboardType: keyboardType,
         autofillHints: autofillHints,
         onChanged: onChanged,
+        
+        expands: expands??false,
+        textAlignVertical: TextAlignVertical.top,
         style:
-            const TextStyle(color: Colors.black, fontWeight: FontWeight.normal, fontSize: 18),
+             TextStyle(color: textColor??Colors.black, fontWeight: FontWeight.normal, fontSize: 18),
         decoration: InputDecoration(
           counterText: counterText,
           contentPadding:

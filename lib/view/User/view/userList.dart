@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/view/chatRoom/controller/chatRoomController.dart';
-import 'package:socialmedia/view/chatRoom/view/chatRoom.dart';
+
 
 class UserListScreen extends StatelessWidget {
   UserListScreen({super.key});
@@ -11,7 +10,6 @@ class UserListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         body: SafeArea(
       child: GetBuilder<Userlistcontroller>(
@@ -20,22 +18,21 @@ class UserListScreen extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              // Animated Container for the search bar
               AnimatedContainer(
                 curve: Curves.easeIn,
                 height: controller.showsearchbar
                     ? 60
-                    : 0, // Height changes smoothly
+                    : 0, 
                 duration:
-                    const Duration(milliseconds: 500), // Smooth transition time
+                    const Duration(milliseconds: 500), 
                 child: controller.showsearchbar
                     ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Searchbar(searchController: searchController),
                       )
-                    : const SizedBox(), // Empty container when search bar is hidden
+                    : const SizedBox(),
               ),
-              // AppBar Row with Search and Menu Icon
+
               !controller.showsearchbar
                   ? SizedBox(
                       height: 70,
@@ -51,7 +48,7 @@ class UserListScreen extends StatelessWidget {
                             children: [
                               IconButton(
                                 onPressed: () {
-                                  controller.searchbar(true); // Open search bar
+                                  controller.searchbar(true);
                                 },
                                 icon: const Icon(Icons.search),
                               ),
@@ -61,10 +58,8 @@ class UserListScreen extends StatelessWidget {
                         ],
                       ),
                     )
-                  : const SizedBox(), // Empty when search bar is visible
+                  : const SizedBox(),
               SB.h(30),
-
-              // Firebase Animated List
               Expanded(
                 child: FirebaseAnimatedList(
                   query: userRef,
@@ -101,7 +96,6 @@ class UserListScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  // Profile Image
                                   Container(
                                     height: 50,
                                     width: 50,
@@ -177,13 +171,13 @@ class UserListScreen extends StatelessWidget {
                                               return Container(
                                                 height: 7,
                                                 width: 7,
-                                                decoration: BoxDecoration(
+                                                decoration: const BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: Colors.black
                                                 ),
                                                 child: Center(
                                                   child: Text(
-                                                      "${snapshot.data!}", style: TextStyle(color: Colors.white, fontSize: 16),),
+                                                      "${snapshot.data!}", style: const TextStyle(color: Colors.white, fontSize: 16),),
                                                 ),
                                               );
                                             } else {

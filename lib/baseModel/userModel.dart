@@ -4,28 +4,87 @@ class UserModel {
   final String username;
   final String profile;
   final String isOnline;
+  final String? phone;
+  final String? bio;
+  final String? country;
+  final String? state;
+  final String? city;
+  final List<String>? hobbies;
+  final int? age;
+  final String? instaLink;
+  final String? fbLink;
+  final String? tiktokLink;
+  final String? gender;
+  final String? sexualOrientation;
+  final String? relationshipType;
+  final String? personalityType;
+  final List<int>? dateOfBirth;
 
-  UserModel({
-    required this.uid,
-    required this.email,
-    required this.username,
-    required this.profile,
-    required this.isOnline,
-  });
-    UserModel copyWith({
+  UserModel(
+      {required this.uid,
+      required this.email,
+      required this.username,
+      required this.profile,
+      required this.isOnline,
+      this.phone,
+      this.bio,
+      this.country,
+      this.state,
+      this.city,
+      this.hobbies,
+      this.age,
+      this.instaLink,
+      this.fbLink,
+      this.tiktokLink,
+      this.gender,
+      this.personalityType,
+      this.dateOfBirth,
+      this.relationshipType,
+      this.sexualOrientation});
+
+  UserModel copyWith({
     String? uid,
     String? email,
     String? username,
     String? profile,
     String? isOnline,
+    String? phone,
+    String? bio,
+    String? country,
+    String? state,
+    String? city,
+    List<String>? hobbies,
+    int? age,
+    String? instaLink,
+    String? fbLink,
+    String? tiktokLink,
+    String? gender,
+    String? sexualOrientation,
+    String? relationshipType,
+    String? personalityType,
+    List<int>? dateOfBirth,
   }) {
     return UserModel(
-      uid: uid ?? this.uid,
-      email: email ?? this.email,
-      username: username ?? this.username,
-      profile: profile ?? this.profile,
-      isOnline: isOnline ?? this.isOnline,
-    );
+        uid: uid ?? this.uid,
+        email: email ?? this.email,
+        username: username ?? this.username,
+        profile: profile ?? this.profile,
+        isOnline: isOnline ?? this.isOnline,
+        phone: phone ?? this.phone,
+        bio: bio ?? this.bio,
+        country: country ?? this.country,
+        state: state ?? this.state,
+        city: city ?? this.city,
+        hobbies: hobbies ?? this.hobbies,
+        age: age ?? this.age,
+        instaLink: instaLink ?? this.instaLink,
+        fbLink: fbLink ?? this.fbLink,
+        tiktokLink: tiktokLink ?? this.tiktokLink,
+        gender: gender ?? this.gender,
+        sexualOrientation: sexualOrientation ?? this.sexualOrientation,
+        personalityType: personalityType ?? this.personalityType,
+        dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+        relationshipType: relationshipType ?? this.relationshipType);
   }
 
   // Method to create a UserModel from a map (Firebase data)
@@ -36,6 +95,22 @@ class UserModel {
       username: map['username'] ?? '',
       profile: map['profile'] ?? '',
       isOnline: map['isOnline'] ?? 'false',
+      phone: map['phone'],
+      bio: map['bio'],
+      country: map['country'],
+      state: map['state'],
+      city: map['city'],
+      hobbies: map['hobbies'] != null ? List<String>.from(map['hobbies']) : [],
+      age: map['age'],
+      instaLink: map['instaLink'],
+      fbLink: map['fbLink'],
+      tiktokLink: map['tiktokLink'],
+      gender: map['gender'],
+      relationshipType: map['relationshipType'],
+      personalityType: map['personalityType'],
+      sexualOrientation: map['sexualOrientation'],
+      dateOfBirth:
+          map['dateOfBirth'] != null ? List<int>.from(map['dateOfBirth']) : [],
     );
   }
 
@@ -47,6 +122,21 @@ class UserModel {
       'username': username,
       'profile': profile,
       'isOnline': isOnline,
+      'phone': phone,
+      'bio': bio,
+      'country': country,
+      'state': state,
+      'city': city,
+      'hobbies': hobbies,
+      'age': age,
+      'instaLink': instaLink,
+      'fbLink': fbLink,
+      'tiktokLink': tiktokLink,
+      'gender': gender,
+      'relationshipType': relationshipType,
+      'personalityType': personalityType,
+      'sexualOrientation': sexualOrientation,
+      'dateOfBirth': dateOfBirth
     };
   }
 }

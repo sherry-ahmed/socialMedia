@@ -1,23 +1,21 @@
-import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:socialmedia/view/chatRoom/viewModel/messageModel.dart';
+
 
 class Chatroomcontroller extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   RxList<Message> messagesList =
-      <Message>[].obs; // Store chat messages as a list of Message objects
-  RxBool isMessageSent = true.obs; // Track message sent status
+      <Message>[].obs; 
+  RxBool isMessageSent = true.obs; 
   var counter = 0;
 
-  // Fetch messages for the chatroom between sender and receiver
   void listenToMessages(String chatroomId) {
     _firestore
         .collection('chatrooms')
         .doc(chatroomId)
         .collection('messages')
         .orderBy('timestamp',
-            descending: false) // Keep the order ascending in Firestore
+            descending: false)
         .snapshots()
         .listen((snapshot) {
       messagesList.clear();
@@ -26,16 +24,13 @@ class Chatroomcontroller extends GetxController {
         messagesList.add(message);
       }
       resetUnreadMessageCount(chatroomId, Sessioncontroller.userid.toString());
-      //isMessageSent.value = true;
     });
   }
 
-  // Getter to reverse the message list for the UI
   List<Message> get reversedMessagesList =>
-      messagesList.reversed.toList(); // Reverse the list here
+      messagesList.reversed.toList(); 
 
-  // Function to send a message
-  // Function to send a message
+
   Future<void> sendMessage(String chatroomId, String senderUID,
       String receiverUID, String content) async {
     final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -65,10 +60,9 @@ class Chatroomcontroller extends GetxController {
           .doc(receiverUID)
           .get();
       if (snapshot.exists) {
-        // Get the unreadMessageCount field and store it in a variable
+
         counter = snapshot.get('unreadMessageCount');
 
-        // Do something with the value (e.g., store in a state variable or use it)
         log('Unread Message Count: $counter');
       } else {
         await _firestore
@@ -102,9 +96,6 @@ class Chatroomcontroller extends GetxController {
     }).onError((error, stackTrace) {
       log('check your internet');
     });
-    // After sending the message, increment the unread message counter for the receiver
-
-    // Set isMessageSent to true after message is successfully uploaded
   }
 
   Future<void> resetUnreadMessageCount(
@@ -119,9 +110,7 @@ class Chatroomcontroller extends GetxController {
         'unreadMessageCount': 0,
       });
     } catch (e) {
-      print("Failed to reset unread message count: $e");
+      log("Failed to reset unread message count: $e");
     }
   }
-
-  // Create a chatroom ID using sender and receiver UIDs
 }
