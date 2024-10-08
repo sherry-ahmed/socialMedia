@@ -37,6 +37,9 @@ dependencies:
   shared_preferences: ^2.3.2
   cloud_firestore: ^5.4.4
   phone_input: ^1.0.0
+  csc_picker: ^0.2.7
+  flutter_card_swiper: ^7.0.1
+  palette_generator: ^0.3.3+4
 
 dev_dependencies:
   flutter_test:

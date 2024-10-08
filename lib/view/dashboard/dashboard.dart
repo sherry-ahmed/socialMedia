@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
+import 'package:socialmedia/view/Flirts/view/flirt.dart';
 import 'package:socialmedia/view/User/view/userList.dart';
 
 class Dashboard extends StatelessWidget {
@@ -10,7 +11,7 @@ class Dashboard extends StatelessWidget {
   List<Widget> _buildScreen() {
     return [
       const Text('Home'),
-      const Text('edit'),
+      UserSwiper(),
       const Text('play'),
       UserListScreen(),
       Profile(),
@@ -20,6 +21,10 @@ class Dashboard extends StatelessWidget {
   List<PersistentBottomNavBarItem> _navBaritem() {
     return [
       PersistentBottomNavBarItem(
+        title: 'Home',
+        iconSize: 35,
+        inactiveColorPrimary: Colors.grey,
+        activeColorPrimary: Colors.white,
           inactiveIcon: const Icon(
             Icons.home,
             color: Colors.grey,
@@ -29,12 +34,17 @@ class Dashboard extends StatelessWidget {
             color: Colors.white,
           )),
       PersistentBottomNavBarItem(
+        title: 'Flirts',
+        iconSize: 35,
+        inactiveColorPrimary: Colors.grey,
+        activeColorPrimary: Colors.white,
+        
           inactiveIcon: const Icon(
-            Icons.message,
+            Icons.favorite,
             color: Colors.grey,
           ),
           icon: const Icon(
-            Icons.message,
+            Icons.favorite,
             color: Colors.white,
           )),
       PersistentBottomNavBarItem(
@@ -48,6 +58,10 @@ class Dashboard extends StatelessWidget {
             color: Colors.black,
           )),
       PersistentBottomNavBarItem(
+        title: 'Friends',
+        iconSize: 35,
+        inactiveColorPrimary: Colors.grey,
+        activeColorPrimary: Colors.white,
           inactiveIcon: const Icon(
             Icons.person,
             color: Colors.grey,
@@ -57,6 +71,11 @@ class Dashboard extends StatelessWidget {
             color: Colors.white,
           )),
       PersistentBottomNavBarItem(
+        
+        title: 'Profile',
+        iconSize: 35,
+        inactiveColorPrimary: Colors.grey,
+        activeColorPrimary: Colors.white,
           inactiveIcon: const Icon(
             Icons.dashboard,
             color: Colors.grey,

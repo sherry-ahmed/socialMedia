@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/custom_appbar.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
 import 'package:socialmedia/baseComponents/spacing.dart';
+import 'package:socialmedia/view/profile/components/addSocials.dart';
 import 'package:socialmedia/view/profile/components/dob.dart';
 import 'package:socialmedia/view/profile/components/gender.dart';
+import 'package:socialmedia/view/profile/components/interest.dart';
 import 'package:socialmedia/view/profile/components/personalityType.dart';
 import 'package:socialmedia/view/profile/components/relationshipType.dart';
 import 'package:socialmedia/view/profile/components/sexualOrientation.dart';
-import 'package:socialmedia/view/profile/model/data.dart';
+import 'package:socialmedia/view/profile/views/country.dart';
 
 class Editprofile extends StatelessWidget {
   Editprofile({super.key});
@@ -36,14 +38,8 @@ class Editprofile extends StatelessWidget {
                     loading: false,
                     text: 'Save',
                     textColor: Colors.black,
-                    onPressed: () async {
-                      // Update the user's username and call updateUserData
-                      UserModel updatedUser =
-                          userController.currentUser.value.copyWith(
-                        username: controller.nameController.text,
-                      );
-                      await userController.updateUserData(updatedUser);
-                      Get.back(); // Go b Go back after updating
+                    onPressed: () {
+                     controller.updateData();
                     },
                     width: context.width * .85,
                     height: context.height * .057,
@@ -64,7 +60,8 @@ class Editprofile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Card(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100)),
                           elevation: 20,
                           shadowColor: Colors.amber,
                           child: Stack(
@@ -116,7 +113,8 @@ class Editprofile extends StatelessWidget {
                                         border: Border.all(
                                             color: Colors.black, width: 2)),
                                     child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(100),
+                                        borderRadius:
+                                            BorderRadius.circular(100),
                                         child: const Icon(
                                           Icons.photo_camera,
                                           color: Colors.black,
@@ -232,12 +230,18 @@ class Editprofile extends StatelessWidget {
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               RelationshipType(),
-                               Spacing.y(context, .01),
+                              Spacing.y(context, .01),
                               Text(
                                 "Personality Type",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               PersonalityType(),
+                               Spacing.y(context, .01),
+                              Text(
+                                "Edit Location",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              CountryPicker(),
                               Spacing.y(context, .01),
                               Text(
                                 "Social Media",
@@ -245,61 +249,64 @@ class Editprofile extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Get.to(()=>const AddSocials());
+                                  Get.to(() => AddSocials());
                                 },
                                 child: const Card(
-                                  
                                   color: Colors.black,
                                   elevation: 10,
                                   shadowColor: Colors.amber,
                                   child: SizedBox(
                                     height: 50,
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal:8.0),
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8.0),
                                       child: Row(
                                         children: [
                                           Text('Add Socials'),
                                           Spacer(),
-                                          Icon(Icons.arrow_forward_ios, color: Colors.white70,)
+                                          Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: Colors.white70,
+                                          )
                                         ],
                                       ),
                                     ),
                                   ),
-                                  
-                                  
                                 ),
                               ),
                               Spacing.y(context, .01),
                               Text(
-                                "Social Media",
+                                "Interests",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Get.to(()=>Interests());
+                                  Get.to(() => Interests());
                                 },
                                 child: const Card(
-                                  
                                   color: Colors.black,
                                   elevation: 10,
                                   shadowColor: Colors.amber,
                                   child: SizedBox(
                                     height: 50,
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal:8.0),
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8.0),
                                       child: Row(
                                         children: [
                                           Text('Change Interests'),
                                           Spacer(),
-                                          Icon(Icons.arrow_forward_ios, color: Colors.white70,)
+                                          Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: Colors.white70,
+                                          )
                                         ],
                                       ),
                                     ),
                                   ),
-                                  
-                                  
                                 ),
                               ),
+                             
                               SB.h(100)
                             ],
                           ),
@@ -313,148 +320,7 @@ class Editprofile extends StatelessWidget {
     ));
   }
 }
-class Interests extends StatelessWidget {
-   Interests({super.key});
-  final controller = Get.put(Editprofilecontroller());
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(title: 'Edit Interests'),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal:8.0,),
-        child: Column(
-          
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: Text('Select Your Interests', style: Theme.of(context).textTheme.bodyMedium,),
-              )),
-              SizedBox(
-        width: context.width,
-        child: Obx(
-          () => Wrap(
-            spacing: 8.0, // Add spacing between the items
-            runSpacing: 8.0, // Add spacing between rows
-            children: List.generate(
-              EditProfileData.interests.length,
-              (index) => GestureDetector(
-                onTap: () {
-                  if(controller.Interests.contains(EditProfileData.interests[index])){
-                    controller.Interests.remove(EditProfileData.interests[index]);
-                  }
-                  else{
-                    controller.Interests.add(EditProfileData.interests[index]);
-                  }
-                  
-                },
-                child: IntrinsicWidth(
-                  child: Card(
-                    elevation: 12,
-                    shadowColor: Colors.amber,
 
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white, width: 2),
-                        borderRadius: BorderRadius.circular(12),
-                        color:
-                            controller.Interests.contains(EditProfileData.interests[index])
-                                ? Colors.white
-                                : Colors.black,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12.0, vertical: 12),
-                        child: Center(
-                          child: Text(
-                            EditProfileData.interests[index].toString(),
-                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                  color: controller.Interests.contains(EditProfileData.interests[index])
-                                      ? Colors.black
-                                      : Colors.white,
-                                ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-            )
-        
-          ],
-        ),
-      ),
-    );
-  }
-}
-class AddSocials extends StatelessWidget {
-  const AddSocials({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(title: 'My Socials'),
-      body: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: context.width*0.05),
-        child: Column(
-          children: [
-            Card(
-              color: Colors.black,
-              elevation: 10,
-              shadowColor: Colors.amber,
-              child: ListTile(
-                leading: SizedBox(
-                  height: 40,
-                  width: 40,
-                  
-                  
-                  child: Assets.icons.facebookPng.image()),
-                title:  Text('connect Facebook', style: Theme.of(context).textTheme.bodyMedium),
-                trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white70,),
-              ),
-            ),
-            Card(
-              color: Colors.black,
-              elevation: 10,
-              shadowColor: Colors.amber,
-              child: ListTile(
-                leading: SizedBox(
-                  height: 40,
-                  width: 40,
-                  
-                  
-                  child: Assets.icons.instaColoured.image()),
-                title:  Text('connect Instagram', style: Theme.of(context).textTheme.bodyMedium),
-                trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white70),
-              ),
-            ),
-            Card(
-              color: Colors.black,
-              elevation: 10,
-              shadowColor: Colors.amber,
-              child: ListTile(
-                leading: SizedBox(
-                  height: 40,
-                  width: 40,
-                  
-                  
-                  child: Assets.icons.twitterColoured.image()),
-                title:  Text('connect Twitter', style: Theme.of(context).textTheme.bodyMedium),
-                trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white70),
-              ),
-            ),
-        
-        
-          ],
-        ),
-      ),
-    );
-  }
-}
+

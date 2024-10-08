@@ -113,6 +113,10 @@ class UserModel {
           map['dateOfBirth'] != null ? List<int>.from(map['dateOfBirth']) : [],
     );
   }
+    // Static method to create a list of UserModel from a list of maps
+  static List<UserModel> fromMapList(List<Map<String, dynamic>> list) {
+    return list.map((map) => UserModel.fromMap(map)).toList();
+  }
 
   // Method to convert UserModel to a map (for saving to Firebase)
   Map<String, dynamic> toMap() {

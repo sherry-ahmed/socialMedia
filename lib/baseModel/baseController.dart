@@ -1,28 +1,28 @@
 import 'package:socialmedia/baseComponents/imports.dart';
 
 class UserController extends GetxController {
-  var currentUser = UserModel(
-    uid: '',
-    email: '',
-    username: '',
-    profile: '',
-    isOnline: 'false',
-    phone: null,
-    bio: null,
-    country: null,
-    state: null,
-    city: null,
-    hobbies: [],
-    age: null,
-    instaLink: null,
-    fbLink: null,
-    tiktokLink: null,
-    gender: null,
-    personalityType: null,
-    relationshipType: null,
-    sexualOrientation: null,
-    dateOfBirth: []
-  ).obs; 
+    var currentUser = UserModel(
+      uid: '',
+      email: '',
+      username: '',
+      profile: '',
+      isOnline: 'false',
+      phone: null,
+      bio: null,
+      country: null,
+      state: null,
+      city: null,
+      hobbies: [],
+      age: null,
+      instaLink: null,
+      fbLink: null,
+      tiktokLink: null,
+      gender: null,
+      personalityType: null,
+      relationshipType: null,
+      sexualOrientation: null,
+      dateOfBirth: []
+    ).obs; 
 
   final DatabaseReference _ref = FirebaseDatabase.instance.ref();
 
@@ -37,6 +37,7 @@ class UserController extends GetxController {
         });
 
         currentUser.value = UserModel.fromMap(userData);
+        log(currentUser.value.uid.toString());
       } else {
         log("User not found");
       }

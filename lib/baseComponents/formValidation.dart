@@ -1,3 +1,5 @@
+
+
 class Validation {
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) return "Please enter your email";
@@ -522,4 +524,17 @@ class Validation {
     // }
     return null;
   }
+    static String? validateCSCPicker(String country) {
+    if (country == 'Country' || country == '') {
+      return 'Please select a country.';
+    }
+    // if (state == 'State') {
+    //   return 'Please select a state.';
+    // }
+    // if (city == 'City') {
+    //   return 'Please select a city.';
+    // }
+    return 'Selected';
+  }
+  
 }

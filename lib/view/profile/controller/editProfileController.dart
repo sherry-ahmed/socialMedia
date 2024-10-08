@@ -5,19 +5,24 @@ import 'package:socialmedia/baseComponents/imports.dart';
 class Editprofilecontroller extends GetxController {
   File? imageFile;
   final UserController userController = Get.find();
-  final  nameController = TextEditingController();
-  final  emailController = TextEditingController();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
   final phoneController = TextEditingController();
   final bioController = TextEditingController();
+  final facebookController = TextEditingController();
+  final instaController = TextEditingController();
+  final twitterController = TextEditingController();
+  RxString countryValue = ''.obs;
+  RxString stateValue = ''.obs;
+  RxString cityValue = ''.obs;
   RxString gender = ''.obs;
   RxString sexualOrientation = ''.obs;
   RxString relationshipType = ''.obs;
   RxString personalityType = ''.obs;
   RxList<String> Interests = [''].obs;
-  final List<int>? dob=[];
+  List<int>? dob = [];
   Rxn<DateTime> selectedTime = Rxn<DateTime>();
   final formKey = GlobalKey<FormState>();
-
 
   @override
   void onInit() {
@@ -33,17 +38,77 @@ class Editprofilecontroller extends GetxController {
         ? phoneController.clear()
         : phoneController.text =
             userController.currentUser.value.phone.toString();
-     userController.currentUser.value.bio == null
+    userController.currentUser.value.bio == null
         ? bioController.clear()
         : bioController.text =
-            userController.currentUser.value.phone.toString();
-      userController.currentUser.value.dateOfBirth ==null? selectedTime.value=DateTime.now(): dob?? userController.currentUser.value.dateOfBirth; 
+            userController.currentUser.value.bio.toString();
+    userController.currentUser.value.dateOfBirth!.isEmpty
+        ? null
+        : selectedTime.value = convertListToDateTime(
+            userController.currentUser.value.dateOfBirth!);
 
-      userController.currentUser.value.gender ==null? gender.value = '': gender.value = userController.currentUser.value.gender.toString();
-      userController.currentUser.value.personalityType ==null? personalityType.value = '': personalityType.value = userController.currentUser.value.personalityType.toString();
-      userController.currentUser.value.relationshipType ==null? relationshipType.value = '': relationshipType.value = userController.currentUser.value.relationshipType.toString();
-      userController.currentUser.value.sexualOrientation ==null? sexualOrientation.value = '': sexualOrientation.value = userController.currentUser.value.sexualOrientation.toString();
-      userController.currentUser.value.hobbies ==null? Interests.value = []: Interests.value = userController.currentUser.value.hobbies!.toList();
+    userController.currentUser.value.gender == null
+        ? gender.value = ''
+        : gender.value = userController.currentUser.value.gender.toString();
+    userController.currentUser.value.personalityType == null
+        ? personalityType.value = ''
+        : personalityType.value =
+            userController.currentUser.value.personalityType.toString();
+    userController.currentUser.value.relationshipType == null
+        ? relationshipType.value = ''
+        : relationshipType.value =
+            userController.currentUser.value.relationshipType.toString();
+    userController.currentUser.value.sexualOrientation == null
+        ? sexualOrientation.value = ''
+        : sexualOrientation.value =
+            userController.currentUser.value.sexualOrientation.toString();
+    userController.currentUser.value.hobbies == null
+        ? Interests.value = []
+        : Interests.value = userController.currentUser.value.hobbies!.toList();
+    userController.currentUser.value.fbLink == null
+        ? facebookController.clear()
+        : facebookController.text =
+            userController.currentUser.value.fbLink.toString();
+    userController.currentUser.value.instaLink == null
+        ? instaController.clear()
+        : instaController.text =
+            userController.currentUser.value.instaLink.toString();
+    userController.currentUser.value.instaLink == null
+        ? twitterController.clear()
+        : twitterController.text =
+            userController.currentUser.value.instaLink.toString();
+    userController.currentUser.value.country == null
+        ? countryValue.value = 'Country'
+        : countryValue.value =
+            userController.currentUser.value.country.toString();
+    userController.currentUser.value.state == null
+        ? stateValue.value = 'State'
+        : stateValue.value = userController.currentUser.value.state.toString();
+    userController.currentUser.value.city == null
+        ? cityValue.value = 'City'
+        : cityValue.value = userController.currentUser.value.city.toString();
+  }
+
+  Future<void> updateData() async {
+    UserModel updatedUser = userController.currentUser.value.copyWith(
+        username: nameController.text,
+        phone: phoneController.text.isEmpty ? '' : phoneController.text,
+        bio: bioController.text.isEmpty ? '' : bioController.text,
+        dateOfBirth: updateUserDateOfBirth(),
+        gender: gender.value,
+        sexualOrientation: sexualOrientation.value,
+        relationshipType: relationshipType.value,
+        personalityType: personalityType.value,
+        country: countryValue.value,
+        state: stateValue.value,
+        city: cityValue.value,
+        fbLink: facebookController.text.isEmpty ? '' : facebookController.text,
+        instaLink: instaController.text.isEmpty ? '' : instaController.text,
+        tiktokLink:
+            twitterController.text.isEmpty ? '' : twitterController.text,
+        hobbies: Interests);
+    await userController.updateUserData(updatedUser);
+    Get.back(); // Go b Go back after updating
   }
 
   Future<void> pickImage(ImageSource source) async {
@@ -61,6 +126,7 @@ class Editprofilecontroller extends GetxController {
       update();
     }
   }
+
   Future<void> selectDate(BuildContext context) async {
     final DateTime now = DateTime.now();
     final DateTime eighteenYearsAgo =
@@ -77,25 +143,70 @@ class Editprofilecontroller extends GetxController {
     }
     formKey.currentState!.validate();
   }
+
+  void checkLink(
+      {required String title, required TextEditingController controller}) {
+    bool isValidUrl(String url, String platform) {
+      final RegExp urlPattern = RegExp(
+        r'^(https?:\/\/)?(www\.)?' + platform + r'\.com\/[a-zA-Z0-9(\.\?)?]',
+        caseSensitive: false,
+      );
+      return urlPattern.hasMatch(url) ? true : false;
+    }
+
+    if (title == 'facebook') {
+      var check = isValidUrl(controller.text, 'facebook');
+      log(check.toString());
+      if (check) {
+        log(facebookController.text);
+        facebookController.text = controller.text;
+
+        Get.back();
+      } else {
+        controller.clear();
+        Get.back();
+        Utils.showSnackbar('Error', "Invalid Facebook link");
+      }
+    }
+    if (title == 'insta') {
+      var check = isValidUrl(controller.text, 'instagram');
+      log(check.toString());
+      if (check) {
+        instaController.text = controller.text;
+        Get.back();
+      } else {
+        controller.clear();
+        Get.back();
+        Utils.showSnackbar('Error', "Invalid Instagram link");
+      }
+    }
+    if (title == 'twitter') {
+      var check = isValidUrl(controller.text, 'twitter');
+      log(check.toString());
+      if (check) {
+        twitterController.text = controller.text;
+        Get.back();
+      } else {
+        controller.clear();
+        Get.back();
+        Utils.showSnackbar('Error', "Invalid twitter link");
+      }
+    }
+  }
+
+  DateTime convertListToDateTime(List<int> dobList) {
+    
+    return DateTime(dobList[0], dobList[1], dobList[2]);
+  }
+
+  List<int> updateUserDateOfBirth() {
+    List<int> dob = [
+      selectedTime.value!.year,
+      selectedTime.value!.month,
+      selectedTime.value!.day,
+    ];
+    return dob;
+
+    // Create a new user model with updated dateOfBirth
+  }
 }
-
-
-// final Rxn<DateTime> selectedTime = Rxn<DateTime>();
-
-// void updateUserDateOfBirth(UserModel userModel) {
-//   if (selectedTime.value != null) {
-//     List<int> dob = [
-//       selectedTime.value!.year,
-//       selectedTime.value!.month,
-//       selectedTime.value!.day,
-//     ];
-
-//     // Create a new user model with updated dateOfBirth
-//     UserModel updatedUser = userModel.copyWith(dateOfBirth: dob);
-
-//     // Now you can call updateUserData(updatedUser) to update Firebase
-//     // For example:
-//     userController.updateUserData(updatedUser);
-//   }
-// }
-
