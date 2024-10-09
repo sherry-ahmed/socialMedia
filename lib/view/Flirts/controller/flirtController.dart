@@ -32,7 +32,7 @@ class Flirtcontroller extends GetxController {
 
             // Create a new UserModel instance for each user
             UserModel newUser = UserModel.fromMap(userData);
-            userList.add(newUser); // Add the new user instance to userList
+            newUser.uid==Sessioncontroller.userid? null:userList.add(newUser); // Add the new user instance to userList
 
             log(newUser.uid.toString()); // Log UID for verification
           }

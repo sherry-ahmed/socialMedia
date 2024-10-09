@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/baseComponents/custom_appbar.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/view/profile/components/social_url_dialog.dart';
+
 
 class AddSocials extends StatelessWidget {
   AddSocials({super.key});

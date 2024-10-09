@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/baseComponents/custom_appbar.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/view/profile/model/data.dart';
+
 
 class Interests extends StatelessWidget {
   Interests({super.key});

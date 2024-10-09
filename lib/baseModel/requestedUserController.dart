@@ -1,7 +1,7 @@
 import 'package:socialmedia/baseComponents/imports.dart';
 
-class UserController extends GetxController {
-    var currentUser = UserModel(
+class Requestedusercontroller extends GetxController {
+    var requestedUser = UserModel(
       uid: '',
       email: '',
       username: '',
@@ -29,7 +29,7 @@ class UserController extends GetxController {
 
   final DatabaseReference _ref = FirebaseDatabase.instance.ref();
 
-  Future<void> fetchUserData(String uid) async {
+  Future<void> fetchRequestedUserData(String uid) async {
     try {
       DataSnapshot snapshot = await _ref.child("Users").child(uid).get();
       if (snapshot.exists) {
@@ -39,25 +39,25 @@ class UserController extends GetxController {
           return MapEntry(key.toString(), value);
         });
 
-        currentUser.value = UserModel.fromMap(userData);
-        log(currentUser.value.uid.toString());
+        requestedUser.value = UserModel.fromMap(userData);
+        log(requestedUser.value.uid.toString());
       } else {
-        log("User not found");
+        log("Requested User not found");
       }
     } catch (e) {
-      log("Error fetching user data: $e");
+      log("Error fetching requested user data: $e");
     }
   }
   
 
-  Future<void> updateUserData(UserModel updatedUser, String uid) async {
+  Future<void> updateRequestedUserData(UserModel updatedUser, String uid) async {
     try {
       await _ref.child("Users").child(uid).update(updatedUser.toMap());
-      currentUser.value = updatedUser; 
+      requestedUser.value = updatedUser; 
       update();
-      Utils.toastMessage('Data Updated Successfully');
+      log('requested user data updated');
     } catch (e) {
-      Utils.toastMessage("Error updating user data: $e");
+      log('error updated requested user data${e}');
     }
   }
 }

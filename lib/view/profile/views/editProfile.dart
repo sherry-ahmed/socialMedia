@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/baseComponents/custom_appbar.dart';
+
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/baseComponents/spacing.dart';
-import 'package:socialmedia/view/profile/components/addSocials.dart';
-import 'package:socialmedia/view/profile/components/dob.dart';
-import 'package:socialmedia/view/profile/components/gender.dart';
-import 'package:socialmedia/view/profile/components/interest.dart';
-import 'package:socialmedia/view/profile/components/personalityType.dart';
-import 'package:socialmedia/view/profile/components/relationshipType.dart';
-import 'package:socialmedia/view/profile/components/sexualOrientation.dart';
-import 'package:socialmedia/view/profile/views/country.dart';
+
 
 class Editprofile extends StatelessWidget {
   Editprofile({super.key});

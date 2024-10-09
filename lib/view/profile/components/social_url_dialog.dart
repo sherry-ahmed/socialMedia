@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/baseComponents/spacing.dart';
 
 class ConnectSocialDialog extends StatelessWidget {
    ConnectSocialDialog(
@@ -15,7 +14,6 @@ class ConnectSocialDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      //backgroundColor: Colors.black,
       shadowColor: Colors.amber,
       elevation: 12,
       child: SingleChildScrollView(

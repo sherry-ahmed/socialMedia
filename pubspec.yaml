@@ -40,6 +40,7 @@ dependencies:
   csc_picker: ^0.2.7
   flutter_card_swiper: ^7.0.1
   palette_generator: ^0.3.3+4
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:

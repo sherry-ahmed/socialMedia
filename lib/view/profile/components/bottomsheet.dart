@@ -4,8 +4,7 @@ import 'package:socialmedia/baseComponents/imports.dart';
 class ImageSourceBottomSheet extends StatelessWidget {
   final Function(ImageSource) onImageSourceSelected;
 
-  const ImageSourceBottomSheet({required this.onImageSourceSelected, Key? key})
-      : super(key: key);
+  const ImageSourceBottomSheet({required this.onImageSourceSelected, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,32 +36,4 @@ class ImageSourceBottomSheet extends StatelessWidget {
 
 // Example usage of the bottom sheet in your screen
 
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Select Image'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return ImageSourceBottomSheet(
-                  onImageSourceSelected: (ImageSource source) {
-                    // Handle the selected image source (camera or gallery)
-                    // You can now call your image picker function here
-                    print('Selected source: $source');
-                  },
-                );
-              },
-            );
-          },
-          child: const Text('Show Image Source'),
-        ),
-      ),
-    );
-  }
-}
+

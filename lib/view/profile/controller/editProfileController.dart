@@ -26,7 +26,6 @@ class Editprofilecontroller extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     setData();
   }
@@ -40,8 +39,7 @@ class Editprofilecontroller extends GetxController {
             userController.currentUser.value.phone.toString();
     userController.currentUser.value.bio == null
         ? bioController.clear()
-        : bioController.text =
-            userController.currentUser.value.bio.toString();
+        : bioController.text = userController.currentUser.value.bio.toString();
     userController.currentUser.value.dateOfBirth!.isEmpty
         ? null
         : selectedTime.value = convertListToDateTime(
@@ -104,10 +102,12 @@ class Editprofilecontroller extends GetxController {
         city: cityValue.value,
         fbLink: facebookController.text.isEmpty ? '' : facebookController.text,
         instaLink: instaController.text.isEmpty ? '' : instaController.text,
+        age: calculateAge(selectedTime.value),
         tiktokLink:
             twitterController.text.isEmpty ? '' : twitterController.text,
         hobbies: Interests);
-    await userController.updateUserData(updatedUser);
+        
+    await userController.updateUserData(updatedUser, Sessioncontroller.userid.toString());
     Get.back(); // Go b Go back after updating
   }
 
@@ -121,7 +121,7 @@ class Editprofilecontroller extends GetxController {
         UserModel updatedUser = userController.currentUser.value.copyWith(
           profile: newUrl,
         );
-        await userController.updateUserData(updatedUser);
+        await userController.updateUserData(updatedUser, Sessioncontroller.userid.toString());
       }
       update();
     }
@@ -195,7 +195,6 @@ class Editprofilecontroller extends GetxController {
   }
 
   DateTime convertListToDateTime(List<int> dobList) {
-    
     return DateTime(dobList[0], dobList[1], dobList[2]);
   }
 
@@ -209,4 +208,21 @@ class Editprofilecontroller extends GetxController {
 
     // Create a new user model with updated dateOfBirth
   }
+  int calculateAge(DateTime? birthDate) {
+  if (birthDate == null) return 0; // If the birthDate is null, return 0
+
+  DateTime currentDate = DateTime.now();
+  
+  // Calculate the difference in years
+  int age = currentDate.year - birthDate.year;
+
+  // Adjust the age if the birthday hasn't occurred yet this year
+  if (currentDate.month < birthDate.month || 
+      (currentDate.month == birthDate.month && currentDate.day < birthDate.day)) {
+    age--;
+  }
+
+  return age;
+}
+
 }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/baseComponents/app_text_field.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
 
-// ignore: must_be_immutable
+
 class DobSection extends StatelessWidget {
   DobSection({super.key});
   final cont = Get.put(Editprofilecontroller());

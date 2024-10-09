@@ -7,7 +7,7 @@ class Profilerow extends StatelessWidget {
   final VoidCallback onPressed;
   final bool divider;
 
-  Profilerow(
+  const Profilerow(
       {super.key,
       required this.leadingIcon,
       required this.trailingIcon,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/view/profile/model/data.dart';
 
 class SexualOrientation extends StatelessWidget {
   SexualOrientation({super.key});
@@ -18,7 +17,7 @@ class SexualOrientation extends StatelessWidget {
             EditProfileData.sexualOrientation.length,
             (index) => GestureDetector(
               onTap: () {
-                // Update the selected sexual orientation
+                
                 controller.sexualOrientation.value =
                     EditProfileData.sexualOrientation[index].toString();
               },

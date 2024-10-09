@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/view/profile/model/data.dart';
-
 import '../../../baseComponents/imports.dart';
 
 class RelationshipType extends StatelessWidget {

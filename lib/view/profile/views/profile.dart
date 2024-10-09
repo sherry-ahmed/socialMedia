@@ -8,14 +8,12 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-    final double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SB.h(screenHeight * 0.1),
+            SB.h(context.width * 0.1),
             Container(
               //height: 750,
               color: Colors.black,
@@ -34,7 +32,7 @@ class Profile extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        SizedBox(height: screenHeight * 0.05),
+                        SizedBox(height: context.width * 0.05),
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 40, right: 40, bottom: 30),

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/view/profile/model/data.dart';
-
-import '../../../baseComponents/spacing.dart';
 
 class Gender extends StatelessWidget {
   Gender({super.key});

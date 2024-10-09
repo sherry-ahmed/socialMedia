@@ -10,6 +10,8 @@ class UserModel {
   final String? state;
   final String? city;
   final List<String>? hobbies;
+  final List<String>? requests;
+  final List<String>? friends;
   final int? age;
   final String? instaLink;
   final String? fbLink;
@@ -26,6 +28,8 @@ class UserModel {
       required this.username,
       required this.profile,
       required this.isOnline,
+      this.requests,
+      this.friends,
       this.phone,
       this.bio,
       this.country,
@@ -54,6 +58,8 @@ class UserModel {
     String? state,
     String? city,
     List<String>? hobbies,
+    List<String>? requests,
+    List<String>? friends,
     int? age,
     String? instaLink,
     String? fbLink,
@@ -76,6 +82,8 @@ class UserModel {
         state: state ?? this.state,
         city: city ?? this.city,
         hobbies: hobbies ?? this.hobbies,
+        requests: requests?? this.requests,
+        friends: friends?? this.friends,
         age: age ?? this.age,
         instaLink: instaLink ?? this.instaLink,
         fbLink: fbLink ?? this.fbLink,
@@ -101,6 +109,8 @@ class UserModel {
       state: map['state'],
       city: map['city'],
       hobbies: map['hobbies'] != null ? List<String>.from(map['hobbies']) : [],
+      requests: map['requests'] != null ? List<String>.from(map['requests']) : [],
+      friends: map['friends'] != null ? List<String>.from(map['friends']) : [],
       age: map['age'],
       instaLink: map['instaLink'],
       fbLink: map['fbLink'],
@@ -132,6 +142,8 @@ class UserModel {
       'state': state,
       'city': city,
       'hobbies': hobbies,
+      'requests': requests,
+      'friends': friends,
       'age': age,
       'instaLink': instaLink,
       'fbLink': fbLink,

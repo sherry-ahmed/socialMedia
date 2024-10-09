@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 
 class Timegetter {
   static String formatTimestamp(String timestamp) {
@@ -94,7 +93,10 @@ static String _getMonthName(int month) {
     final hour = DateTime.now().hour;
     if (hour < 12) {
       return "Good Morning";
-    } else if (hour < 18) {
+    } else if (hour < 4) {
+      return "Still Wakeup";
+    }
+    else if (hour < 18) {
       return "Good Afternoon";
     } else {
       return "Good Evening";

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/view/profile/model/data.dart';
 
 class PersonalityType extends StatelessWidget {
   PersonalityType({super.key});
@@ -12,13 +11,13 @@ class PersonalityType extends StatelessWidget {
       width: context.width,
       child: Obx(
         () => Wrap(
-          spacing: 8.0, // Add spacing between the items
-          runSpacing: 8.0, // Add spacing between rows
+          spacing: 8.0, 
+          runSpacing: 8.0, 
           children: List.generate(
             EditProfileData.personalityType.length,
             (index) => GestureDetector(
               onTap: () {
-                // Update the selected sexual orientation
+               
                 controller.personalityType.value =
                     EditProfileData.personalityType[index].toString();
               },
