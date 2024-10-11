@@ -19,7 +19,8 @@ class HomePopupMenu extends StatelessWidget {
          PopupMenuItem<String>(
           value: 'Requests',
           onTap: () {
-            Get.to(()=>  Friendrequests());
+            //Future.delayed(const Duration(seconds: 2));
+            Get.to(()=>  Friendrequests(currentUserUID: Sessioncontroller.userid.toString()));
           },
           
           child: const Text('Requests'),

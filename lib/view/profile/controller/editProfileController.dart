@@ -89,25 +89,43 @@ class Editprofilecontroller extends GetxController {
 
   Future<void> updateData() async {
     UserModel updatedUser = userController.currentUser.value.copyWith(
-        username: nameController.text,
-        phone: phoneController.text.isEmpty ? '' : phoneController.text,
-        bio: bioController.text.isEmpty ? '' : bioController.text,
-        dateOfBirth: updateUserDateOfBirth(),
-        gender: gender.value,
-        sexualOrientation: sexualOrientation.value,
-        relationshipType: relationshipType.value,
-        personalityType: personalityType.value,
-        country: countryValue.value,
-        state: stateValue.value,
-        city: cityValue.value,
-        fbLink: facebookController.text.isEmpty ? '' : facebookController.text,
-        instaLink: instaController.text.isEmpty ? '' : instaController.text,
-        age: calculateAge(selectedTime.value),
-        tiktokLink:
-            twitterController.text.isEmpty ? '' : twitterController.text,
-        hobbies: Interests);
-        
-    await userController.updateUserData(updatedUser, Sessioncontroller.userid.toString());
+      username: nameController.text,
+      phone: phoneController.text.isEmpty ? '' : phoneController.text,
+      bio: bioController.text.isEmpty ? '' : bioController.text,
+      dateOfBirth: updateUserDateOfBirth(),
+      gender: gender.value,
+      sexualOrientation: sexualOrientation.value,
+      relationshipType: relationshipType.value,
+      personalityType: personalityType.value,
+      country: countryValue.value,
+      state: stateValue.value,
+      city: cityValue.value,
+      age: calculateAge(selectedTime.value),
+    );
+
+    await userController.updateUserData(
+        updatedUser, Sessioncontroller.userid.toString());
+    Get.back(); // Go b Go back after updating
+  }
+
+  Future<void> updateSocials() async {
+    UserModel updatedsocials = userController.currentUser.value.copyWith(
+      fbLink: facebookController.text.isEmpty ? '' : facebookController.text,
+      instaLink: instaController.text.isEmpty ? '' : instaController.text,
+      tiktokLink: twitterController.text.isEmpty ? '' : twitterController.text,
+    );
+
+    await userController.updateUserData(
+        updatedsocials, Sessioncontroller.userid.toString());
+    Get.back(); // Go b Go back after updating
+  }
+
+  Future<void> updateInterests() async {
+    UserModel updatedInterests =
+        userController.currentUser.value.copyWith(hobbies: Interests);
+
+    await userController.updateUserData(
+        updatedInterests, Sessioncontroller.userid.toString());
     Get.back(); // Go b Go back after updating
   }
 
@@ -121,7 +139,8 @@ class Editprofilecontroller extends GetxController {
         UserModel updatedUser = userController.currentUser.value.copyWith(
           profile: newUrl,
         );
-        await userController.updateUserData(updatedUser, Sessioncontroller.userid.toString());
+        await userController.updateUserData(
+            updatedUser, Sessioncontroller.userid.toString());
       }
       update();
     }
@@ -208,21 +227,22 @@ class Editprofilecontroller extends GetxController {
 
     // Create a new user model with updated dateOfBirth
   }
+
   int calculateAge(DateTime? birthDate) {
-  if (birthDate == null) return 0; // If the birthDate is null, return 0
+    if (birthDate == null) return 0; // If the birthDate is null, return 0
 
-  DateTime currentDate = DateTime.now();
-  
-  // Calculate the difference in years
-  int age = currentDate.year - birthDate.year;
+    DateTime currentDate = DateTime.now();
 
-  // Adjust the age if the birthday hasn't occurred yet this year
-  if (currentDate.month < birthDate.month || 
-      (currentDate.month == birthDate.month && currentDate.day < birthDate.day)) {
-    age--;
+    // Calculate the difference in years
+    int age = currentDate.year - birthDate.year;
+
+    // Adjust the age if the birthday hasn't occurred yet this year
+    if (currentDate.month < birthDate.month ||
+        (currentDate.month == birthDate.month &&
+            currentDate.day < birthDate.day)) {
+      age--;
+    }
+
+    return age;
   }
-
-  return age;
-}
-
 }

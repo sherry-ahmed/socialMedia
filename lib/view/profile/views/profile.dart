@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
+import 'package:socialmedia/baseComponents/profileImage.dart';
 import 'package:socialmedia/baseComponents/timeGetter.dart';
 
 class Profile extends StatelessWidget {
@@ -41,27 +42,16 @@ class Profile extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  Obx(
-                                    () => Container(
-                                        height: 60,
-                                        width: 60,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                                color: Colors.white, width: 5)),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          child: userController.currentUser.value
-                                                  .profile.isEmpty
-                                              ? Assets.images.womenPeekingOut
-                                                  .image(fit: BoxFit.cover)
-                                              : Image.network(
-                                                  userController
-                                                      .currentUser.value.profile,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                        )),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 20.0),
+                                    child: Obx(
+                                      () => userController.currentUser.value
+                                                    .profile.isEmpty
+                                                ? Assets.images.womenPeekingOut
+                                                    .image(fit: BoxFit.cover, width: 50, height: 50)
+                                                : profileImage(profile: userController.currentUser.value.profile, height: 50, width: 50)
+                                          
+                                    ),
                                   ),
                                   Text(
                                       'Hi! ${userController.currentUser.value.username} \n${Timegetter.getGreeting()}',

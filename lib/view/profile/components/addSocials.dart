@@ -10,6 +10,23 @@ class AddSocials extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(title: 'My Socials'),
+      bottomSheet: Container(
+            height: context.height * .1,
+            width: context.width,
+            color: Colors.black,
+            child: Center(
+                child: CustomElevatedButton(
+                    loading: false,
+                    text: 'Save',
+                    textColor: Colors.black,
+                    onPressed: () {
+                     controller.updateSocials();
+                    },
+                    width: context.width * .85,
+                    height: context.height * .057,
+                    color: Colors.white,
+                    radius: 10)),
+          ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: context.width * 0.05),
         child: Column(

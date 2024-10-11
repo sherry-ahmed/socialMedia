@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/baseModel/requestedUserController.dart';
-import 'package:socialmedia/services/connection.dart';
+import 'package:socialmedia/baseModel/friendController.dart';
 import 'package:socialmedia/view/Flirts/components/blockReport.dart';
+import 'package:socialmedia/view/Flirts/controller/ImageComponent.dart';
 import 'package:socialmedia/view/Flirts/controller/flirtdetailController.dart';
 
 class Flirtdetailscreen extends StatelessWidget {
@@ -10,7 +10,8 @@ class Flirtdetailscreen extends StatelessWidget {
   final UserModel data;
   final Flirtdetailcontroller controller = Get.put(Flirtdetailcontroller());
   final userController = Get.find<UserController>();
-  final Requestedusercontroller requestedusercontroller = Get.put(Requestedusercontroller());
+
+  final FriendController friendController = Get.put(FriendController());
 
   @override
   Widget build(BuildContext context) {
@@ -36,25 +37,23 @@ class Flirtdetailscreen extends StatelessWidget {
                   clipBehavior: Clip.none,
                   children: [
                     Container(
-                      clipBehavior: Clip.hardEdge,
-                      height: context.height * 0.5,
-                      width: context.width * 0.8,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: controller.dominantColor,
-                              spreadRadius: 12,
-                              offset: const Offset(0, 4),
-                              blurRadius: 10,
-                            )
-                          ]),
-                      child: Image.network(
-                        requestedusercontroller.requestedUser.value.profile,
-                        //fit: BoxFit.fill,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                        clipBehavior: Clip.hardEdge,
+                        height: context.height * 0.5,
+                        width: context.width * 0.8,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.red,
+                                spreadRadius: 6,
+                                offset: Offset(0, 8),
+                                blurRadius: 20,
+                              )
+                            ]),
+                        child: Imagecomponent(
+                            profile: data.profile,
+                            height: double.infinity,
+                            width: double.infinity)),
                     Positioned(
                       bottom: 0,
                       right: 0,
@@ -63,12 +62,11 @@ class Flirtdetailscreen extends StatelessWidget {
                           data.fbLink != ''
                               ? GestureDetector(
                                   onTap: () {
-                                    controller.launchURL(requestedusercontroller
-                                        .requestedUser.value.fbLink);
+                                    controller.launchURL(data.fbLink);
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 12.0),
+                                        vertical: 8.0, horizontal: 6),
                                     child: CircleAvatar(
                                         backgroundColor: Colors.white,
                                         radius: 25,
@@ -83,12 +81,11 @@ class Flirtdetailscreen extends StatelessWidget {
                           data.instaLink != ''
                               ? GestureDetector(
                                   onTap: () {
-                                    controller.launchURL(requestedusercontroller
-                                        .requestedUser.value.instaLink);
+                                    controller.launchURL(data.instaLink);
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 12.0),
+                                        vertical: 8.0, horizontal: 6),
                                     child: CircleAvatar(
                                         backgroundColor: Colors.white,
                                         radius: 25,
@@ -103,12 +100,11 @@ class Flirtdetailscreen extends StatelessWidget {
                           data.tiktokLink != ''
                               ? GestureDetector(
                                   onTap: () {
-                                    controller.launchURL(requestedusercontroller
-                                        .requestedUser.value.tiktokLink);
+                                    controller.launchURL(data.tiktokLink);
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 12.0),
+                                        vertical: 8.0, horizontal: 6),
                                     child: CircleAvatar(
                                         backgroundColor: Colors.white,
                                         radius: 25,
@@ -130,20 +126,19 @@ class Flirtdetailscreen extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    requestedusercontroller.requestedUser.value.username
-                        .toString(),
+                    data.username.toString(),
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   data.age == null
-                      ? SizedBox()
+                      ? const SizedBox()
                       : Text(
-                          "  ${requestedusercontroller.requestedUser.value.age.toString()}",
+                          "  ${data.age.toString()}",
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
                 ],
               ),
               Text(
-                requestedusercontroller.requestedUser.value.bio.toString(),
+                data.bio.toString(),
                 style: Theme.of(context)
                     .textTheme
                     .bodyLarge!
@@ -153,11 +148,11 @@ class Flirtdetailscreen extends StatelessWidget {
                 spacing: 8.0, // Add spacing between the items
                 runSpacing: 8.0, // Add spacing between rows
                 children: List.generate(
-                  requestedusercontroller.requestedUser.value.hobbies!.length,
+                  data.hobbies!.length,
                   (index) => IntrinsicWidth(
                     child: Card(
                       elevation: 5,
-                      shadowColor: controller.dominantColor,
+                      shadowColor: Colors.red,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12)),
                       child: Container(
@@ -171,9 +166,7 @@ class Flirtdetailscreen extends StatelessWidget {
                               horizontal: 12.0, vertical: 12),
                           child: Center(
                             child: Text(
-                              requestedusercontroller
-                                  .requestedUser.value.hobbies![index]
-                                  .toString(),
+                              data.hobbies![index].toString(),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -201,13 +194,13 @@ class Flirtdetailscreen extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                Utils.toastMessage('Location Uavailable');
+                Utils.toastMessage('${data.country}\n ${data.state}\n ${data.city}');
               },
               child: Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100)),
                 elevation: 10,
-                shadowColor: controller.dominantColor,
+                shadowColor: Colors.red,
                 child: const CircleAvatar(
                     radius: 30,
                     backgroundColor: Colors.black,
@@ -218,35 +211,36 @@ class Flirtdetailscreen extends StatelessWidget {
                     )),
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                requestedusercontroller.requestedUser.value.requests!
-                            .contains(userController.currentUser.value.uid) ||
-                        userController.currentUser.value.friends!
-                            .contains(data.uid.toString())
-                    ? Connection.withdrawRequest()
-                    : Connection.sendrequest();
-              },
-              child: Obx(
-                  () => Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100)),
-                elevation: 10,
-                shadowColor: controller.dominantColor,
-                child: CircleAvatar(
+            Obx(
+              () => GestureDetector(
+                onTap: () {
+                  if (controller.isFriend.isTrue) {
+                    Utils.toastMessage('Your are Already Friends');
+                  } else {
+                    friendController.requestsent.value == true
+                        ? friendController.declineFriendRequest(
+                            data.uid, Sessioncontroller.userid.toString())
+                        : friendController.sendFriendRequest(
+                            Sessioncontroller.userid.toString(),
+                            data.uid,
+                            userController.currentUser.value);
+                  }
+                },
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100)),
+                  elevation: 10,
+                  shadowColor: Colors.red,
+                  child: CircleAvatar(
                     radius: 30,
-                    backgroundColor: requestedusercontroller.requestedUser.value.requests!.contains(
-                                userController.currentUser.value.uid) ||
-                            userController.currentUser.value.friends!
-                                .contains(data.uid)
+                    backgroundColor: controller.isFriend.isTrue ||
+                            friendController.requestsent.isTrue
                         ? Colors.black
                         : Colors.white,
                     child: Icon(
                       Icons.person_add,
-                      color: requestedusercontroller.requestedUser.value.requests!.contains(
-                                  userController.currentUser.value.uid) ||
-                              userController.currentUser.value.friends!
-                                  .contains(data.uid)
+                      color: controller.isFriend.isTrue ||
+                              friendController.requestsent.isTrue
                           ? Colors.white
                           : Colors.black,
                       size: 30,
@@ -257,13 +251,21 @@ class Flirtdetailscreen extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                // Get.to(()=>Chatroom(profile: data.profile, username: data.username, receiverUID: data.uid) );
+                if (controller.isFriend.value == true) {
+                  Get.to(() => Chatroom(
+                        receiverUID: data.uid,
+                        profile: data.profile,
+                        username: data.username,
+                      ));
+                } else {
+                  Utils.toastMessage('Account is Private');
+                }
               },
               child: Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100)),
                 elevation: 10,
-                shadowColor: controller.dominantColor,
+                shadowColor: Colors.red,
                 child: const CircleAvatar(
                   radius: 30,
                   backgroundColor: Colors.black,

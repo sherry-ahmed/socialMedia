@@ -1,7 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
+import 'package:socialmedia/baseModel/friendController.dart';
 
 class Userlistcontroller extends GetxController{
+  final FriendController friendController = Get.put(FriendController());
+  List<String> friends = [];
+  
+  
 
 bool showsearchbar = false;
    searchbar(value){
@@ -11,16 +15,20 @@ bool showsearchbar = false;
   rebuild(){
     update();
   }
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  // Function to get unread message count for a specific user in the chatroom
-Stream<int> getUnreadMessageCount(String chatroomId, String userId) {
-  return _firestore
-      .collection('chatrooms')
-      .doc(chatroomId)
-      .collection('participants')
-      .doc(userId)
-      .snapshots()
-      .map((snapshot) => snapshot['unreadMessageCount'] ?? 0);
-}
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    friendController.listenToFriends(Sessioncontroller.userid.toString());
+    for(int i = 0 ; i< friendController.friendList.length; i++){
+      UserModel user = friendController.friendList[i];
+      friends.add(user.uid);
+    }
+    log(friends.toString());
+    update();
+    
+  }
+  
+  
 
 }

@@ -13,8 +13,6 @@ class UserController extends GetxController {
       state: null,
       city: null,
       hobbies: [],
-      friends: [],
-      requests: [],
       age: null,
       instaLink: null,
       fbLink: null,

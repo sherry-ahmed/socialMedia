@@ -2,6 +2,7 @@ import 'package:socialmedia/baseComponents/imports.dart';
 
 class SplashController extends GetxController {
   final UserController userController = Get.put(UserController());
+  //final FriendController friendController = Get.put(FriendController());
   @override
   void onReady() {
     super.onReady();
@@ -21,6 +22,7 @@ class SplashController extends GetxController {
       if (user != null && user.uid == authToken) {
         Sessioncontroller.userid = user.uid.toString();
         await userController.fetchUserData(user.uid);
+        //friendController.listenToFriends(user.uid.toString());
 
         Get.offAll(() =>  Dashboard());
       } else {

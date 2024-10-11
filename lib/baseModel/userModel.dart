@@ -10,8 +10,6 @@ class UserModel {
   final String? state;
   final String? city;
   final List<String>? hobbies;
-  final List<String>? requests;
-  final List<String>? friends;
   final int? age;
   final String? instaLink;
   final String? fbLink;
@@ -28,8 +26,6 @@ class UserModel {
       required this.username,
       required this.profile,
       required this.isOnline,
-      this.requests,
-      this.friends,
       this.phone,
       this.bio,
       this.country,
@@ -58,8 +54,6 @@ class UserModel {
     String? state,
     String? city,
     List<String>? hobbies,
-    List<String>? requests,
-    List<String>? friends,
     int? age,
     String? instaLink,
     String? fbLink,
@@ -82,8 +76,6 @@ class UserModel {
         state: state ?? this.state,
         city: city ?? this.city,
         hobbies: hobbies ?? this.hobbies,
-        requests: requests?? this.requests,
-        friends: friends?? this.friends,
         age: age ?? this.age,
         instaLink: instaLink ?? this.instaLink,
         fbLink: fbLink ?? this.fbLink,
@@ -109,8 +101,6 @@ class UserModel {
       state: map['state'],
       city: map['city'],
       hobbies: map['hobbies'] != null ? List<String>.from(map['hobbies']) : [],
-      requests: map['requests'] != null ? List<String>.from(map['requests']) : [],
-      friends: map['friends'] != null ? List<String>.from(map['friends']) : [],
       age: map['age'],
       instaLink: map['instaLink'],
       fbLink: map['fbLink'],
@@ -129,7 +119,7 @@ class UserModel {
   }
 
   // Method to convert UserModel to a map (for saving to Firebase)
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic>  toMap() {
     return {
       'uid': uid,
       'email': email,
@@ -142,8 +132,6 @@ class UserModel {
       'state': state,
       'city': city,
       'hobbies': hobbies,
-      'requests': requests,
-      'friends': friends,
       'age': age,
       'instaLink': instaLink,
       'fbLink': fbLink,
@@ -153,6 +141,30 @@ class UserModel {
       'personalityType': personalityType,
       'sexualOrientation': sexualOrientation,
       'dateOfBirth': dateOfBirth
+    };
+  }
+    Map<String, dynamic>  toObjectMap(UserModel data) {
+    return {
+      'uid': data.uid,
+      'email': data.email,
+      'username': data.username,
+      'profile': data.profile,
+      'isOnline': data.isOnline,
+      'phone': data.phone,
+      'bio': data.bio,
+      'country': data.country,
+      'state': data.state,
+      'city': data.city,
+      'hobbies': data.hobbies,
+      'age': data.age,
+      'instaLink': data.instaLink,
+      'fbLink': data.fbLink,
+      'tiktokLink': data.tiktokLink,
+      'gender': data.gender,
+      'relationshipType': data.relationshipType,
+      'personalityType': data.personalityType,
+      'sexualOrientation': data.sexualOrientation,
+      'dateOfBirth': data.dateOfBirth
     };
   }
 }

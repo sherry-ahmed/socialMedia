@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:socialmedia/baseComponents/imports.dart';
-
+import 'package:socialmedia/baseComponents/profileImage.dart';
 
 class Editprofile extends StatelessWidget {
   Editprofile({super.key});
@@ -31,7 +31,7 @@ class Editprofile extends StatelessWidget {
                     text: 'Save',
                     textColor: Colors.black,
                     onPressed: () {
-                     controller.updateData();
+                      controller.updateData();
                     },
                     width: context.width * .85,
                     height: context.height * .057,
@@ -51,51 +51,41 @@ class Editprofile extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(100)),
-                          elevation: 20,
-                          shadowColor: Colors.amber,
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Container(
-                                  height: 150,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: Colors.white, width: 2)),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
-                                    child: userController
-                                            .currentUser.value.profile.isEmpty
-                                        ? Assets.images.womenPeekingOut
-                                            .image(fit: BoxFit.cover)
-                                        : Image.network(
-                                            userController
-                                                .currentUser.value.profile,
-                                            fit: BoxFit.cover),
-                                  )),
-                              Positioned(
-                                right: 3,
-                                bottom: 3,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    //controller.pickImage(ImageSource.camera);
-                                    showModalBottomSheet(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return ImageSourceBottomSheet(
-                                          onImageSourceSelected:
-                                              (ImageSource source) {
-                                            controller.pickImage(source);
-                                            log('Selected source: $source');
-                                          },
-                                        );
-                                      },
-                                    );
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ImageSourceBottomSheet(
+                                  onImageSourceSelected: (ImageSource source) {
+                                    controller.pickImage(source);
+                                    log('Selected source: $source');
                                   },
+                                );
+                              },
+                            );
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(100)),
+                            elevation: 20,
+                            shadowColor: Colors.amber,
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                userController.currentUser.value.profile.isEmpty
+                                    ? Assets.images.womenPeekingOut.image(
+                                        fit: BoxFit.cover,
+                                        height: 150,
+                                        width: 150)
+                                    : profileImage(
+                                        profile: userController
+                                            .currentUser.value.profile,
+                                        height: 150,
+                                        width: 150),
+                                Positioned(
+                                  right: 3,
+                                  bottom: 3,
                                   child: Container(
                                     height: 35,
                                     width: 35,
@@ -115,8 +105,8 @@ class Editprofile extends StatelessWidget {
                                         ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                         Form(
@@ -228,7 +218,7 @@ class Editprofile extends StatelessWidget {
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               PersonalityType(),
-                               Spacing.y(context, .01),
+                              Spacing.y(context, .01),
                               Text(
                                 "Edit Location",
                                 style: Theme.of(context).textTheme.bodyMedium,
@@ -298,7 +288,6 @@ class Editprofile extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                             
                               SB.h(100)
                             ],
                           ),
@@ -312,7 +301,3 @@ class Editprofile extends StatelessWidget {
     ));
   }
 }
-
-
-
-

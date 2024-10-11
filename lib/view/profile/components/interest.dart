@@ -10,6 +10,23 @@ class Interests extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(title: 'Edit Interests'),
+      bottomSheet: Container(
+            height: context.height * .1,
+            width: context.width,
+            color: Colors.black,
+            child: Center(
+                child: CustomElevatedButton(
+                    loading: false,
+                    text: 'Save',
+                    textColor: Colors.black,
+                    onPressed: () {
+                     controller.updateInterests();
+                    },
+                    width: context.width * .85,
+                    height: context.height * .057,
+                    color: Colors.white,
+                    radius: 10)),
+          ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 8.0,

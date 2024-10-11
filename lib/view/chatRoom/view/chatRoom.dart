@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
+import 'package:socialmedia/baseComponents/profileImage.dart';
 
 
 class Chatroom extends StatelessWidget {
@@ -27,7 +28,7 @@ class Chatroom extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white30,
         appBar: AppBar(
           automaticallyImplyLeading: false, // Disable default back button
@@ -44,23 +45,7 @@ class Chatroom extends StatelessWidget {
                       Get.back();
                     },
                   ),
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 2,
-                        color: Colors.white,
-                      ),
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          profile,
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                  profileImage(profile: profile, height: 40, width: 40),
                   SB.w(30),
                   Text(
                     username,
@@ -99,8 +84,10 @@ class Chatroom extends StatelessWidget {
                 }),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
+                
+                    padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 15.0,
+                    ),
                 child: Row(
                   children: [
                     Expanded(

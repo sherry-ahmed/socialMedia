@@ -53,6 +53,7 @@ class Chatroomcontroller extends GetxController {
         .set(message.toMap())
         .then((value) async {
       log('message sent');
+      isMessageSent.value = true;
       DocumentSnapshot snapshot = await _firestore
           .collection('chatrooms')
           .doc(chatroomId)
@@ -92,7 +93,7 @@ class Chatroomcontroller extends GetxController {
       }).onError((error, stacktrace) {
         log('counter not updated');
       });
-      isMessageSent.value = true;
+      
     }).onError((error, stackTrace) {
       log('check your internet');
     });

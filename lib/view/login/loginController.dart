@@ -10,6 +10,7 @@ class Logincontroller extends GetxController {
   bool _loading = false;
   FirebaseAuth auth = FirebaseAuth.instance;
   final UserController userController = Get.put(UserController());
+  //final FriendController friendController = Get.put(FriendController());
   bool get loading => _loading;
   setLoading(bool value) {
     _loading = value;
@@ -30,6 +31,7 @@ class Logincontroller extends GetxController {
 
         Utils.toastMessage('Login Successfull');
         setLoading(false);
+        //friendController.listenToFriends(Sessioncontroller.userid.toString());
         Get.offAll(() => Dashboard());
       }).onError((error, StackTrace) {
         setLoading(false);
