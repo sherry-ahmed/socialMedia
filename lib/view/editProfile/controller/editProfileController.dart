@@ -12,9 +12,9 @@ class Editprofilecontroller extends GetxController {
   final facebookController = TextEditingController();
   final instaController = TextEditingController();
   final twitterController = TextEditingController();
-  RxString countryValue = ''.obs;
-  RxString stateValue = ''.obs;
-  RxString cityValue = ''.obs;
+  RxString countryValue = 'Country'.obs;
+  RxString stateValue = 'State'.obs;
+  RxString cityValue = 'City'.obs;
   RxString gender = ''.obs;
   RxString sexualOrientation = ''.obs;
   RxString relationshipType = ''.obs;
@@ -31,6 +31,7 @@ class Editprofilecontroller extends GetxController {
   }
 
   void setData() {
+    if(phoneController.text.isEmpty&&bioController.text.isEmpty&&gender.value==''&&cityValue.value=='')
     nameController.text = userController.currentUser.value.username;
     emailController.text = userController.currentUser.value.email;
     userController.currentUser.value.phone == null
