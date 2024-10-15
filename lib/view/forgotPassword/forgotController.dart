@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
 
 class Forgotcontroller extends GetxController {

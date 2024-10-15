@@ -1,10 +1,4 @@
-import 'package:get/get.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:socialmedia/baseModel/baseController.dart';
-import 'package:socialmedia/view/dashboard/dashboard.dart';
-import 'package:socialmedia/utils/utils.dart';
-import 'package:socialmedia/services/sessionController.dart';
+import 'package:socialmedia/baseComponents/imports.dart';
 
 class Logincontroller extends GetxController {
   bool _loading = false;

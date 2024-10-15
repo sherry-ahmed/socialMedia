@@ -31,7 +31,6 @@ class Editprofilecontroller extends GetxController {
   }
 
   void setData() {
-    if(phoneController.text.isEmpty&&bioController.text.isEmpty&&gender.value==''&&cityValue.value=='')
     nameController.text = userController.currentUser.value.username;
     emailController.text = userController.currentUser.value.email;
     userController.currentUser.value.phone == null
@@ -89,24 +88,36 @@ class Editprofilecontroller extends GetxController {
   }
 
   Future<void> updateData() async {
-    UserModel updatedUser = userController.currentUser.value.copyWith(
-      username: nameController.text,
-      phone: phoneController.text.isEmpty ? '' : phoneController.text,
-      bio: bioController.text.isEmpty ? '' : bioController.text,
-      dateOfBirth: updateUserDateOfBirth(),
-      gender: gender.value,
-      sexualOrientation: sexualOrientation.value,
-      relationshipType: relationshipType.value,
-      personalityType: personalityType.value,
-      country: countryValue.value,
-      state: stateValue.value,
-      city: cityValue.value,
-      age: calculateAge(selectedTime.value),
-    );
+    if (phoneController.text.isEmpty &&
+        bioController.text.isEmpty &&
+        gender.value == '' &&
+        sexualOrientation.value == '' &&
+        personalityType.value == '' &&
+        relationshipType.value == '' &&
+        cityValue.value == 'City' &&
+        stateValue.value == 'State' &&
+        countryValue.value == 'Country') {
+      Utils.toastMessage('Please check All fields');
+    } else {
+      UserModel updatedUser = userController.currentUser.value.copyWith(
+        username: nameController.text,
+        phone: phoneController.text.isEmpty ? '' : phoneController.text,
+        bio: bioController.text.isEmpty ? '' : bioController.text,
+        dateOfBirth: updateUserDateOfBirth(),
+        gender: gender.value,
+        sexualOrientation: sexualOrientation.value,
+        relationshipType: relationshipType.value,
+        personalityType: personalityType.value,
+        country: countryValue.value,
+        state: stateValue.value,
+        city: cityValue.value,
+        age: calculateAge(selectedTime.value),
+      );
 
-    await userController.updateUserData(
-        updatedUser, Sessioncontroller.userid.toString());
-    Get.back(); // Go b Go back after updating
+      await userController.updateUserData(
+          updatedUser, Sessioncontroller.userid.toString());
+      Get.back(); // Go b Go back after updating
+    }
   }
 
   Future<void> updateSocials() async {

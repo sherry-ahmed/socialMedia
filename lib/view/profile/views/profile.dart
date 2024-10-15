@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/baseComponents/profileImage.dart';
-import 'package:socialmedia/baseComponents/timeGetter.dart';
+
+
 
 class Profile extends StatelessWidget {
   Profile({super.key});

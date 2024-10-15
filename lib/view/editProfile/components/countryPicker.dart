@@ -36,10 +36,13 @@ class CountryPicker extends StatelessWidget {
         log(value);
 
         cont.countryValue.value = value;
+        cont.stateValue.value = 'state';
+        cont.cityValue.value = 'city';
       },
 
       onStateChanged: (value) {
         cont.stateValue.value = value.toString();
+        cont.cityValue.value='city';
       },
       onCityChanged: (value) {
         cont.cityValue.value = value.toString();

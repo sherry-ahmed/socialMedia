@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/baseComponents/profileImage.dart';
-
 
 class Chatroom extends StatelessWidget {
   final String profile, username, receiverUID;
   final messageController = TextEditingController();
-
-  final String senderUID =
-      "YOUR_CURRENT_USER_UID"; // Replace with the current logged-in user's UID
 
   Chatroom(
       {super.key,
@@ -57,8 +52,9 @@ class Chatroom extends StatelessWidget {
           ),
         ),
         body: Container(
-          
-          decoration: BoxDecoration(image: DecorationImage(image: AssetImage(Assets.images.bg.path), fit: BoxFit.cover)),
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(Assets.images.bg.path), fit: BoxFit.cover)),
           child: Column(
             children: [
               Expanded(
@@ -70,10 +66,9 @@ class Chatroom extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final Message message =
                           chatController.reversedMessagesList[index];
-                      bool isSender =
-                          message.senderId == Sessioncontroller.userid.toString();
-                      
-          
+                      bool isSender = message.senderId ==
+                          Sessioncontroller.userid.toString();
+
                       return MessageBox(
                         isSender: isSender,
                         message: message,
@@ -84,35 +79,37 @@ class Chatroom extends StatelessWidget {
                 }),
               ),
               Padding(
-                
-                    padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom + 15.0,
-                    ),
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 15.0,
+                ),
                 child: Row(
                   children: [
                     Expanded(
                         child: TextFieldWidget(
-                          prefixIcon: const Icon(Icons.sentiment_very_satisfied, color: Colors.black38,),
+                      prefixIcon: const Icon(
+                        Icons.sentiment_very_satisfied,
+                        color: Colors.black38,
+                      ),
                       hintText: 'Message',
                       controller: messageController,
                       fillColor: Colors.white,
                       borderRadius: 50,
                       maxLines: 1,
                       cursorColor: Colors.black,
-                      suffixIcon: IconButton(onPressed: (){
-                        if (messageController.text.isNotEmpty) {
-                          chatController.sendMessage(
-                            chatroomId,
-                            Sessioncontroller.userid.toString(),
-                            receiverUID,
-                            messageController.text.trim(),
-                          );
-                          messageController.clear();
-                        }
-          
-                      }, icon: const Icon(Icons.send)),
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            if (messageController.text.isNotEmpty) {
+                              chatController.sendMessage(
+                                chatroomId,
+                                Sessioncontroller.userid.toString(),
+                                receiverUID,
+                                messageController.text.trim(),
+                              );
+                              messageController.clear();
+                            }
+                          },
+                          icon: const Icon(Icons.send)),
                     )),
-               
                   ],
                 ),
               )
@@ -123,10 +120,3 @@ class Chatroom extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-

@@ -1,16 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class Flirtdetailcontroller extends GetxController {
   RxBool isFriend = false.obs;
+  RxBool isrequest = false.obs;
+  final  friendController = Get.find<FriendController>();
+
+  close() {
+    isFriend.value = false;
+    isrequest.value = false;
+    log('friend set to false');
+  }
 
   final controller = Get.find<Flirtcontroller>();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Color dominantColor = Colors.red;
-  Future<void> sendFriendRequest(String senderUID, String receiverUID) async {
+  Future<void> checkfriend(String senderUID, String receiverUID) async {
     DocumentSnapshot receiverSnapshot = await firestore
         .collection('FriendSystem')
         .doc(senderUID)
@@ -21,6 +28,23 @@ class Flirtdetailcontroller extends GetxController {
       isFriend.value = true;
 
       // Exit the function if already friends
+    } else {
+      isFriend.value = false;
+    }
+  }
+  Future<void> checkrequest(String senderUID, String receiverUID) async {
+    DocumentSnapshot receiverSnapshot = await firestore
+        .collection('FriendSystem')
+        .doc(senderUID)
+        .collection('requests')
+        .doc(receiverUID)
+        .get();
+    if (receiverSnapshot.exists) {
+      isrequest.value = true;
+
+      // Exit the function if already friends
+    } else {
+      isrequest.value = false;
     }
   }
 

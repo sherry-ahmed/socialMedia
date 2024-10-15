@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/baseComponents/profileImage.dart';
-import 'package:socialmedia/baseComponents/searchbar.dart';
-import 'package:socialmedia/baseModel/friendController.dart';
+
 
 class UserListScreen extends StatelessWidget {
   UserListScreen({super.key});

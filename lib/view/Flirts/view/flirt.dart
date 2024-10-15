@@ -1,7 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
-import 'package:socialmedia/view/Flirts/controller/flirtdetailController.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
 
 class UserSwiper extends StatelessWidget {
@@ -62,7 +59,8 @@ class UserSwiper extends StatelessWidget {
 
                         return GestureDetector(
                           onTap: ()  {
-                            flirtdetailcontroller.sendFriendRequest(Sessioncontroller.userid.toString(), user.uid);
+                            flirtdetailcontroller.checkfriend(Sessioncontroller.userid.toString(), user.uid);
+                            flirtdetailcontroller.checkrequest(Sessioncontroller.userid.toString(), user.uid);
 
                             Get.to(() => Flirtdetailscreen(data: user));
                           },

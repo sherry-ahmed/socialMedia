@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
 
+// ignore: must_be_immutable
 class CustomElevatedButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;

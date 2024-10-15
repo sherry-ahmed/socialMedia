@@ -1,15 +1,62 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/baseModel/friendController.dart';
 
 class Homecontroller extends GetxController {
   RxBool showsearchbar = false.obs;
-  final FriendController friendController = Get.put(FriendController());
-  @override
+  final friendController = Get.find<FriendController>();
+  var isloading = false;
+    var friendList = <UserModel>[].obs; // List of UIDs of friends
+    @override
   void onInit() {
+    // TODO: implement onInit
     super.onInit();
-    friendController.listenToFriends(Sessioncontroller.userid.toString());
+    listenToFriends(Sessioncontroller.userid.toString());
   }
+
+ void listenToFriends(String userUID) {
+  try {
+    isloading = true; // Start loading
+    update();
+
+    _firestore
+        .collection('FriendSystem')
+        .doc(userUID)
+        .collection('friends')
+        .snapshots()
+        .listen(
+      (snapshot) {
+        // Clear the existing friend list before updating
+        friendList.clear();
+
+        for (var doc in snapshot.docs) {
+          // Extract and map the data to UserModel
+          var requestData = doc.data();
+          UserModel userModel = UserModel.fromMap(requestData['data']);
+          // Add the new friend to the observable list
+          friendList.add(userModel);
+        }
+
+        log(friendList.toString());
+
+        // Stop loading when the first batch of data is loaded
+        isloading = false;
+        update();
+      },
+      onError: (error) {
+        // Handle any errors here and stop loading
+        isloading = false;
+        log("Error listening to friends: $error");
+        update();
+      },
+    );
+  } catch (e) {
+    // Catch and handle any errors that may occur
+    log("Exception in listenToFriends: $e");
+    isloading = false;
+    update(); // Stop loading in case of an exception
+  }
+}
+
 
   searchbar(value) {
     showsearchbar.value = value;

@@ -1,8 +1,9 @@
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/baseModel/friendController.dart';
+import 'package:socialmedia/view/home/controller/homeController.dart';
+
 
 class Userlistcontroller extends GetxController{
-  final FriendController friendController = Get.put(FriendController());
+  final  homeController = Get.find<Homecontroller>();
   List<String> friends = [];
   
   
@@ -19,9 +20,9 @@ bool showsearchbar = false;
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    friendController.listenToFriends(Sessioncontroller.userid.toString());
-    for(int i = 0 ; i< friendController.friendList.length; i++){
-      UserModel user = friendController.friendList[i];
+    homeController.listenToFriends(Sessioncontroller.userid.toString());
+    for(int i = 0 ; i< homeController.friendList.length; i++){
+      UserModel user = homeController.friendList[i];
       friends.add(user.uid);
     }
     log(friends.toString());

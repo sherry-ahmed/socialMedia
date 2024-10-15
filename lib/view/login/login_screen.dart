@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:socialmedia/baseComponents/custom_elevated_button.dart';
-import 'package:socialmedia/baseComponents/formValidation.dart';
-import 'package:socialmedia/baseComponents/sb.dart';
-import 'package:socialmedia/baseComponents/textFieldWidget.dart';
-import 'package:socialmedia/res/color.dart';
-import 'package:socialmedia/view/forgotPassword/forgotScreen.dart';
-import 'package:socialmedia/view/login/loginController.dart';
-import 'package:socialmedia/view/signup/sign_up_screen.dart';
+import 'package:socialmedia/baseComponents/imports.dart';
+
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});

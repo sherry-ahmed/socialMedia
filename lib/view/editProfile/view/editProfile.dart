@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/baseComponents/profileImage.dart';
 
 class Editprofile extends StatelessWidget {
   Editprofile({super.key});

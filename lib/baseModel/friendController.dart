@@ -9,14 +9,8 @@ class FriendController extends GetxController {
   var requestList = <UserModel>[].obs; // List of UIDs of friend requests
   var friendList = <UserModel>[].obs; // List of UIDs of friends
   RxBool requestsent = false.obs;
+  var isloading = false;
 
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    listenToFriends(Sessioncontroller.userid.toString());
-    
-  }
 
   // Retrieve friend requests in real-time
   void listenToFriendRequests(String userUID) {
@@ -30,29 +24,15 @@ class FriendController extends GetxController {
        for (var doc in snapshot.docs) {
         var requestData = doc.data();
         UserModel userModel = UserModel.fromMap(requestData['data']);
-        requestList.value.add(userModel); // Add to observable list
+        requestList.add(userModel); // Add to observable list
       }
       log(requestList.toString());
     });
   }
 
   // Retrieve friends in real-time
-  void listenToFriends(String userUID) {
-    _firestore
-        .collection('FriendSystem')
-        .doc(userUID)
-        .collection('friends')
-        .snapshots()
-        .listen((snapshot) {
-      friendList.clear();
-      for (var doc in snapshot.docs) {
-        var requestData = doc.data();
-        UserModel userModel = UserModel.fromMap(requestData['data']);
-        friendList.value.add(userModel); // Add to observable list
-      }
-      log(requestList.toString());
-    });
-  }
+  
+
 
   // Send a friend request
   Future<void> sendFriendRequest(

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/baseComponents/timeGetter.dart';
-
 import '../../../baseComponents/imports.dart';
 
 class MessageBox extends StatelessWidget {

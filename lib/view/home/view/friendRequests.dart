@@ -1,25 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/baseComponents/profileImage.dart';
-import 'package:socialmedia/baseModel/friendController.dart';
-
-
 
 class Friendrequests extends StatelessWidget {
-  
   final FriendController friendController = Get.put(FriendController());
-  final  userController = Get.find<UserController>();
+  final userController = Get.find<UserController>();
   final String currentUserUID;
 
-   Friendrequests({super.key, required this.currentUserUID}){
+  Friendrequests({super.key, required this.currentUserUID}) {
     friendController.listenToFriendRequests(currentUserUID);
-     
-
-   }
-
-
-
-
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +32,7 @@ class Friendrequests extends StatelessWidget {
             itemCount: friendController.requestList.length,
             itemBuilder: (context, index) {
               UserModel user = friendController.requestList[index];
-              
+
               return SizedBox(
                 height: 100,
                 child: Card(
@@ -58,9 +47,9 @@ class Friendrequests extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        profileImage(profile: user.profile, height: 50, width: 50),
+                        profileImage(
+                            profile: user.profile, height: 50, width: 50),
 
-                        
                         SB.w(20),
                         // User Info
                         Column(
@@ -85,8 +74,9 @@ class Friendrequests extends StatelessWidget {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                friendController.declineFriendRequest(Sessioncontroller.userid.toString(), user.uid);
-                                
+                                friendController.declineFriendRequest(
+                                    Sessioncontroller.userid.toString(),
+                                    user.uid);
                               },
                               child: Card(
                                 shape: RoundedRectangleBorder(
@@ -107,8 +97,11 @@ class Friendrequests extends StatelessWidget {
                             SB.w(context.width * 0.05),
                             GestureDetector(
                               onTap: () {
-                                friendController.acceptFriendRequest(Sessioncontroller.userid.toString(), user.uid, userController.currentUser.value, user);
-                                
+                                friendController.acceptFriendRequest(
+                                    Sessioncontroller.userid.toString(),
+                                    user.uid,
+                                    userController.currentUser.value,
+                                    user);
                               },
                               child: Card(
                                 shape: RoundedRectangleBorder(
@@ -140,7 +133,3 @@ class Friendrequests extends StatelessWidget {
     );
   }
 }
-
-
-
-

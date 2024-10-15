@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/view/Flirts/view/flirt.dart';
-import 'package:socialmedia/view/User/view/userList.dart';
-import 'package:socialmedia/view/home/view/home.dart';
+
 
 class Dashboard extends StatelessWidget {
   Dashboard({super.key});
@@ -105,7 +103,7 @@ class Dashboard extends StatelessWidget {
             isVisible: true,
             handleAndroidBackButtonPress: true, // Default is true.
         resizeToAvoidBottomInset: true, // This needs to be true if you want to move up the screen on a non-scrollable screen when keyboard appears. Default is true.
-        //stateManagement: false, // Default is true.
+        stateManagement: true, // Default is true.
         hideNavigationBarWhenKeyboardAppears: true,
         confineToSafeArea: true,
             context,

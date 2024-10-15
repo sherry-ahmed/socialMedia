@@ -1,5 +1,4 @@
-import 'package:socialmedia/gen/assets.gen.dart';
-
+import 'package:socialmedia/baseComponents/imports.dart';
 class EditProfileData{
   static List socialIcons = [
   Assets.icons.facebookPng.path,
