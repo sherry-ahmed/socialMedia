@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:socialmedia/baseComponents/UserStatus.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/baseModel/appLifeCycle.dart';
 import 'package:socialmedia/view/home/components/popUpmenu.dart';
 import 'package:socialmedia/view/home/controller/homeController.dart';
 
 class Home extends StatelessWidget {
-  final FriendController friendController = Get.put(FriendController());
+  
   final searchController = TextEditingController();
   final currentUserController = Get.find<UserController>();
-  //final appLifecycleController = Get.find<AppLifecycleController>();
 
   Home({super.key});
 
@@ -21,8 +20,7 @@ class Home extends StatelessWidget {
           child: GetBuilder<Homecontroller>(
               init: Homecontroller(),
               builder: (controller) {
-                //controller.listenToFriends(Sessioncontroller.userid.toString());
-                //bool isOnline = appLifecycleController.isOnline.value;
+                
 
                 return Column(
                   children: [
@@ -115,126 +113,157 @@ class Home extends StatelessWidget {
                         : const SizedBox(),
                     SB.h(30),
                     Expanded(
+                      child: controller.friendList.isEmpty
+                          ? const Center(
+                              child: Text(
+                              'No Friends',
+                              style: TextStyle(
+                                  color: Colors.white60, fontSize: 25),
+                            ))
+                          : ListView.builder(
+                              itemCount: controller.friendList.length,
+                              itemBuilder: (context, index) {
+                                UserModel user = controller.friendList[index];
+                                final username = user.username;
 
-                      child: controller.friendList.isEmpty? const Center(child: Text('No Friends' ,style: TextStyle(color: Colors.white60, fontSize: 25),)) :ListView.builder(
-                          itemCount: controller.friendList.length,
-                          itemBuilder: (context, index) {
-                            UserModel user = controller.friendList[index];
-                            final username = user.username;
-                            
-                            if (searchController.text.isEmpty ||
-                                username.toLowerCase().contains(
-                                    searchController.text.toLowerCase())) {
-                              return InkWell(
-                                onTap: () {
-                                  Get.to(() => Chatroom(
-                                        receiverUID: user.uid,
-                                        profile: user.profile,
-                                        username: user.username,
-                                      ));
-                                },
-                                child: Card(
-                                  elevation: 10,
-                                  color: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        user.profile.isEmpty
-                                            ? Container(
-                                                height: 50,
-                                                width: 50,
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    width: 2,
-                                                    color: Colors.black,
-                                                  ),
-                                                  shape: BoxShape.circle,
-                                                  image: DecorationImage(
-                                                    image: AssetImage(Assets
-                                                        .images
-                                                        .user
-                                                        .path) as ImageProvider,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                              )
-                                            : profileImage(
-                                                profile: user.profile,
-                                                height: 50,
-                                                width: 50),
-                                        SB.w(20),
-                                        // User Info
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                if (searchController.text.isEmpty ||
+                                    username.toLowerCase().contains(
+                                        searchController.text.toLowerCase())) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Get.to(() => Chatroom(
+                                            user: user,
+                                          ));
+                                    },
+                                    child: Card(
+                                      elevation: 10,
+                                      color: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
                                           children: [
-                                            Text(
-                                              user.username,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleMedium,
+                                            user.profile.isEmpty
+                                                ? Stack(
+                                                    children: [
+                                                      Container(
+                                                        height: 50,
+                                                        width: 50,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                            width: 2,
+                                                            color: Colors.black,
+                                                          ),
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          image:
+                                                              DecorationImage(
+                                                            image: AssetImage(
+                                                                    Assets
+                                                                        .images
+                                                                        .user
+                                                                        .path)
+                                                                as ImageProvider,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Positioned(
+                                                        right: -2,
+                                                        bottom: 2,
+                                                        child: UserStatus(user),
+                                                      ),
+                                                    ],
+                                                  )
+                                                : Stack(
+                                                    children: [
+                                                      profileImage(
+                                                          profile: user.profile,
+                                                          height: 50,
+                                                          width: 50),
+                                                      Positioned(
+                                                          right: -2,
+                                                          bottom: 2,
+                                                          child:
+                                                              UserStatus(user)),
+                                                    ],
+                                                  ),
+                                            SB.w(20),
+                                            // User Info
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  user.username,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleMedium,
+                                                ),
+                                                Text(
+                                                  user.email,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleMedium!
+                                                      .copyWith(fontSize: 12),
+                                                ),
+                                              ],
                                             ),
-                                            Text(
-                                              user.email,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleMedium!
-                                                  .copyWith(fontSize: 12),
+                                            const Spacer(),
+                                            SizedBox(
+                                              height: 30,
+                                              width: 30,
+                                              child: StreamBuilder<int>(
+                                                stream: controller
+                                                    .getUnreadMessageCount(
+                                                        Services.getChatroomId(
+                                                            Sessioncontroller
+                                                                .userid
+                                                                .toString(),
+                                                            user.uid),
+                                                        Sessioncontroller.userid
+                                                            .toString()),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot.hasData &&
+                                                      snapshot.data! > 0) {
+                                                    return Container(
+                                                      height: 7,
+                                                      width: 7,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              color:
+                                                                  Colors.black),
+                                                      child: Center(
+                                                        child: Text(
+                                                          "${snapshot.data!}",
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 16),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    return Container(); // No unread messages
+                                                  }
+                                                },
+                                              ),
                                             ),
                                           ],
                                         ),
-                                        const Spacer(),
-                                        SizedBox(
-                                          height: 30,
-                                          width: 30,
-                                          child: StreamBuilder<int>(
-                                            stream: controller
-                                                .getUnreadMessageCount(
-                                                    Services.getChatroomId(
-                                                        Sessioncontroller.userid
-                                                            .toString(),
-                                                        user.uid),
-                                                    Sessioncontroller.userid
-                                                        .toString()),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.hasData &&
-                                                  snapshot.data! > 0) {
-                                                return Container(
-                                                  height: 7,
-                                                  width: 7,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle,
-                                                          color: Colors.black),
-                                                  child: Center(
-                                                    child: Text(
-                                                      "${snapshot.data!}",
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 16),
-                                                    ),
-                                                  ),
-                                                );
-                                              } else {
-                                                return Container(); // No unread messages
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return Container();
-                            }
-                          }),
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              }),
                     ),
                   ],
                 );

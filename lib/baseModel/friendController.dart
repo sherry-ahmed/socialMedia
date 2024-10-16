@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
 
 class FriendController extends GetxController {

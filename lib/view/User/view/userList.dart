@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:socialmedia/baseComponents/UserStatus.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
 import 'package:socialmedia/view/home/components/popUpmenu.dart';
 import 'package:socialmedia/view/home/controller/homeController.dart';
@@ -139,9 +140,8 @@ class UserList extends StatelessWidget {
                                   return InkWell(
                                     onTap: () {
                                       Get.to(() => Chatroom(
-                                            receiverUID: user.uid,
-                                            profile: user.profile,
-                                            username: user.username,
+                                        user: user,
+                                            
                                           ));
                                     },
                                     child: Card(
@@ -155,29 +155,51 @@ class UserList extends StatelessWidget {
                                         child: Row(
                                           children: [
                                             user.profile.isEmpty
-                                                ? Container(
-                                                    height: 50,
-                                                    width: 50,
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                        width: 2,
-                                                        color: Colors.black,
+                                                ? Stack(
+                                                    children: [
+                                                      Container(
+                                                        height: 50,
+                                                        width: 50,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                            width: 2,
+                                                            color: Colors.black,
+                                                          ),
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          image:
+                                                              DecorationImage(
+                                                            image: AssetImage(
+                                                                    Assets
+                                                                        .images
+                                                                        .user
+                                                                        .path)
+                                                                as ImageProvider,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
                                                       ),
-                                                      shape: BoxShape.circle,
-                                                      image: DecorationImage(
-                                                        image: AssetImage(Assets
-                                                                .images
-                                                                .user
-                                                                .path)
-                                                            as ImageProvider,
-                                                        fit: BoxFit.cover,
+                                                      Positioned(
+                                                        right: -2,
+                                                        bottom: 2,
+                                                        child: UserStatus(user),
                                                       ),
-                                                    ),
+                                                    ],
                                                   )
-                                                : profileImage(
-                                                    profile: user.profile,
-                                                    height: 50,
-                                                    width: 50),
+                                                : Stack(
+                                                    children: [
+                                                      profileImage(
+                                                          profile: user.profile,
+                                                          height: 50,
+                                                          width: 50),
+                                                      Positioned(
+                                                        right: -2,
+                                                        bottom: 2,
+                                                        child: UserStatus(user)
+                                                      ),
+                                                    ],
+                                                  ),
                                             SB.w(20),
                                             // User Info
                                             Column(

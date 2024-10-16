@@ -1,60 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:socialmedia/baseComponents/UserStatus.dart';
+import 'package:socialmedia/baseComponents/UserStatusChatroom.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
+import 'package:socialmedia/baseModel/appLifeCycle.dart';
 
 class Chatroom extends StatelessWidget {
-  final String profile, username, receiverUID;
+  UserModel? user;
   final messageController = TextEditingController();
+  final appLifecycleController = Get.find<AppLifecycleController>();
 
-  Chatroom(
-      {super.key,
-      required this.profile,
-      required this.username,
-      required this.receiverUID});
+  Chatroom({
+    super.key,
+    required this.user,
+  });
   final Chatroomcontroller chatController = Get.put(Chatroomcontroller());
 
   @override
   Widget build(BuildContext context) {
-    String chatroomId = Services.getChatroomId(
-        Sessioncontroller.userid.toString(), receiverUID);
+    String chatroomId =
+        Services.getChatroomId(Sessioncontroller.userid.toString(), user!.uid);
 
-    chatController.listenToMessages(chatroomId, receiverUID);
-    
+    chatController.listenToMessages(chatroomId, user!.uid);
 
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white30,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          flexibleSpace: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Get.back();
-                    },
-                  ),
-                  profileImage(profile: profile, height: 40, width: 40),
-                  SB.w(30),
-                  Text(
-                    username,
-                    style: Theme.of(context).appBarTheme.titleTextStyle,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(Assets.images.bg.path), fit: BoxFit.cover)),
           child: Column(
             children: [
+              Container(
+                height: 65,
+                color: Colors.black,
+                child: Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        icon: const Icon(Icons.arrow_back_ios)),
+                    Stack(
+                      children: [
+                        profileImage(profile: user!.profile, height: 50, width: 50),
+                        Positioned(
+                                                        right: -2,
+                                                        bottom: 2,
+                                                        child: UserStatus(user),
+                                                      ),
+                      ],
+                    ),
+                    SB.w(30),
+                    UserStatusChatroom(user),
+                  ],
+                ),
+              ),
               Expanded(
                 child: Obx(() {
                   return ListView.builder(
@@ -66,7 +68,8 @@ class Chatroom extends StatelessWidget {
                         // Load more messages only if `finish` is false
                         if (!chatController.finish.value) {
                           chatController.updatecounter();
-                          chatController.listenToMessages(chatroomId,receiverUID);
+                          chatController.listenToMessages(
+                              chatroomId, user!.uid.toString());
                         }
 
                         // Show a loading spinner or "No more messages" message
@@ -115,20 +118,34 @@ class Chatroom extends StatelessWidget {
                       borderRadius: 50,
                       maxLines: 1,
                       cursorColor: Colors.black,
+                      onChanged: (text) {
+                        // Set typing status to true when typing
+                        appLifecycleController
+                            .updateTypingStatus(text.isNotEmpty);
+                      },
+                      onFieldSubmittedValue: (value) {
+                        // Set typing status to false when done
+                        appLifecycleController.updateTypingStatus(
+                          false,
+                        );
+                      },
                       suffixIcon: IconButton(
-                          onPressed: () {
-                            if (messageController.text.isNotEmpty) {
-                              chatController.sendMessage(
-                                chatroomId,
-                                Sessioncontroller.userid.toString(),
-                                receiverUID,
-                                messageController.text.trim(),
-                              );
-                              messageController.clear();
-                            }
-                          },
-                          icon: const Icon(Icons.send)),
-                    )),
+                        onPressed: () {
+                          if (messageController.text.isNotEmpty) {
+                            chatController.sendMessage(
+                              chatroomId,
+                              Sessioncontroller.userid.toString(),
+                              user!.uid,
+                              messageController.text.trim(),
+                            );
+                            messageController.clear();
+                            // Set typing status to false after sending
+                            appLifecycleController.updateTypingStatus(false);
+                          }
+                        },
+                        icon: const Icon(Icons.send),
+                      ),
+                    ))
                   ],
                 ),
               )

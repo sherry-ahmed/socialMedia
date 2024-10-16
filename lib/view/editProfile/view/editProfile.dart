@@ -79,6 +79,7 @@ class Editprofile extends StatelessWidget {
                                     : profileImage(
                                         profile: userController
                                             .currentUser.value.profile,
+                                            
                                         height: 150,
                                         width: 150),
                                 Positioned(

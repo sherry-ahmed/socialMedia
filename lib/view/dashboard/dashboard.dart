@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
+import 'package:socialmedia/baseModel/appLifeCycle.dart';
+import 'package:socialmedia/view/home/controller/homeController.dart';
+import 'package:socialmedia/view/mapScreen/view/mapview.dart';
 
 
 class Dashboard extends StatelessWidget {
   Dashboard({super.key});
+  final FriendController friendController = Get.put(FriendController());
+  final AppLifecycleController appLifecycleController = Get.put(AppLifecycleController());
 
   final controller = PersistentTabController(initialIndex: 0);
+  
+  //final Homecontroller homecontroller =Get.put(Homecontroller());
   List<Widget> _buildScreen() {
     return [
        Home(),
       UserSwiper(),
-      const Text('play'),
+      const Mapview(),
       UserList(),
       Profile(),
     ];

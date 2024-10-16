@@ -6,6 +6,7 @@ import 'package:socialmedia/baseComponents/imports.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
+  
 
   @override
   Widget build(BuildContext context) {

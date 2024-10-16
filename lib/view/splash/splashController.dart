@@ -1,7 +1,9 @@
 import 'package:socialmedia/baseComponents/imports.dart';
+import 'package:socialmedia/baseModel/appLifeCycle.dart';
 
 class SplashController extends GetxController {
   final UserController userController = Get.put(UserController());
+  
   
   @override
   void onReady() {
@@ -22,6 +24,7 @@ class SplashController extends GetxController {
       if (user != null && user.uid == authToken) {
         Sessioncontroller.userid = user.uid.toString();
         await userController.fetchUserData(user.uid);
+        
         
 
         Get.offAll(() =>  Dashboard());

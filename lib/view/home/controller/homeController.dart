@@ -8,12 +8,14 @@ class Homecontroller extends GetxController {
     var friendList = <UserModel>[].obs; // List of UIDs of friends
     @override
   void onInit() {
-    // TODO: implement onInit
+   
     super.onInit();
     listenToFriends(Sessioncontroller.userid.toString());
+    log('called');
   }
 
  void listenToFriends(String userUID) {
+  log('listening starts');
   try {
     isloading = true; // Start loading
     update();

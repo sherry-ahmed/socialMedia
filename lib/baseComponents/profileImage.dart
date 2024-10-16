@@ -1,15 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:socialmedia/baseComponents/imports.dart';
 import 'package:socialmedia/baseComponents/profileImageShimmer.dart';
+import 'package:socialmedia/baseModel/appLifeCycle.dart';
 
 class profileImage extends StatelessWidget {
   final String profile;
   final double height;
   final double width;
 
-  const profileImage({super.key, required this.profile, required this.height, required this.width});
-
- 
+  profileImage(
+      {super.key,
+      required this.profile,
+      required this.height,
+      required this.width});
+  final appLifecycleController = Get.find<AppLifecycleController>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +29,8 @@ class profileImage extends StatelessWidget {
         // Ensures the image inside is clipped to a circular shape
         child: CachedNetworkImage(
           imageUrl: profile,
-          placeholder: (context, url) =>
-               profileImageshimmer(width: width, height: height), // Placeholder while loading
+          placeholder: (context, url) => profileImageshimmer(
+              width: width, height: height), // Placeholder while loading
           errorWidget: (context, url, error) =>
               const Icon(Icons.error), // Error icon if the image fails to load
           fit: BoxFit.cover, // Ensures the image covers the container properly

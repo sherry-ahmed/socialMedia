@@ -48,7 +48,7 @@ class Friendrequests extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         profileImage(
-                            profile: user.profile, height: 50, width: 50),
+                            profile: user.profile, height: 50, width: 50,),
 
                         SB.w(20),
                         // User Info

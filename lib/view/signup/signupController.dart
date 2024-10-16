@@ -44,7 +44,8 @@ class Signupcontroller extends GetxController {
             personalityType: null,
             relationshipType: null,
             sexualOrientation: null,
-            isOnline: '',
+            isTyping: false,
+            isOnline: false,
             dateOfBirth: []);
         usersRef
             .doc(value.user!.uid.toString())

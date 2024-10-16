@@ -3,7 +3,7 @@ class UserModel {
   final String email;
   final String username;
   final String profile;
-  final String isOnline;
+  final bool isOnline;
   final String? phone;
   final String? bio;
   final String? country;
@@ -11,6 +11,7 @@ class UserModel {
   final String? city;
   final List<String>? hobbies;
   final int? age;
+  final bool? isTyping;
   final String? instaLink;
   final String? fbLink;
   final String? tiktokLink;
@@ -26,6 +27,7 @@ class UserModel {
       required this.username,
       required this.profile,
       required this.isOnline,
+      this.isTyping,
       this.phone,
       this.bio,
       this.country,
@@ -47,7 +49,7 @@ class UserModel {
     String? email,
     String? username,
     String? profile,
-    String? isOnline,
+    bool? isOnline,
     String? phone,
     String? bio,
     String? country,
@@ -55,6 +57,7 @@ class UserModel {
     String? city,
     List<String>? hobbies,
     int? age,
+    bool? isTyping,
     String? instaLink,
     String? fbLink,
     String? tiktokLink,
@@ -77,6 +80,7 @@ class UserModel {
         city: city ?? this.city,
         hobbies: hobbies ?? this.hobbies,
         age: age ?? this.age,
+        isTyping: isTyping??this.isTyping,
         instaLink: instaLink ?? this.instaLink,
         fbLink: fbLink ?? this.fbLink,
         tiktokLink: tiktokLink ?? this.tiktokLink,
@@ -94,7 +98,7 @@ class UserModel {
       email: map['email'] ?? '',
       username: map['username'] ?? '',
       profile: map['profile'] ?? '',
-      isOnline: map['isOnline'] ?? 'false',
+      isOnline: map['isOnline']??false,
       phone: map['phone'],
       bio: map['bio'],
       country: map['country'],
@@ -102,6 +106,7 @@ class UserModel {
       city: map['city'],
       hobbies: map['hobbies'] != null ? List<String>.from(map['hobbies']) : [],
       age: map['age'],
+      isTyping: map["isTyping"],
       instaLink: map['instaLink'],
       fbLink: map['fbLink'],
       tiktokLink: map['tiktokLink'],
@@ -133,6 +138,7 @@ class UserModel {
       'city': city,
       'hobbies': hobbies,
       'age': age,
+      'isTyping': isTyping,
       'instaLink': instaLink,
       'fbLink': fbLink,
       'tiktokLink': tiktokLink,

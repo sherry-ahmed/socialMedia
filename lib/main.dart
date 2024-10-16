@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/baseModel/appLifeCycle.dart';
 
 void main() async {
   
@@ -8,7 +7,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  //Get.put(AppLifecycleController());
+  
   runApp(const MyApp());
 }
 

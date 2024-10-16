@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
 
 class UserController extends GetxController {
@@ -8,8 +7,9 @@ class UserController extends GetxController {
     email: '',
     username: '',
     profile: '',
-    isOnline: 'false',
+    isOnline: false,
     phone: '',
+    isTyping: false,
     bio: null,
     country: null,
     state: null,
@@ -62,12 +62,5 @@ class UserController extends GetxController {
       Utils.toastMessage("Error updating user data: $e");
     }
   }
-  void updateOnlineStatus(bool isOnline) {
-  
-    usersRef
-    .doc(Sessioncontroller.userid)
-    .update({
-      'isOnline': isOnline,
-    });
-}
+
 }

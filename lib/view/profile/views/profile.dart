@@ -50,6 +50,7 @@ class Profile extends StatelessWidget {
                                         : profileImage(
                                             profile: userController
                                                 .currentUser.value.profile,
+                                                
                                             height: 50,
                                             width: 50)),
                                   ),

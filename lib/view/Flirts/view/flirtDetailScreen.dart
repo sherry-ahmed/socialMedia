@@ -264,9 +264,8 @@ class Flirtdetailscreen extends StatelessWidget {
                 onTap: () {
                   if (controller.isFriend.value == true) {
                     Get.to(() => Chatroom(
-                          receiverUID: data.uid,
-                          profile: data.profile,
-                          username: data.username,
+                      user: data,
+                     
                         ));
                   } else {
                     Utils.toastMessage('Account is Private');
