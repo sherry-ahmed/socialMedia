@@ -143,28 +143,5 @@ class UserModel {
       'dateOfBirth': dateOfBirth
     };
   }
-    Map<String, dynamic>  toObjectMap(UserModel data) {
-    return {
-      'uid': data.uid,
-      'email': data.email,
-      'username': data.username,
-      'profile': data.profile,
-      'isOnline': data.isOnline,
-      'phone': data.phone,
-      'bio': data.bio,
-      'country': data.country,
-      'state': data.state,
-      'city': data.city,
-      'hobbies': data.hobbies,
-      'age': data.age,
-      'instaLink': data.instaLink,
-      'fbLink': data.fbLink,
-      'tiktokLink': data.tiktokLink,
-      'gender': data.gender,
-      'relationshipType': data.relationshipType,
-      'personalityType': data.personalityType,
-      'sexualOrientation': data.sexualOrientation,
-      'dateOfBirth': data.dateOfBirth
-    };
-  }
+    
 }

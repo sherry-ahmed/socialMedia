@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
+import 'package:socialmedia/baseModel/appLifeCycle.dart';
 import 'package:socialmedia/view/home/components/popUpmenu.dart';
 import 'package:socialmedia/view/home/controller/homeController.dart';
 
@@ -7,6 +8,7 @@ class Home extends StatelessWidget {
   final FriendController friendController = Get.put(FriendController());
   final searchController = TextEditingController();
   final currentUserController = Get.find<UserController>();
+  //final appLifecycleController = Get.find<AppLifecycleController>();
 
   Home({super.key});
 
@@ -20,6 +22,7 @@ class Home extends StatelessWidget {
               init: Homecontroller(),
               builder: (controller) {
                 //controller.listenToFriends(Sessioncontroller.userid.toString());
+                //bool isOnline = appLifecycleController.isOnline.value;
 
                 return Column(
                   children: [

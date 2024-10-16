@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
 
 class Signupcontroller extends GetxController {
   bool _loading = false;
   FirebaseAuth auth = FirebaseAuth.instance;
-  DatabaseReference ref = FirebaseDatabase.instance.ref().child('Users');
+  final CollectionReference usersRef =
+      FirebaseFirestore.instance.collection('Users');
   final UserController userController = Get.put(UserController());
 
   bool get loading => _loading;
@@ -12,7 +14,7 @@ class Signupcontroller extends GetxController {
     update();
   }
 
-  void signup(String username, String email, String password) {
+  void signup(String username, String email, String password, String phone) {
     setLoading(true);
     try {
       auth
@@ -23,18 +25,35 @@ class Signupcontroller extends GetxController {
         SharedPreferences prefs = await SharedPreferences.getInstance();
 
         prefs.setString('authToken', value.user!.uid);
-        ref.child(value.user!.uid.toString()).set({
-          'uid': value.user!.uid.toString(),
-          'email': value.user!.email.toString(),
-          'username': username,
-          'profile': '',
-          'isOnline': 'false'
-        }).then((value) async{
+        UserModel updatedUser = userController.currentUser.value.copyWith(
+            uid: value.user!.uid.toString(),
+            email: value.user!.email.toString(),
+            username: username,
+            phone: phone,
+            profile: null,
+            bio: null,
+            country: null,
+            state: null,
+            city: null,
+            hobbies: [],
+            age: null,
+            instaLink: null,
+            fbLink: null,
+            tiktokLink: null,
+            gender: null,
+            personalityType: null,
+            relationshipType: null,
+            sexualOrientation: null,
+            isOnline: '',
+            dateOfBirth: []);
+        usersRef
+            .doc(value.user!.uid.toString())
+            .set(updatedUser.toMap())
+            .then((value) async {
           Utils.toastMessage('User Added');
           setLoading(false);
           await userController.fetchUserData(auth.currentUser!.uid);
-          
-          Get.offAll(() => Dashboard());
+          Get.offAll(Dashboard());
         }).onError((error, StackTrace) {
           setLoading(false);
 

@@ -1,42 +1,43 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
 
 class UserController extends GetxController {
-    var currentUser = UserModel(
-      uid: '',
-      email: '',
-      username: '',
-      profile: '',
-      isOnline: 'false',
-      phone: null,
-      bio: null,
-      country: null,
-      state: null,
-      city: null,
-      hobbies: [],
-      age: null,
-      instaLink: null,
-      fbLink: null,
-      tiktokLink: null,
-      gender: null,
-      personalityType: null,
-      relationshipType: null,
-      sexualOrientation: null,
-      dateOfBirth: []
-    ).obs; 
-    
+  var currentUser = UserModel(
+    uid: '',
+    email: '',
+    username: '',
+    profile: '',
+    isOnline: 'false',
+    phone: '',
+    bio: null,
+    country: null,
+    state: null,
+    city: null,
+    hobbies: [],
+    age: null,
+    instaLink: null,
+    fbLink: null,
+    tiktokLink: null,
+    gender: null,
+    personalityType: null,
+    relationshipType: null,
+    sexualOrientation: null,
+    dateOfBirth: []
+  ).obs;
 
-  final DatabaseReference _ref = FirebaseDatabase.instance.ref();
+  // Reference to Firestore collection
+  final CollectionReference usersRef = FirebaseFirestore.instance.collection('Users');
 
+  // Fetch user data from Firestore by UID
   Future<void> fetchUserData(String uid) async {
     try {
-      DataSnapshot snapshot = await _ref.child("Users").child(uid).get();
-      if (snapshot.exists) {
-        Map<Object?, Object?> firebaseData = snapshot.value as Map<Object?, Object?>;
-        
-        Map<String, dynamic> userData = firebaseData.map((key, value) {
-          return MapEntry(key.toString(), value);
-        });
+      DocumentSnapshot snapshot = await usersRef.doc(uid).get();
 
+      if (snapshot.exists) {
+        Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
+
+        // Map Firestore data to UserModel
         currentUser.value = UserModel.fromMap(userData);
         log(currentUser.value.uid.toString());
       } else {
@@ -46,16 +47,27 @@ class UserController extends GetxController {
       log("Error fetching user data: $e");
     }
   }
-  
 
+  // Update user data in Firestore
   Future<void> updateUserData(UserModel updatedUser, String uid) async {
     try {
-      await _ref.child("Users").child(uid).update(updatedUser.toMap());
-      currentUser.value = updatedUser; 
-      update();
+      // Update Firestore document with new user data
+      await usersRef.doc(uid).update(updatedUser.toMap());
+      
+      // Update the local user data in the controller
+      currentUser.value = updatedUser;
+      update();  // Notify listeners to update UI
       Utils.toastMessage('Data Updated Successfully');
     } catch (e) {
       Utils.toastMessage("Error updating user data: $e");
     }
   }
+  void updateOnlineStatus(bool isOnline) {
+  
+    usersRef
+    .doc(Sessioncontroller.userid)
+    .update({
+      'isOnline': isOnline,
+    });
+}
 }

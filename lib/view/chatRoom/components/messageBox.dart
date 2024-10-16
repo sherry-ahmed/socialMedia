@@ -21,41 +21,38 @@ class MessageBox extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            //width: context.width*0.5,
+            //height: context.height*0.05,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             decoration: BoxDecoration(
                 color: isSender ? Colors.blue : Colors.white,
                 borderRadius: BorderRadius.only(
-                    topLeft: const Radius.circular(15),
-                    topRight: const Radius.circular(15),
-                    bottomLeft: Radius.circular(isSender ? 15 : 0),
-                    bottomRight: Radius.circular(isSender ? 0 : 15))),
+                    topLeft: const Radius.circular(10),
+                    topRight: const Radius.circular(10),
+                    bottomLeft: Radius.circular(isSender ? 10 : 0),
+                    bottomRight: Radius.circular(isSender ? 0 : 10))),
             child: Column(
               crossAxisAlignment:
                   isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: [
                 Text(message.content,
                     style:
-                        TextStyle(color: isSender ? Colors.white : Colors.black)),
-                
-              ],
-
-            ),
-          ),
-          Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment:
-                      isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      Timegetter.formatTimestamp(message.timestamp.toString()),
-                      style: TextStyle(
+                        TextStyle(color: isSender ? Colors.white : Colors.black, fontSize: 16)),
+                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              Timegetter.formatTimestamp(message.timestamp.toString()),
+                                              style: TextStyle(
                           color: isSender ? Colors.white70 : Colors.amber,
                           fontSize: 10),
-                    ),
-                    if (isSender) ...[
-                      const SizedBox(width: 3),
-                      Obx(
+                                            ),
+                                            if (isSender) ...[
+                                              const SizedBox(width: 3),
+                                              Obx(
                         () => Icon(
                           chatController.isMessageSent.value
                               ? Icons.done_all
@@ -65,10 +62,16 @@ class MessageBox extends StatelessWidget {
                               ? Colors.yellow
                               : Colors.white70,
                         ),
-                      ),
-                    ],
-                  ],
-                ),
+                                              ),
+                                            ],
+                                          ],
+                                        ),
+                
+              ],
+
+            ),
+          ),
+          
         ],
       ),
     );

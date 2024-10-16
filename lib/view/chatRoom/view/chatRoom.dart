@@ -14,23 +14,21 @@ class Chatroom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get the chatroom ID for this sender/receiver pair
     String chatroomId = Services.getChatroomId(
         Sessioncontroller.userid.toString(), receiverUID);
 
-    // Load initial messages when the widget is built
-    chatController.listenToMessages(chatroomId);
+    chatController.listenToMessages(chatroomId, receiverUID);
+    
 
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white30,
         appBar: AppBar(
-          automaticallyImplyLeading: false, // Disable default back button
+          automaticallyImplyLeading: false,
           flexibleSpace: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0), // Add padding to the row
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -60,12 +58,33 @@ class Chatroom extends StatelessWidget {
               Expanded(
                 child: Obx(() {
                   return ListView.builder(
-                    reverse:
-                        true, // Reverse the list to show the latest messages at the bottom
-                    itemCount: chatController.messagesList.length,
+                    reverse: true,
+                    itemCount: chatController.messagesList.length + 1,
                     itemBuilder: (context, index) {
+                      log(chatController.messagesList.length.toString());
+                      if (index == chatController.messagesList.length) {
+                        // Load more messages only if `finish` is false
+                        if (!chatController.finish.value) {
+                          chatController.updatecounter();
+                          chatController.listenToMessages(chatroomId,receiverUID);
+                        }
+
+                        // Show a loading spinner or "No more messages" message
+                        return Center(
+                          child: chatController.finish.value
+                              ? const Text(
+                                  'No more messages',
+                                  style: TextStyle(color: Colors.white),
+                                )
+                              : const CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeCap: StrokeCap.round,
+                                ),
+                        );
+                      }
+
                       final Message message =
-                          chatController.reversedMessagesList[index];
+                          chatController.messagesList[index];
                       bool isSender = message.senderId ==
                           Sessioncontroller.userid.toString();
 

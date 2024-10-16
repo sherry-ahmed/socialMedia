@@ -11,7 +11,7 @@ class Dashboard extends StatelessWidget {
        Home(),
       UserSwiper(),
       const Text('play'),
-      UserListScreen(),
+      UserList(),
       Profile(),
     ];
   }

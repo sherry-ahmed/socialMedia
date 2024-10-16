@@ -6,10 +6,12 @@ class SignUpScreen extends StatelessWidget {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final userNameController = TextEditingController();
+  final phonecontroller = TextEditingController();
 
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
   final userNameFocusNode = FocusNode();
+  final phoneFocusNode= FocusNode();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -86,7 +88,25 @@ class SignUpScreen extends StatelessWidget {
                           cursorColor: Colors.black,
                           onFieldSubmittedValue: (value) {
                             Utils.fieldfocus(
-                                context, emailFocusNode, passwordFocusNode);
+                                context, emailFocusNode, phoneFocusNode);
+                          },
+                        ),
+                        SB.h(10),
+                        TextFieldWidget(
+                          borderRadius: 12,
+                          hintText: 'Phone',
+                          controller: phonecontroller,
+                          autofillHints: const [AutofillHints.telephoneNumberLocalPrefix],
+                          maxLines: 1,
+                          focusNode: phoneFocusNode,
+                          validator: Validation.validatePhoneNumber,
+                          keyboardType: TextInputType.phone,
+                          fillColor: Colors.white,
+                          prefixIcon: const Icon(Icons.phone),
+                          cursorColor: Colors.black,
+                          onFieldSubmittedValue: (value) {
+                            Utils.fieldfocus(
+                                context, phoneFocusNode, passwordFocusNode);
                           },
                         ),
                         SB.h(10),
@@ -117,7 +137,8 @@ class SignUpScreen extends StatelessWidget {
                             : controller.signup(
                                 userNameController.text.trim(),
                                 emailController.text.trim(),
-                                passwordController.text.trim());
+                                passwordController.text.trim(),
+                                phonecontroller.text.trim());
                       }
                     },
                     width: screenWidth,

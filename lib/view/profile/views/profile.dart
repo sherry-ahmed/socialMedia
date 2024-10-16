@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/baseComponents/imports.dart';
 
-
-
 class Profile extends StatelessWidget {
   Profile({super.key});
   final UserController userController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -19,7 +16,7 @@ class Profile extends StatelessWidget {
               //height: 750,
               color: Colors.black,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal:8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30)),
@@ -44,24 +41,29 @@ class Profile extends StatelessWidget {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(right: 20.0),
-                                    child: Obx(
-                                      () => userController.currentUser.value
-                                                    .profile.isEmpty
-                                                ? Assets.images.womenPeekingOut
-                                                    .image(fit: BoxFit.cover, width: 50, height: 50)
-                                                : profileImage(profile: userController.currentUser.value.profile, height: 50, width: 50)
-                                          
-                                    ),
+                                    child: Obx(() => userController
+                                            .currentUser.value.profile.isEmpty
+                                        ? Assets.images.womenPeekingOut.image(
+                                            fit: BoxFit.cover,
+                                            width: 50,
+                                            height: 50)
+                                        : profileImage(
+                                            profile: userController
+                                                .currentUser.value.profile,
+                                            height: 50,
+                                            width: 50)),
                                   ),
                                   Text(
                                       'Hi! ${userController.currentUser.value.username} \n${Timegetter.getGreeting()}',
                                       style: Theme.of(context)
                                           .textTheme
-                                          .headlineSmall!.copyWith(fontSize: 16)),
+                                          .headlineSmall!
+                                          .copyWith(fontSize: 16)),
                                 ],
                               ),
                               Text('Account',
-                                  style: Theme.of(context).textTheme.titleSmall),
+                                  style:
+                                      Theme.of(context).textTheme.titleSmall),
                               Profilerow(
                                 divider: true,
                                 leadingIcon: Icons.edit_rounded,
@@ -72,7 +74,8 @@ class Profile extends StatelessWidget {
                                 },
                               ),
                               Text('About',
-                                  style: Theme.of(context).textTheme.titleSmall),
+                                  style:
+                                      Theme.of(context).textTheme.titleSmall),
                               Profilerow(
                                 divider: true,
                                 leadingIcon: Icons.help,
@@ -100,7 +103,8 @@ class Profile extends StatelessWidget {
                                 },
                               ),
                               Text('General',
-                                  style: Theme.of(context).textTheme.titleSmall),
+                                  style:
+                                      Theme.of(context).textTheme.titleSmall),
                               Profilerow(
                                 divider: true,
                                 leadingIcon: Icons.shop,
@@ -113,8 +117,12 @@ class Profile extends StatelessWidget {
                                 leadingIcon: Icons.check_circle,
                                 trailingIcon: Icons.arrow_forward_ios,
                                 text: 'Logout',
-                                onPressed: () {
+                                onPressed: () async {
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  await prefs.clear();
                                   FirebaseAuth.instance.signOut();
+
                                   Get.offAll(() => LoginScreen());
                                 },
                               ),

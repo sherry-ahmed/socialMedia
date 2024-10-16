@@ -1,35 +1,47 @@
-import 'package:socialmedia/baseComponents/imports.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:socialmedia/baseComponents/imports.dart';
 
 
 class Chatroomcontroller extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  RxList<Message> messagesList =
-      <Message>[].obs; 
-  RxBool isMessageSent = true.obs; 
-  var counter = 0;
+  RxList<Message> messagesList = <Message>[].obs;
+  RxBool isMessageSent = true.obs;
+  int messageLimit = 10; // Dynamic message limit
+  int counter = 1; // Counter to multiply the limit after threshold
+  RxBool finish = false.obs;
 
-  void listenToMessages(String chatroomId) {
-    _firestore
-        .collection('chatrooms')
-        .doc(chatroomId)
-        .collection('messages')
-        .orderBy('timestamp',
-            descending: false)
-        .snapshots()
-        .listen((snapshot) {
-      messagesList.clear();
+
+  updatecounter(){
+    counter++;
+  }
+ void listenToMessages(String chatroomId, receiverUID) {
+  
+  _firestore
+      .collection('chatrooms')
+      .doc(chatroomId)
+      .collection('messages')
+      .orderBy('timestamp', descending: true)
+      .limit((messageLimit * counter)+1)
+      .snapshots()
+      .listen((snapshot) {
+     messagesList.clear();
       for (var doc in snapshot.docs) {
         Message message = Message.fromDocument(doc);
         messagesList.add(message);
       }
       resetUnreadMessageCount(chatroomId, Sessioncontroller.userid.toString());
-    });
-  }
 
-  List<Message> get reversedMessagesList =>
-      messagesList.reversed.toList(); 
+      if (snapshot.docs.length <( messageLimit * counter)+1) {
+        finish.value = true; 
+      } else {
+        finish.value = false; 
+      }
+     
+  });
+}
 
+
+   List<Message> get reversedMessagesList => messagesList.reversed.toList();
 
   Future<void> sendMessage(String chatroomId, String senderUID,
       String receiverUID, String content) async {
@@ -61,23 +73,22 @@ class Chatroomcontroller extends GetxController {
           .doc(receiverUID)
           .get();
       if (snapshot.exists) {
-
         counter = snapshot.get('unreadMessageCount');
 
         log('Unread Message Count: $counter');
       } else {
         await _firestore
-          .collection('chatrooms')
-          .doc(chatroomId)
-          .collection('participants')
-          .doc(receiverUID)
-          .set({
-        'unreadMessageCount': FieldValue.increment(0),
-      }).then((value) {
-        log('document does not exit so counter set to zero on later function it will be incremented counter updated');
-      }).onError((error, stacktrace) {
-        log('counter not updated');
-      });
+            .collection('chatrooms')
+            .doc(chatroomId)
+            .collection('participants')
+            .doc(receiverUID)
+            .set({
+          'unreadMessageCount': 1,
+        }).then((value) {
+          log('document does not exit so counter set to zero on later function it will be incremented counter updated');
+        }).onError((error, stacktrace) {
+          log('counter not updated');
+        });
         log('Document does not exist');
       }
 
@@ -87,13 +98,12 @@ class Chatroomcontroller extends GetxController {
           .collection('participants')
           .doc(receiverUID)
           .set({
-        'unreadMessageCount': FieldValue.increment(counter + 1),
+        'unreadMessageCount': counter + 1,
       }).then((value) {
         log('counter updated');
       }).onError((error, stacktrace) {
         log('counter not updated');
       });
-      
     }).onError((error, stackTrace) {
       log('check your internet');
     });
