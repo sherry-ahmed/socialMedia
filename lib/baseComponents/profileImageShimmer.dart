@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:socialmedia/services/imports.dart';
+
 
 class profileImageshimmer extends StatelessWidget {
   final double width;

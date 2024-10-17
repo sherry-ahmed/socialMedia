@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:socialmedia/services/sessionController.dart';
+import 'package:socialmedia/services/imports.dart';
+
 
 class AppLifecycleController extends SuperController
     with WidgetsBindingObserver {
@@ -9,17 +9,14 @@ class AppLifecycleController extends SuperController
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
-    updateOnlineStatus(true); // Set user as online when the app starts
+    updateOnlineStatus(true);
     updateTypingStatus(false);
   }
 
-  RxBool isOnline = false.obs; // Observable to track online status
   final CollectionReference usersRef =
       FirebaseFirestore.instance.collection('Users');
 
-  // Method to update the user's online status in Firestore
   void updateOnlineStatus(bool onlineStatus) {
-    isOnline.value = onlineStatus; // Update the observable
     usersRef.doc(Sessioncontroller.userid).update({
       'isOnline': onlineStatus,
     });
@@ -53,46 +50,47 @@ class AppLifecycleController extends SuperController
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.paused) {
-      updateOnlineStatus(false); // Set user as offline when app is paused
+      updateOnlineStatus(false);
     } else if (state == AppLifecycleState.resumed) {
-      updateOnlineStatus(true); // Set user as online when app is resumed
+      updateOnlineStatus(true);
+    }else if (state == AppLifecycleState.detached) {
+      updateOnlineStatus(false);
+    }else if (state == AppLifecycleState.hidden) {
+      updateOnlineStatus(false);
+    }else if (state == AppLifecycleState.inactive) {
+      updateOnlineStatus(false);
     }
   }
 
   @override
   void onClose() {
-    updateOnlineStatus(false); // Set user as offline when app is closed
+    updateOnlineStatus(false);
     WidgetsBinding.instance.removeObserver(this);
     super.onClose();
   }
 
   @override
   void onHidden() {
-    // TODO: implement onHidden
     updateOnlineStatus(false);
   }
 
   @override
   void onDetached() {
-    // TODO: implement onDetached
     updateOnlineStatus(false);
   }
 
   @override
   void onInactive() {
-    // TODO: implement onInactive
     updateOnlineStatus(false);
   }
 
   @override
   void onPaused() {
-    // TODO: implement onPaused
     updateOnlineStatus(false);
   }
 
   @override
   void onResumed() {
-    // TODO: implement onResumed
     updateOnlineStatus(true);
   }
 }

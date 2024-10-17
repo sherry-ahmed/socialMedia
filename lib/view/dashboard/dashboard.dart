@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/baseComponents/imports.dart';
+import 'package:socialmedia/services/imports.dart';
 import 'package:socialmedia/baseModel/appLifeCycle.dart';
 import 'package:socialmedia/view/home/controller/homeController.dart';
 import 'package:socialmedia/view/mapScreen/view/mapview.dart';

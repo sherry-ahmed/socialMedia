@@ -1,4 +1,3 @@
-// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 
 extension BuildContextEntension<T> on BuildContext {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:socialmedia/baseComponents/imports.dart';
+import 'package:socialmedia/services/imports.dart';
 
 
 class CustomTextField extends StatefulWidget {

@@ -1,8 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
-import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/baseComponents/profileImageShimmer.dart';
-import 'package:socialmedia/baseModel/appLifeCycle.dart';
+import 'package:socialmedia/services/imports.dart';
+
+
+
 
 class profileImage extends StatelessWidget {
   final String profile;
@@ -14,7 +15,6 @@ class profileImage extends StatelessWidget {
       required this.profile,
       required this.height,
       required this.width});
-  final appLifecycleController = Get.find<AppLifecycleController>();
 
   @override
   Widget build(BuildContext context) {

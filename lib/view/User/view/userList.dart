@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/baseComponents/UserStatus.dart';
-import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/view/home/components/popUpmenu.dart';
-import 'package:socialmedia/view/home/controller/homeController.dart';
+import 'package:socialmedia/services/imports.dart';
 
 class UserList extends StatelessWidget {
   final FriendController friendController = Get.put(FriendController());
@@ -22,8 +19,6 @@ class UserList extends StatelessWidget {
           child: GetBuilder<Userlistcontroller>(
               init: Userlistcontroller(),
               builder: (controller) {
-                //controller.listenToFriends(Sessioncontroller.userid.toString());
-
                 return Column(
                   children: [
                     AnimatedContainer(
@@ -76,7 +71,7 @@ class UserList extends StatelessWidget {
                                   prefixIcon: IconButton(
                                     onPressed: () {
                                       controller.searchbar(false);
-                                      controller.update(); // Close search bar
+                                      controller.update();
                                     },
                                     icon: const Icon(Icons.arrow_back),
                                   ),
@@ -131,19 +126,18 @@ class UserList extends StatelessWidget {
                                 final username = user.username;
                                 if (homeController.friendList
                                     .any((friend) => friend.uid == user.uid)) {
-                                  return SizedBox(); // Skip this user
+                                  return const SizedBox(); // Skip this user
+                                }
+                                else if(user.uid == Sessioncontroller.userid.toString()){
+                                  return SizedBox();
+
                                 }
 
-                                if (searchController.text.isEmpty ||
+                                else if (searchController.text.isEmpty ||
                                     username.toLowerCase().contains(
                                         searchController.text.toLowerCase())) {
                                   return InkWell(
-                                    onTap: () {
-                                      Get.to(() => Chatroom(
-                                        user: user,
-                                            
-                                          ));
-                                    },
+                                    onTap: () {},
                                     child: Card(
                                       elevation: 10,
                                       color: Colors.white,
@@ -194,10 +188,10 @@ class UserList extends StatelessWidget {
                                                           height: 50,
                                                           width: 50),
                                                       Positioned(
-                                                        right: -2,
-                                                        bottom: 2,
-                                                        child: UserStatus(user)
-                                                      ),
+                                                          right: -2,
+                                                          bottom: 2,
+                                                          child:
+                                                              UserStatus(user)),
                                                     ],
                                                   ),
                                             SB.w(20),

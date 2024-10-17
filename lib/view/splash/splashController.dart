@@ -1,5 +1,4 @@
-import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/baseModel/appLifeCycle.dart';
+import 'package:socialmedia/services/imports.dart';
 
 class SplashController extends GetxController {
   final UserController userController = Get.put(UserController());

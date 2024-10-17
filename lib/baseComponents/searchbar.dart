@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/view/home/controller/homeController.dart';
+import 'package:socialmedia/services/imports.dart';
+
 
 class Searchbar extends StatelessWidget {
   Searchbar({

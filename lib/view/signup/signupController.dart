@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:socialmedia/baseComponents/imports.dart';
+import 'package:socialmedia/services/imports.dart';
 
 class Signupcontroller extends GetxController {
   bool _loading = false;

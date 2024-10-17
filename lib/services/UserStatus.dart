@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/baseModel/appLifeCycle.dart';
+import 'package:socialmedia/services/imports.dart';
+
 
 class UserStatus extends StatelessWidget {
   UserModel? user;

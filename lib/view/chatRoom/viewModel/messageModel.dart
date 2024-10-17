@@ -5,12 +5,14 @@ class Message {
   String receiverId;
   String content;
   int timestamp;
+  MessageStatus status; // Add this field
 
   Message({
     required this.senderId,
     required this.receiverId,
     required this.content,
     required this.timestamp,
+    required this.status, // Include status in the constructor
   });
 
   factory Message.fromDocument(DocumentSnapshot doc) {
@@ -19,6 +21,8 @@ class Message {
       receiverId: doc['receiverId'],
       content: doc['content'],
       timestamp: doc['timestamp'],
+      status:
+          MessageStatus.values[doc['status']], // Map Firestore value to enum
     );
   }
 
@@ -28,6 +32,9 @@ class Message {
       'receiverId': receiverId,
       'content': content,
       'timestamp': timestamp,
+      'status': status.index, // Save the status index to Firestore
     };
   }
 }
+
+enum MessageStatus { notDelivered, delivered, seen } // Define the enum

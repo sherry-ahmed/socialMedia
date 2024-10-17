@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/baseComponents/UserStatus.dart';
-import 'package:socialmedia/baseComponents/imports.dart';
-import 'package:socialmedia/view/home/components/popUpmenu.dart';
-import 'package:socialmedia/view/home/controller/homeController.dart';
+import 'package:socialmedia/services/imports.dart';
 
 class Home extends StatelessWidget {
-  
   final searchController = TextEditingController();
   final currentUserController = Get.find<UserController>();
 
@@ -20,8 +16,6 @@ class Home extends StatelessWidget {
           child: GetBuilder<Homecontroller>(
               init: Homecontroller(),
               builder: (controller) {
-                
-
                 return Column(
                   children: [
                     AnimatedContainer(
@@ -104,7 +98,7 @@ class Home extends StatelessWidget {
                                       },
                                       icon: const Icon(Icons.search),
                                     ),
-                                    const HomePopupMenu(),
+                                    const HomePopupMenu()
                                   ],
                                 )
                               ],
@@ -133,7 +127,7 @@ class Home extends StatelessWidget {
                                     onTap: () {
                                       Get.to(() => Chatroom(
                                             user: user,
-                                          ));
+                                          ), duration: const Duration(seconds: 1));
                                     },
                                     child: Card(
                                       elevation: 10,

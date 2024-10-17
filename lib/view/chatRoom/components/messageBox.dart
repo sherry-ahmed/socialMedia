@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../baseComponents/imports.dart';
+import '../../../services/imports.dart';
 
 class MessageBox extends StatelessWidget {
   MessageBox({
@@ -37,43 +37,43 @@ class MessageBox extends StatelessWidget {
                   isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: [
                 Text(message.content,
-                    style:
-                        TextStyle(color: isSender ? Colors.white : Colors.black, fontSize: 16)),
-                        Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              Timegetter.formatTimestamp(message.timestamp.toString()),
-                                              style: TextStyle(
+                    style: TextStyle(
+                        color: isSender ? Colors.white : Colors.black,
+                        fontSize: 16)),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: isSender
+                      ? MainAxisAlignment.end
+                      : MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      Timegetter.formatTimestamp(message.timestamp.toString()),
+                      style: TextStyle(
                           color: isSender ? Colors.white70 : Colors.amber,
                           fontSize: 10),
-                                            ),
-                                            if (isSender) ...[
-                                              const SizedBox(width: 3),
-                                              Obx(
-                        () => Icon(
-                          chatController.isMessageSent.value
-                              ? Icons.done_all
-                              : Icons.done,
-                          size: 16,
-                          color: chatController.isMessageSent.value
-                              ? Colors.yellow
-                              : Colors.white70,
-                        ),
-                                              ),
-                                            ],
-                                          ],
-                                        ),
-                
+                    ),
+                    if (isSender) ...[
+                      const SizedBox(width: 3),
+                      buildMessageStatus(message),
+                    ],
+                  ],
+                ),
               ],
-
             ),
           ),
-          
         ],
       ),
     );
+  }
+
+  Widget buildMessageStatus(Message message) {
+    switch (message.status) {
+      case MessageStatus.notDelivered:
+        return const Icon(Icons.done, color: Colors.grey); // Single tick
+      case MessageStatus.delivered:
+        return const Icon(Icons.done_all, color: Colors.grey);
+      case MessageStatus.seen:
+        return const Icon(Icons.done_all, color: Colors.amber);
+    }
   }
 }

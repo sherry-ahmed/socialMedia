@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../baseComponents/imports.dart';
+import '../../../services/imports.dart';
 
 class RelationshipType extends StatelessWidget {
   RelationshipType({super.key});

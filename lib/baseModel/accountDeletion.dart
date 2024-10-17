@@ -1,4 +1,4 @@
-import 'package:socialmedia/baseComponents/imports.dart';
+import 'package:socialmedia/services/imports.dart';
 
 class DeleteAccount {
   final DatabaseReference _ref = FirebaseDatabase.instance.ref();

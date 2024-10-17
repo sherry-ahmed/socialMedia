@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:phone_input/phone_input_package.dart';
-import 'package:socialmedia/baseComponents/sb.dart';
+import 'package:socialmedia/services/imports.dart';
+
 
 
 // ignore: must_be_immutable

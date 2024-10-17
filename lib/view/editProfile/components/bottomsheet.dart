@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/baseComponents/imports.dart';
+import 'package:socialmedia/services/imports.dart';
 
 class ImageSourceBottomSheet extends StatelessWidget {
   final Function(ImageSource) onImageSourceSelected;

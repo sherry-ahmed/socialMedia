@@ -17,7 +17,7 @@ export 'package:socialmedia/view/profile/views/aboutUs.dart';
 export 'package:socialmedia/view/editProfile/view/editProfile.dart';
 export 'package:socialmedia/view/profile/views/helpSupport.dart';
 export 'package:socialmedia/view/profile/views/privacyPolicy.dart';
-export 'package:socialmedia/baseComponents/imports.dart';
+export 'package:socialmedia/services/imports.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:socialmedia/view/dashboard/dashboard.dart';
 export 'package:socialmedia/utils/utils.dart';
@@ -63,7 +63,7 @@ export 'package:socialmedia/view/Flirts/view/flirtDetailScreen.dart';
 export 'package:socialmedia/baseComponents/profileImage.dart';
 export 'package:socialmedia/baseComponents/searchbar.dart';
 export 'package:socialmedia/baseModel/friendController.dart';
-export 'package:socialmedia/baseComponents/timeGetter.dart';
+export 'package:socialmedia/services/timeGetter.dart';
 export 'package:socialmedia/view/forgotPassword/forgotScreen.dart';
 export 'package:socialmedia/view/login/loginController.dart';
 export 'package:socialmedia/view/Flirts/components/blockReport.dart';
@@ -75,5 +75,12 @@ export 'package:url_launcher/url_launcher.dart';
 export 'package:socialmedia/view/Flirts/view/flirt.dart';
 export 'package:socialmedia/view/User/view/userList.dart';
 export 'package:socialmedia/view/home/view/home.dart';
+export 'package:phone_input/phone_input_package.dart';
+export 'package:socialmedia/baseComponents/profileImageShimmer.dart';
+export 'package:socialmedia/view/home/controller/homeController.dart';
+export 'package:socialmedia/baseModel/appLifeCycle.dart';
+export 'package:socialmedia/services/UserStatus.dart';
+export 'package:socialmedia/view/home/components/popUpmenu.dart';
+
 
 
