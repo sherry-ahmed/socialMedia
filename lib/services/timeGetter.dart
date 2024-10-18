@@ -103,5 +103,36 @@ static String _getMonthName(int month) {
     }
   }
     
+static String formatDateOfBirth(List<int>? dateOfBirth) {
+  if (dateOfBirth == null || dateOfBirth.length != 3) {
+    return 'Invalid date format';
+  }
 
+  int year = dateOfBirth[0];
+  int month = dateOfBirth[1];
+  int day = dateOfBirth[2];
+
+  List<String> months = [
+    '', // Index 0 placeholder to match 1-based month indexing
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  // Ensure month and day are valid
+  if (month < 1 || month > 12 || day < 1 || day > 31) {
+    return 'Invalid date values';
+  }
+
+  return '${months[month]} $day, $year';
+}
 }

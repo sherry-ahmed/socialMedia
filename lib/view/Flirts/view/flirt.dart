@@ -15,7 +15,7 @@ class UserSwiper extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Flirts'),
-        leading: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back_ios)),
+       automaticallyImplyLeading: false,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -29,7 +29,8 @@ class UserSwiper extends StatelessWidget {
               child: flirtcontroller.userList.isEmpty
                   ? const Text('No Flirts Available')
                   : CardSwiper(
-                      duration: const Duration(milliseconds: 400),
+                    
+                      duration: const Duration(milliseconds: 100),
                       allowedSwipeDirection:
                           const AllowedSwipeDirection.symmetric(
                               horizontal: true, vertical: true),
@@ -41,7 +42,7 @@ class UserSwiper extends StatelessWidget {
                               ? 3
                               : flirtcontroller.userList.length,
                       cardsCount: flirtcontroller.userList.length,
-                      isLoop: false,
+                      isLoop: true,
                       onSwipe: (previousIndex, currentIndex, direction) {
                         if (currentIndex != null) {
                           if (direction == CardSwiperDirection.right) {

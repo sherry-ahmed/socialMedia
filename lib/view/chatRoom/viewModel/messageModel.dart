@@ -4,6 +4,7 @@ class Message {
   String senderId;
   String receiverId;
   String content;
+  String type;
   int timestamp;
   MessageStatus status; // Add this field
 
@@ -11,6 +12,7 @@ class Message {
     required this.senderId,
     required this.receiverId,
     required this.content,
+    required this.type,
     required this.timestamp,
     required this.status, // Include status in the constructor
   });
@@ -20,6 +22,7 @@ class Message {
       senderId: doc['senderId'],
       receiverId: doc['receiverId'],
       content: doc['content'],
+      type: doc['type'],
       timestamp: doc['timestamp'],
       status:
           MessageStatus.values[doc['status']], // Map Firestore value to enum
@@ -31,6 +34,7 @@ class Message {
       'senderId': senderId,
       'receiverId': receiverId,
       'content': content,
+      'type' : type,
       'timestamp': timestamp,
       'status': status.index, // Save the status index to Firestore
     };

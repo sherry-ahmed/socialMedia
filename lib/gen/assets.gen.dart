@@ -370,6 +370,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/logo.jpg
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.jpg');
 
+  /// File path: assets/images/pets.png
+  AssetGenImage get pets => const AssetGenImage('assets/images/pets.png');
+
   /// File path: assets/images/user.png
   AssetGenImage get user => const AssetGenImage('assets/images/user.png');
 
@@ -379,7 +382,7 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values =>
-      [appTextIcon, bg, logo, user, womenPeekingOut];
+      [appTextIcon, bg, logo, pets, user, womenPeekingOut];
 }
 
 class Assets {

@@ -1,42 +1,38 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:socialmedia/services/imports.dart';
 
 class Chatroomcontroller extends GetxController {
   RxList<Message> unseen = <Message>[].obs;
   RxString passedchatroomId = ''.obs;
-  StreamSubscription<QuerySnapshot>? _seensubscription;
-  StreamSubscription<QuerySnapshot>? _messageSubscription;
-    final FirebaseFirestore firestore = FirebaseFirestore.instance;
-    @override
+  StreamSubscription<QuerySnapshot>? seensubscription;
+  StreamSubscription<QuerySnapshot>? messageSubscription;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  File? imageFile;
+  @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     log('chatController initialized');
   }
 
- @override
+  @override
   void onClose() {
     log('onclosed call');
     super.onClose();
-    // Cancel the Firestore listener when the controller is closed
-    _seensubscription?.cancel();
-    _messageSubscription?.cancel();
-    
+    seensubscription?.cancel();
+    seensubscription = null;
+    messageSubscription?.cancel();
+    messageSubscription = null;
+
     super.onClose();
   }
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   log('ondispose call');
-  //    _messageSubscription?.cancel();
-  //    _seensubscription?.cancel();
-  // }
 
   void markMessagesAsSeen(String chatroomId) {
-    // Listen for messages where status is "delivered" or "notDelivered" and receiverId matches the current user
-    _seensubscription = firestore
+    seensubscription = firestore
         .collection('chatrooms')
         .doc(chatroomId)
         .collection('messages')
@@ -44,91 +40,34 @@ class Chatroomcontroller extends GetxController {
           MessageStatus.delivered.index,
           MessageStatus.notDelivered.index
         ]) // Condition for status
-        .where('receiverId',
-            isEqualTo:
-                Sessioncontroller.userid.toString()) // Condition for receiverId
+        .where('receiverId', isEqualTo: Sessioncontroller.userid.toString())
         .snapshots()
         .listen((snapshot) async {
           if (snapshot.docs.isNotEmpty) {
-            // Loop through each document (message) that matches the condition
             for (var doc in snapshot.docs) {
-              // Message message = Message.fromDocument(doc);
-              // log("Processing message ID: ${doc.id} with status: ${message.status}");
+              await firestore
+                  .collection('chatrooms')
+                  .doc(chatroomId)
+                  .collection('messages')
+                  .doc(doc.id)
+                  .update({'status': MessageStatus.seen.index});
 
-              // // Check if the message's status is 'delivered' or 'notDelivered'
-              // if (message.status == MessageStatus.delivered ||
-              //     message.status == MessageStatus.notDelivered) {
-                // Update the status to "seen" in Firestore for each message
-                await firestore
-                    .collection('chatrooms')
-                    .doc(chatroomId)
-                    .collection('messages')
-                    .doc(doc
-                        .id) // Using the message ID from Firestore to update the correct document
-                    .update({'status': MessageStatus.seen.index});
-
-                log("Message with ID ${doc.id} marked as seen.");
-              }
-            
+              log("Message with ID ${doc.id} marked as seen.");
+            }
           } else {
-            Utils.toastMessage('No messages to mark as seen');
+            log('No messages to mark as seen');
           }
         });
   }
 
- 
-
-
-
-
   RxBool isMessageSent = true.obs;
 
-//   RxBool finish = false.obs;
-
-//   updatecounter() {
-//     counter++;
-//   }
   RxList<Message> messagesList = <Message>[].obs;
   int messageLimit = 10;
   int counter = 1;
   DocumentSnapshot? lastDocument;
   RxBool hasMoreMessages = true.obs;
-//   void listenToMessages(String chatroomId, String receiverUID) {
-//   var query = _firestore
-//       .collection('chatrooms')
-//       .doc(chatroomId)
-//       .collection('messages')
-//       .orderBy('timestamp', descending: false)
-//       .limit(messageLimit);
 
-//   if (lastDocument != null) {
-
-//     query = query.startAfterDocument(lastDocument!);
-
-//   }
-
-//   query.snapshots().listen((snapshot) {
-//     if (snapshot.docs.isNotEmpty) {
-//       //List<Message> newMessages = [];
-
-//       for (var doc in snapshot.docs) {
-//         Message message = Message.fromDocument(doc);
-//          if (!messagesList.any((m) => m.timestamp == message.timestamp)) {
-//           messagesList.insert(0,  message);
-//         }
-//       }
-
-//       //messagesList.addAll(newMessages.reversed);
-//       lastDocument = snapshot.docs.last;
-//       resetUnreadMessageCount(chatroomId, Sessioncontroller.userid.toString());
-//       hasMoreMessages.value = snapshot.docs.length == messageLimit;
-
-//      } else {
-//       // No messages found
-//       hasMoreMessages.value = false;
-//     }
-//   });
-// }
   RxBool finish = false.obs;
 
   updatecounter() {
@@ -136,7 +75,7 @@ class Chatroomcontroller extends GetxController {
   }
 
   void listenToMessages(String chatroomId, receiverUID) {
-   _messageSubscription = firestore
+    messageSubscription = firestore
         .collection('chatrooms')
         .doc(chatroomId)
         .collection('messages')
@@ -150,7 +89,7 @@ class Chatroomcontroller extends GetxController {
           Message message = Message.fromDocument(doc);
           messagesList.add(message);
         }
-        
+
         hasMoreMessages.value =
             snapshot.docs.length == ((messageLimit * counter) + 1);
       } else {
@@ -163,7 +102,7 @@ class Chatroomcontroller extends GetxController {
   List<Message> get reversedMessagesList => messagesList.reversed.toList();
 
   Future<void> sendMessage(String chatroomId, String senderUID,
-      String receiverUID, String content) async {
+      String receiverUID, String content, String type) async {
     final timestamp = DateTime.now().millisecondsSinceEpoch;
 
     // Create a new message object
@@ -172,6 +111,7 @@ class Chatroomcontroller extends GetxController {
       receiverId: receiverUID,
       content: content,
       timestamp: timestamp,
+      type: type,
       status: MessageStatus.notDelivered, // Set initial status
     );
 
@@ -263,32 +203,107 @@ class Chatroomcontroller extends GetxController {
       log("Failed to reset unread message count: $e");
     }
   }
+  var isuploading = false.obs;
 
-// Future<void> markMessagesAsSeen(String chatroomId, List<Message> messages) async {
-//   final batch = _firestore.batch();
+  Future<void> pickImage(ImageSource source, String chatroomId,
+      String senderUID, String receiverUID, String content, String type) async {
+        
+    final String? imagePath = await Services.pickImage(source);
+    if (imagePath != null) {
+      isuploading.value = true;
+      imageFile = File(imagePath);
+      final String? newUrl = await Services.sendImage(imagePath, chatroomId);
+      isuploading.value = false;
+      if (newUrl != null) {
+        await sendMessage(chatroomId, senderUID, receiverUID, newUrl, type);
+        
+      } else {
+        log('unable to send image');
+        isuploading.value = false;
+      }
+      update();
+    }
+  }
+  Future<void> decrementUnreadMessageCount(
+      String chatroomId, String receiverUID) async {
+    final participantsRef = firestore
+        .collection('chatrooms')
+        .doc(chatroomId)
+        .collection('participants')
+        .doc(receiverUID);
 
-//   for (var message in messages) {
-//     if (message.status == MessageStatus.delivered) {
-//       batch.update(
-//         _firestore
-//             .collection('chatrooms')
-//             .doc(chatroomId)
-//             .collection('messages')
-//             .doc(message.timestamp.toString()),
-//         {'status': MessageStatus.seen.index},
-//       );
-//     }
-//   }
+    try {
+      await firestore.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(participantsRef);
 
-//   try {
-//     await batch.commit();
-//     log('Messages marked as seen');
-//   } catch (e) {
-//     log('Error marking messages as seen: $e');
-//   }
-// }
+        if (snapshot.exists) {
+          int currentCount = snapshot['unreadMessageCount'] ?? 0;
+          int newCount = currentCount -1;
 
-   var isFriend = true.obs;
+          transaction.update(participantsRef, {
+            'unreadMessageCount': newCount,
+          });
+        } else {
+          transaction.set(participantsRef, {
+            'unreadMessageCount': 1,
+          });
+        }
+      });
+
+      log('Unread message count updated successfully');
+    } catch (error) {
+      log('Error updating unread message count: $error');
+    }
+  }
+  Future<void> deleteMessage(String chatroomId, Message messsage) async {
+    try {
+      // Reference to the message document
+      final messageRef = firestore
+          .collection('chatrooms')
+          .doc(chatroomId)
+          .collection('messages')
+          .doc(messsage.timestamp.toString());
+          if(messsage.status == MessageStatus.delivered || messsage.status==MessageStatus.notDelivered){
+            decrementUnreadMessageCount(chatroomId, messsage.receiverId);
+          }
+
+      // Delete the message document
+      await messageRef.delete();
+      log('Message deleted successfully');
+    } catch (error) {
+      log('Error deleting message: $error');
+    }
+  }
+void showDeleteConfirmationDialog(BuildContext context, String chatroomId, Message message) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Delete Message'),
+        content: Text('Do you want to delete this message?',style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black),),
+        actions: [
+          TextButton(
+            onPressed: () {
+              // Close the dialog without doing anything
+              Navigator.of(context).pop();
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              // Call the delete message function
+              await deleteMessage(chatroomId, message);
+              // Close the dialog
+              Get.back();
+            },
+            child: const Text('Delete'),
+          ),
+        ],
+      );
+    },
+  );
+}
+  var isFriend = true.obs;
 
   // void checkFriendship(String currentUserId, String friendUserId) {
   //   isFriendStream(currentUserId, friendUserId).listen((isFriendStatus) {

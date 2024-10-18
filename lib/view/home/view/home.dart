@@ -127,7 +127,7 @@ class Home extends StatelessWidget {
                                     onTap: () {
                                       Get.to(() => Chatroom(
                                             user: user,
-                                          ), duration: const Duration(seconds: 1));
+                                          ));
                                     },
                                     child: Card(
                                       elevation: 10,

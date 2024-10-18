@@ -6,12 +6,12 @@ class MessageBox extends StatelessWidget {
     super.key,
     required this.isSender,
     required this.message,
-    required this.isMessageSent,
+
   });
 
   final bool isSender;
   final Message message;
-  final bool isMessageSent;
+
   final Chatroomcontroller chatController = Get.put(Chatroomcontroller());
 
   @override
