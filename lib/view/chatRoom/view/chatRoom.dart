@@ -3,6 +3,7 @@ import 'package:socialmedia/services/UserStatusChatroom.dart';
 import 'package:socialmedia/services/imports.dart';
 import 'package:socialmedia/view/chatRoom/components/chatPopUpmenu.dart';
 import 'package:socialmedia/view/chatRoom/components/imagebox.dart';
+import 'package:socialmedia/view/chatRoom/components/voicenote.dart';
 import 'package:socialmedia/view/chatRoom/controller/chatRoomController.dart';
 import 'package:socialmedia/view/friendDetail/view/friendDetail.dart';
 
@@ -110,84 +111,99 @@ class Chatroom extends StatelessWidget {
                       );
                     }
 
-                    return ListView.builder(
-                      reverse: true,
-                      itemCount: chatController.messagesList.length + 1,
-                      itemBuilder: (context, index) {
-                        log(chatController.messagesList.length.toString());
-                        if (index == chatController.messagesList.length) {
-                          if (chatController.hasMoreMessages.value) {
-                            chatController.updatecounter();
-                            chatController.listenToMessages(
-                                chatroomId.toString(), user!.uid.toString());
-
-                            return const Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeCap: StrokeCap.round,
-                              ),
-                            );
-                          } else {
-                            return const Center(
-                              child: Text(
-                                'No more messages',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            );
-                          }
-                        }
-
-                        final Message message =
-                            chatController.messagesList[index];
-                        bool isSender = message.senderId ==
-                            Sessioncontroller.userid.toString();
-
-                        return message.type == 'text'
-                            ? GestureDetector(
-                                onLongPress: () {
-                                  chatController.showDeleteConfirmationDialog(
-                                      context,
-                                      chatroomId,
-                                      message);
-                                },
-                                child: MessageBox(
-                                  isSender: isSender,
-                                  message: message,
+                    return Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: 12.0),
+                      child: ListView.builder(
+                        reverse: true,
+                        itemCount: chatController.messagesList.length + 1,
+                        itemBuilder: (context, index) {
+                          log(chatController.messagesList.length.toString());
+                          if (index == chatController.messagesList.length) {
+                            if (chatController.hasMoreMessages.value) {
+                              chatController.updatecounter();
+                              chatController.listenToMessages(
+                                  chatroomId.toString(), user!.uid.toString());
+                      
+                              return const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeCap: StrokeCap.round,
                                 ),
-                              )
-                            : GestureDetector(
-                                onLongPress: () {
-                                  chatController.showDeleteConfirmationDialog(
-                                      context,
-                                      chatroomId,
-                                      message);
-                                },
-                                child: Imagebox(
-                                    isSender: isSender, message: message));
-                      },
+                              );
+                            } else {
+                              return const Center(
+                                child: Text(
+                                  'No more messages',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              );
+                            }
+                          }
+                      
+                          final Message message =
+                              chatController.messagesList[index];
+                          bool isSender = message.senderId ==
+                              Sessioncontroller.userid.toString();
+                      
+                          return message.type == 'text'
+                              ? GestureDetector(
+                                  onLongPress: () {
+                                    chatController.showDeleteConfirmationDialog(
+                                        context, chatroomId, message);
+                                  },
+                                  child: MessageBox(
+                                    isSender: isSender,
+                                    message: message,
+                                  ),
+                                )
+                              : message.type == 'voicenote'
+                                  ? GestureDetector(
+                                      onLongPress: () {
+                                        chatController
+                                            .showDeleteConfirmationDialog(
+                                                context, chatroomId, message);
+                                      },
+                                      child: Voicenote(
+                                          isSender: isSender,
+                                          message:
+                                              message), // Assuming content holds the audio URL
+                                    )
+                                  : GestureDetector(
+                                      onLongPress: () {
+                                        chatController
+                                            .showDeleteConfirmationDialog(
+                                                context, chatroomId, message);
+                                      },
+                                      child: Imagebox(
+                                        isSender: isSender,
+                                        message: message,
+                                      ),
+                                    );
+                        },
+                      ),
                     );
                   }),
                 ),
-                Obx(()=>
-                  chatController.isuploading.value
+                Obx(
+                  () => chatController.isuploading.value
                       ? Padding(
-                        padding: const EdgeInsets.symmetric(vertical:8.0),
-                        child: Container(
-                          height: 35,
-                          width: context.width*0.5,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                                borderRadius: BorderRadius.circular(50)),
-                            child: Center(
-                              child: Text(
-                                'Uploading...',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(color: Colors.black),
-                              ),
-                            )),
-                      )
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Container(
+                              height: 35,
+                              width: context.width * 0.5,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(50)),
+                              child: Center(
+                                child: Text(
+                                  'Uploading...',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(color: Colors.black),
+                                ),
+                              )),
+                        )
                       : Container(),
                 ),
                 Padding(
@@ -216,12 +232,13 @@ class Chatroom extends StatelessWidget {
                                 prefixIcon: const Icon(
                                   Icons.sentiment_very_satisfied,
                                   color: Colors.black38,
+                                  size: 20,
                                 ),
                                 suffixIcon: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    IconButton(
-                                        onPressed: () {
+                                    GestureDetector(
+                                        onTap: () {
                                           chatController.pickImage(
                                               ImageSource.gallery,
                                               chatroomId.toString(),
@@ -231,11 +248,14 @@ class Chatroom extends StatelessWidget {
                                               messageController.text.trim(),
                                               'image');
                                         },
-                                        icon: const Icon(
-                                            Icons.attach_file_rounded,
-                                            color: Colors.grey)),
-                                    IconButton(
-                                        onPressed: () {
+                                        child: const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2.0),
+                                          child:
+                                              Icon(Icons.attach_file_rounded),
+                                        )),
+                                    GestureDetector(
+                                        onTap: () {
                                           chatController.pickImage(
                                               ImageSource.camera,
                                               chatroomId.toString(),
@@ -245,27 +265,39 @@ class Chatroom extends StatelessWidget {
                                               messageController.text.trim(),
                                               'image');
                                         },
-                                        icon: const Icon(
-                                          Icons.camera_alt,
-                                          color: Colors.grey,
+                                        child: const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 4.0),
+                                          child: Icon(Icons.camera_alt),
                                         )),
-                                    IconButton(
-                                      onPressed: () {
-                                        if (messageController.text.isNotEmpty) {
-                                          chatController.sendMessage(
+                                    GestureDetector(
+                                        onLongPress: () {
+                                          chatController.togglerecording();
+                                          chatController.startRecording();
+                                        },
+                                        onLongPressEnd: (details) {
+                                          chatController.togglerecording();
+                                          chatController.stopRecording(
                                               chatroomId.toString(),
                                               Sessioncontroller.userid
                                                   .toString(),
                                               user!.uid,
                                               messageController.text.trim(),
-                                              'text');
-                                          messageController.clear();
-                                          appLifecycleController
-                                              .updateTypingStatus(false);
-                                        }
-                                      },
-                                      icon: const Icon(Icons.send),
-                                    ),
+                                              'voicenote');
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          child: Icon(
+                                            chatController.isRecording.value
+                                                ? Icons.stop
+                                                : Icons.mic,
+                                            color:
+                                                chatController.isRecording.value
+                                                    ? Colors.red
+                                                    : Colors.black,
+                                          ),
+                                        )),
                                   ],
                                 ),
                               ),
@@ -279,6 +311,34 @@ class Chatroom extends StatelessWidget {
                               },
                             ),
                           ),
+                          CircleAvatar(
+                            radius: 26,
+                            backgroundColor: Colors.white,
+                            child: Center(
+                              child: IconButton(
+                                onPressed: () {
+                                  final timestamp =
+                                      DateTime.now().microsecondsSinceEpoch;
+                                  if (messageController.text.isNotEmpty) {
+                                    chatController.sendMessage(
+                                        chatroomId.toString(),
+                                        Sessioncontroller.userid.toString(),
+                                        user!.uid,
+                                        messageController.text.trim(),
+                                        'text',
+                                        timestamp);
+                                    messageController.clear();
+                                    appLifecycleController
+                                        .updateTypingStatus(false);
+                                  }
+                                },
+                                icon: const Icon(
+                                  Icons.send,
+                                  size: 25,
+                                ),
+                              ),
+                            ),
+                          )
                         ],
                       );
                     } else {

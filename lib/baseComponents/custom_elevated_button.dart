@@ -6,27 +6,27 @@ class CustomElevatedButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   Color? textColor;
-  
+
   double? width;
   double? height;
-   Color? shadowColor;
-   double ? elevation;
-   Color? color;
-   double? radius;
-   final bool loading;
+  Color? shadowColor;
+  double? elevation;
+  Color? color;
+  double? radius;
+  final bool loading;
 
-   CustomElevatedButton({
+  CustomElevatedButton({
     super.key,
-     required this.loading,
-     required this.text,
-     this.textColor,
-     required this.onPressed,
-     this.width,
-     this.height,
-     this.shadowColor,
-     this.elevation,
-     this.color,
-     this.radius,
+    required this.loading,
+    required this.text,
+    this.textColor,
+    required this.onPressed,
+    this.width,
+    this.height,
+    this.shadowColor,
+    this.elevation,
+    this.color,
+    this.radius,
   });
   @override
   Widget build(BuildContext context) {
@@ -39,15 +39,20 @@ class CustomElevatedButton extends StatelessWidget {
         foregroundColor: Colors.white,
         disabledBackgroundColor: Colors.white,
         disabledForegroundColor: Colors.black,
-        minimumSize: Size(width?? context.width, height??50),
+        minimumSize: Size(width ?? context.width, height ?? 50),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(radius?? 12),
+          borderRadius: BorderRadius.circular(radius ?? 12),
         ),
       ),
-      child: loading? const Center(child: CircularProgressIndicator(color: Colors.black,)): Text(
-        text,
-        style: TextStyle(fontSize: 16.0, color: textColor),
-      ),
+      child: loading
+          ? const Center(
+              child: CircularProgressIndicator(
+              color: Colors.black,
+            ))
+          : Text(
+              text,
+              style: TextStyle(fontSize: 16.0, color: textColor),
+            ),
     );
   }
 }

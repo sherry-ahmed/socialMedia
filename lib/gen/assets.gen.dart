@@ -360,6 +360,10 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/addImage.png
+  AssetGenImage get addImage =>
+      const AssetGenImage('assets/images/addImage.png');
+
   /// File path: assets/images/app_text_icon.png
   AssetGenImage get appTextIcon =>
       const AssetGenImage('assets/images/app_text_icon.png');
@@ -382,7 +386,7 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values =>
-      [appTextIcon, bg, logo, pets, user, womenPeekingOut];
+      [addImage, appTextIcon, bg, logo, pets, user, womenPeekingOut];
 }
 
 class Assets {

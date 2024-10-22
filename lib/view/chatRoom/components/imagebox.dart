@@ -84,51 +84,39 @@ class ImageBoxContent extends StatefulWidget {
   final String imageUrl;
   final bool isSender;
 
-  const ImageBoxContent({Key? key, required this.imageUrl, required this.isSender}) : super(key: key);
+  const ImageBoxContent(
+      {Key? key, required this.imageUrl, required this.isSender})
+      : super(key: key);
 
   @override
   _ImageBoxContentState createState() => _ImageBoxContentState();
 }
 
 class _ImageBoxContentState extends State<ImageBoxContent> {
-  double _downloadProgress = 0.0;
+  // double _downloadProgress = 0.0;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Image.network(
-          widget.imageUrl,
-          width: context.width * 0.5,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) {
-              // Image is fully loaded, return the image widget
-              return child;
-            } else {
-              // Calculate download progress
-              _downloadProgress = loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                      (loadingProgress.expectedTotalBytes ?? 1)
-                  : 0;
-
-              return SizedBox(
-                width: context.width*0.5,
-                child: Center(
-                  child: CircularProgressIndicator(
-                    value: _downloadProgress, // Show progress indicator
-                    valueColor: widget.isSender? const AlwaysStoppedAnimation<Color>(Colors.white): const AlwaysStoppedAnimation<Color>(Colors.black) ,
-                  ),
-                ),
-              );
-            }
-          },
-          errorBuilder: (context, error, stackTrace) {
-            // Handle image load error
-            return const Icon(Icons.error, color: Colors.red); // Error icon
-          },
-        ),
-      ],
+    return CachedNetworkImage(
+      imageUrl: widget.imageUrl,
+      width: context.width * 0.5,
+      placeholder: (context, url) => SizedBox(
+        width: context.width * 0.5,
+        child: Shimmer.fromColors(
+          baseColor: Colors.blue,
+          highlightColor: Colors.white,
+          child: Container(
+            width: context.width * 0.5,
+            height: 150,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.0), // Adjust as needed
+            ),
+          ),
+        )
+      ),
+      errorWidget: (context, url, error) =>
+          const Icon(Icons.error, color: Colors.red), // Error icon
     );
   }
 }

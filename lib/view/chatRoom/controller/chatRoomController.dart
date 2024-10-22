@@ -1,8 +1,13 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:record/record.dart';
 import 'package:socialmedia/services/imports.dart';
 
 class Chatroomcontroller extends GetxController {
@@ -102,9 +107,7 @@ class Chatroomcontroller extends GetxController {
   List<Message> get reversedMessagesList => messagesList.reversed.toList();
 
   Future<void> sendMessage(String chatroomId, String senderUID,
-      String receiverUID, String content, String type) async {
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-
+      String receiverUID, String content, String type, int timestamp) async {
     // Create a new message object
     Message message = Message(
       senderId: senderUID,
@@ -203,20 +206,28 @@ class Chatroomcontroller extends GetxController {
       log("Failed to reset unread message count: $e");
     }
   }
+
   var isuploading = false.obs;
 
   Future<void> pickImage(ImageSource source, String chatroomId,
       String senderUID, String receiverUID, String content, String type) async {
-        
+    //Uint8List? _compressedImageBytes;
+    final timstamp = DateTime.now().millisecondsSinceEpoch;
+
     final String? imagePath = await Services.pickImage(source);
     if (imagePath != null) {
       isuploading.value = true;
       imageFile = File(imagePath);
-      final String? newUrl = await Services.sendImage(imagePath, chatroomId);
+      Uint8List imageBytes = await imageFile!.readAsBytes();
+      Uint8List? compressedImageBytes =
+          await Services.compressImage(imageBytes);
+      //Uint8List? compressedImageBytes = await Services.compressImageInMemory(imageFile!);
+      final String? newUrl =
+          await Services.sendImage(compressedImageBytes!, chatroomId, timstamp);
       isuploading.value = false;
       if (newUrl != null) {
-        await sendMessage(chatroomId, senderUID, receiverUID, newUrl, type);
-        
+        await sendMessage(
+            chatroomId, senderUID, receiverUID, newUrl, type, timstamp);
       } else {
         log('unable to send image');
         isuploading.value = false;
@@ -224,6 +235,7 @@ class Chatroomcontroller extends GetxController {
       update();
     }
   }
+
   Future<void> decrementUnreadMessageCount(
       String chatroomId, String receiverUID) async {
     final participantsRef = firestore
@@ -238,7 +250,7 @@ class Chatroomcontroller extends GetxController {
 
         if (snapshot.exists) {
           int currentCount = snapshot['unreadMessageCount'] ?? 0;
-          int newCount = currentCount -1;
+          int newCount = currentCount - 1;
 
           transaction.update(participantsRef, {
             'unreadMessageCount': newCount,
@@ -255,6 +267,7 @@ class Chatroomcontroller extends GetxController {
       log('Error updating unread message count: $error');
     }
   }
+
   Future<void> deleteMessage(String chatroomId, Message messsage) async {
     try {
       // Reference to the message document
@@ -263,46 +276,156 @@ class Chatroomcontroller extends GetxController {
           .doc(chatroomId)
           .collection('messages')
           .doc(messsage.timestamp.toString());
-          if(messsage.status == MessageStatus.delivered || messsage.status==MessageStatus.notDelivered){
-            decrementUnreadMessageCount(chatroomId, messsage.receiverId);
-          }
+      if (messsage.status == MessageStatus.delivered ||
+          messsage.status == MessageStatus.notDelivered) {
+        decrementUnreadMessageCount(chatroomId, messsage.receiverId);
+      }
 
       // Delete the message document
+      //await messageRef.delete();
+      if (messsage.type == 'image') {
+        log(messsage.type.toString());
+        final Reference storageRef = FirebaseStorage.instance
+            .ref()
+            .child('chatrooms')
+            .child(chatroomId)
+            .child(messsage.timestamp.toString());
+        await storageRef.delete();
+      }
       await messageRef.delete();
       log('Message deleted successfully');
     } catch (error) {
       log('Error deleting message: $error');
     }
   }
-void showDeleteConfirmationDialog(BuildContext context, String chatroomId, Message message) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Delete Message'),
-        content: Text('Do you want to delete this message?',style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black),),
-        actions: [
-          TextButton(
-            onPressed: () {
-              // Close the dialog without doing anything
-              Navigator.of(context).pop();
-            },
-            child: const Text('Cancel'),
+
+  void showDeleteConfirmationDialog(
+      BuildContext context, String chatroomId, Message message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete Message'),
+          content: Text(
+            'Do you want to delete this message?',
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(color: Colors.black),
           ),
-          TextButton(
-            onPressed: () async {
-              // Call the delete message function
-              await deleteMessage(chatroomId, message);
-              // Close the dialog
-              Get.back();
-            },
-            child: const Text('Delete'),
-          ),
-        ],
-      );
-    },
-  );
-}
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Close the dialog without doing anything
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                // Call the delete message function
+                await deleteMessage(chatroomId, message);
+                // Close the dialog
+                Get.back();
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+//   final record = AudioRecorder();
+//   bool isRecording = false;
+//   String? audioPath;
+//   Future<void> startRecording() async {
+//     isRecording = true;
+//     // Check for microphone permission
+//     if (await record.hasPermission()) {
+//       // Start recording to file
+//       await record.start(const RecordConfig(), path: 'aFullPath/myFile.m4a');
+//       // ... or to stream
+//       final stream = await record
+//           .startStream(const RecordConfig(encoder: AudioEncoder.pcm16bits));
+//     }
+
+//     final path = await record.stop();
+//     isRecording = false;
+// // ... or cancel it (and implicitly remove file/blob).
+//     await record.cancel();
+
+//     record.dispose();
+//   }
+  var isRecording = false.obs;
+  String? recordedFile;
+  final record = AudioRecorder();
+  togglerecording() {
+    isRecording.value = !isRecording.value;
+  }
+
+  Future<void> startRecording() async {
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+
+    // Check if recording is already in progress
+
+    // Check for microphone permissions
+    if (await record.hasPermission()) {
+      // Get the temporary directory to store the audio file
+      Directory tempDir = await getTemporaryDirectory();
+      String audioPath =
+          '${tempDir.path}/$timestamp.mp3'; // Use timestamp as filename
+
+      // Start recording to file
+      await record.start(const RecordConfig(encoder: AudioEncoder.wav), path: audioPath);
+      // Set recording state to true
+      log('Recording started at path: $audioPath'); // Log recording start
+    } else {
+      log('Microphone permission not granted.');
+    }
+  }
+
+  Future<void> stopRecording(String chatroomId, String senderUID,
+      String receiverUID, String content, String type) async {
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final path = await record.stop();
+    if (path != null && path.isNotEmpty) {
+      log('Recording stopped. File path: $path');
+
+      // Check if the file exists before trying to upload
+      File audioFile = File(path);
+      log("Audio file: $audioFile");
+      if (await audioFile.exists()) {
+        // Upload the audio file to cloud storage
+        String? downloadUrl = await Services.uploadAudioToCloudStorage(
+            audioFile, chatroomId, timestamp);
+
+        // Send the message with the download URL
+        if (downloadUrl != null) {
+          await sendMessage(
+              chatroomId, senderUID, receiverUID, downloadUrl, type, timestamp);
+        } else {
+          log('Failed to upload audio. Download URL is null.');
+        }
+      } else {
+        log('Audio file does not exist at path: $path');
+      }
+    } else {
+      log('Recording path is null or empty. Audio not saved.');
+    }
+  }
+
+  // Future<void> uploadToFirebase() async {
+  //   if (recordedFile != null) {
+  //     final storage = FirebaseStorage.instance;
+  //     final file = File(recordedFile!);
+  //     final ref =
+  //         storage.ref().child('recordings/${recordedFile!.split('/').last}');
+  //     await ref.putFile(file);
+  //     log('File uploaded to Firebase Cloud Storage');
+  //   }
+  // }
+
   var isFriend = true.obs;
 
   // void checkFriendship(String currentUserId, String friendUserId) {

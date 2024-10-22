@@ -16,6 +16,7 @@ class MessageBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Align(
       alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
       child: Column(
