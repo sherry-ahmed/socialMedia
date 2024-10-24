@@ -6,7 +6,5 @@ class Sessioncontroller {
   factory Sessioncontroller(){
     return _session;
   }
-  Sessioncontroller._internal(){
-
-  }
+  Sessioncontroller._internal();
 }

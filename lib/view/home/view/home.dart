@@ -123,71 +123,74 @@ class Home extends StatelessWidget {
                                 if (searchController.text.isEmpty ||
                                     username.toLowerCase().contains(
                                         searchController.text.toLowerCase())) {
-                                  return InkWell(
-                                    onTap: () {
-                                      Get.to(() => Chatroom(
-                                            user: user,
-                                          ));
-                                    },
-                                    child: Card(
-                                      elevation: 10,
-                                      color: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          children: [
-                                            user.profile.isEmpty
-                                                ? Stack(
-                                                    children: [
-                                                      Container(
-                                                        height: 50,
-                                                        width: 50,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          border: Border.all(
-                                                            width: 2,
-                                                            color: Colors.black,
-                                                          ),
-                                                          shape:
-                                                              BoxShape.circle,
-                                                          image:
-                                                              DecorationImage(
-                                                            image: AssetImage(
-                                                                    Assets
-                                                                        .images
-                                                                        .user
-                                                                        .path)
-                                                                as ImageProvider,
-                                                            fit: BoxFit.cover,
-                                                          ),
+                                  return Card(
+                                    elevation: 10,
+                                    color: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          user.profile.isEmpty
+                                              ? Stack(
+                                                  children: [
+                                                    Container(
+                                                      height: 50,
+                                                      width: 50,
+                                                      decoration:
+                                                          BoxDecoration(
+                                                        border: Border.all(
+                                                          width: 2,
+                                                          color: Colors.black,
+                                                        ),
+                                                        shape:
+                                                            BoxShape.circle,
+                                                        image:
+                                                            DecorationImage(
+                                                          image: AssetImage(
+                                                                  Assets
+                                                                      .images
+                                                                      .user
+                                                                      .path)
+                                                              as ImageProvider,
+                                                          fit: BoxFit.cover,
                                                         ),
                                                       ),
-                                                      Positioned(
-                                                        right: -2,
-                                                        bottom: 2,
-                                                        child: UserStatus(user),
-                                                      ),
-                                                    ],
-                                                  )
-                                                : Stack(
-                                                    children: [
-                                                      profileImage(
+                                                    ),
+                                                    Positioned(
+                                                      right: -2,
+                                                      bottom: 2,
+                                                      child: UserStatus(user),
+                                                    ),
+                                                  ],
+                                                )
+                                              : Stack(
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () => Services.showFullScreenImage(context, user.profile),
+                                                      child: profileImage(
                                                           profile: user.profile,
                                                           height: 50,
                                                           width: 50),
-                                                      Positioned(
-                                                          right: -2,
-                                                          bottom: 2,
-                                                          child:
-                                                              UserStatus(user)),
-                                                    ],
-                                                  ),
-                                            SB.w(20),
-                                            // User Info
-                                            Column(
+                                                    ),
+                                                    Positioned(
+                                                        right: -2,
+                                                        bottom: 2,
+                                                        child:
+                                                            UserStatus(user)),
+                                                  ],
+                                                ),
+                                          SB.w(20),
+                                          // User Info
+                                          InkWell(
+                                            onTap: () {
+                                               Get.to(() => Chatroom(
+                                            user: user,
+                                          ));
+                                            },
+                                            child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
@@ -206,51 +209,51 @@ class Home extends StatelessWidget {
                                                 ),
                                               ],
                                             ),
-                                            const Spacer(),
-                                            SizedBox(
-                                              height: 30,
-                                              width: 30,
-                                              child: StreamBuilder<int>(
-                                                stream: controller
-                                                    .getUnreadMessageCount(
-                                                        Services.getChatroomId(
-                                                            Sessioncontroller
-                                                                .userid
-                                                                .toString(),
-                                                            user.uid),
-                                                        Sessioncontroller.userid
-                                                            .toString()),
-                                                builder: (context, snapshot) {
-                                                  if (snapshot.hasData &&
-                                                      snapshot.data! > 0) {
-                                                    return Container(
-                                                      height: 7,
-                                                      width: 7,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                              shape: BoxShape
-                                                                  .circle,
-                                                              color:
-                                                                  Colors.black),
-                                                      child: Center(
-                                                        child: Text(
-                                                          "${snapshot.data!}",
-                                                          style:
-                                                              const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 16),
-                                                        ),
+                                          ),
+                                          const Spacer(),
+                                          SizedBox(
+                                            height: 30,
+                                            width: 30,
+                                            child: StreamBuilder<int>(
+                                              stream: controller
+                                                  .getUnreadMessageCount(
+                                                      Services.getChatroomId(
+                                                          Sessioncontroller
+                                                              .userid
+                                                              .toString(),
+                                                          user.uid),
+                                                      Sessioncontroller.userid
+                                                          .toString()),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.hasData &&
+                                                    snapshot.data! > 0) {
+                                                  return Container(
+                                                    height: 7,
+                                                    width: 7,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                            shape: BoxShape
+                                                                .circle,
+                                                            color:
+                                                                Colors.black),
+                                                    child: Center(
+                                                      child: Text(
+                                                        "${snapshot.data!}",
+                                                        style:
+                                                            const TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 16),
                                                       ),
-                                                    );
-                                                  } else {
-                                                    return Container(); // No unread messages
-                                                  }
-                                                },
-                                              ),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return Container(); // No unread messages
+                                                }
+                                              },
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   );

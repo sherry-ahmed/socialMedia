@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 import 'package:socialmedia/services/imports.dart';
 
@@ -16,6 +14,15 @@ class Chatroomcontroller extends GetxController {
   StreamSubscription<QuerySnapshot>? seensubscription;
   StreamSubscription<QuerySnapshot>? messageSubscription;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  RxBool typing = false.obs;
+  toggleTyping(TextEditingController messageController)
+  { if(messageController.text.isEmpty){
+    typing.value = false;
+  }else{
+    typing.value = true;
+  }
+    
+  }
 
   File? imageFile;
   @override
@@ -98,7 +105,6 @@ class Chatroomcontroller extends GetxController {
         hasMoreMessages.value =
             snapshot.docs.length == ((messageLimit * counter) + 1);
       } else {
-        // No messages found
         hasMoreMessages.value = false;
       }
     });
@@ -214,10 +220,11 @@ class Chatroomcontroller extends GetxController {
     //Uint8List? _compressedImageBytes;
     final timstamp = DateTime.now().millisecondsSinceEpoch;
 
-    final String? imagePath = await Services.pickImage(source);
-    if (imagePath != null) {
+    final String imagePath = await Services.pickImage(source);
+    if (imagePath != '') {
       isuploading.value = true;
       imageFile = File(imagePath);
+
       Uint8List imageBytes = await imageFile!.readAsBytes();
       Uint8List? compressedImageBytes =
           await Services.compressImage(imageBytes);
@@ -233,6 +240,8 @@ class Chatroomcontroller extends GetxController {
         isuploading.value = false;
       }
       update();
+    } else {
+      Utils.toastMessage('no image selected');
     }
   }
 
@@ -336,50 +345,68 @@ class Chatroomcontroller extends GetxController {
     );
   }
 
-//   final record = AudioRecorder();
-//   bool isRecording = false;
-//   String? audioPath;
-//   Future<void> startRecording() async {
-//     isRecording = true;
-//     // Check for microphone permission
-//     if (await record.hasPermission()) {
-//       // Start recording to file
-//       await record.start(const RecordConfig(), path: 'aFullPath/myFile.m4a');
-//       // ... or to stream
-//       final stream = await record
-//           .startStream(const RecordConfig(encoder: AudioEncoder.pcm16bits));
-//     }
-
-//     final path = await record.stop();
-//     isRecording = false;
-// // ... or cancel it (and implicitly remove file/blob).
-//     await record.cancel();
-
-//     record.dispose();
-//   }
   var isRecording = false.obs;
-  String? recordedFile;
-  final record = AudioRecorder();
+  var recordingTime = 0.obs;
+  var blinking = false.obs;
+
+  Timer? _timer;
   togglerecording() {
     isRecording.value = !isRecording.value;
   }
 
+  String _twoDigits(int n) {
+    if (n >= 10) return "$n";
+    return "0$n";
+  }
+
+  String? recordedFile;
+  final record = AudioRecorder();
+
+  Future<void> deleteRecording() async {
+    try {
+      // Stop the recording first
+      final path = await record.stop();
+
+      if (path != null && path.isNotEmpty) {
+        // Log that the recording was stopped
+        log('Recording stopped and file path is: $path');
+        _timer?.cancel();
+        recordingTime.value = 0;
+        isRecording.value = false;
+        blinking.value = false;
+
+        File audioFile = File(path);
+        if (await audioFile.exists()) {
+          // Delete the audio file
+          await audioFile.delete();
+          log('Recording deleted from local storage.');
+        } else {
+          log('Audio file does not exist, so nothing to delete.');
+        }
+      } else {
+        log('No recording to stop and delete.');
+      }
+    } catch (e) {
+      log('Error deleting recording: $e');
+    }
+  }
+
   Future<void> startRecording() async {
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      recordingTime.value++;
+      blinking.value = !blinking.value;
+      //stackopen.value = true;
+    });
+    final timestamp = DateTime.now().microsecondsSinceEpoch;
 
-    // Check if recording is already in progress
-
-    // Check for microphone permissions
     if (await record.hasPermission()) {
-      // Get the temporary directory to store the audio file
       Directory tempDir = await getTemporaryDirectory();
-      String audioPath =
-          '${tempDir.path}/$timestamp.mp3'; // Use timestamp as filename
+      String audioPath = '${tempDir.path}/$timestamp.mp3';
 
-      // Start recording to file
-      await record.start(const RecordConfig(encoder: AudioEncoder.wav), path: audioPath);
+      await record.start(const RecordConfig(encoder: AudioEncoder.wav),
+          path: audioPath);
       // Set recording state to true
-      log('Recording started at path: $audioPath'); // Log recording start
+      log('Recording started at path: $audioPath');
     } else {
       log('Microphone permission not granted.');
     }
@@ -387,20 +414,20 @@ class Chatroomcontroller extends GetxController {
 
   Future<void> stopRecording(String chatroomId, String senderUID,
       String receiverUID, String content, String type) async {
+    _timer?.cancel();
     final timestamp = DateTime.now().millisecondsSinceEpoch;
     final path = await record.stop();
     if (path != null && path.isNotEmpty) {
       log('Recording stopped. File path: $path');
 
-      // Check if the file exists before trying to upload
       File audioFile = File(path);
       log("Audio file: $audioFile");
       if (await audioFile.exists()) {
-        // Upload the audio file to cloud storage
+        isuploading.value = true;
         String? downloadUrl = await Services.uploadAudioToCloudStorage(
             audioFile, chatroomId, timestamp);
+        isuploading.value = false;
 
-        // Send the message with the download URL
         if (downloadUrl != null) {
           await sendMessage(
               chatroomId, senderUID, receiverUID, downloadUrl, type, timestamp);
@@ -415,16 +442,11 @@ class Chatroomcontroller extends GetxController {
     }
   }
 
-  // Future<void> uploadToFirebase() async {
-  //   if (recordedFile != null) {
-  //     final storage = FirebaseStorage.instance;
-  //     final file = File(recordedFile!);
-  //     final ref =
-  //         storage.ref().child('recordings/${recordedFile!.split('/').last}');
-  //     await ref.putFile(file);
-  //     log('File uploaded to Firebase Cloud Storage');
-  //   }
-  // }
+  String getFormattedTime() {
+    int minutes = (recordingTime.value / 60).floor();
+    int seconds = recordingTime.value % 60;
+    return "${_twoDigits(minutes)}:${_twoDigits(seconds)}";
+  }
 
   var isFriend = true.obs;
 

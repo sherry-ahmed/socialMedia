@@ -113,7 +113,7 @@ static String formatDateOfBirth(List<int>? dateOfBirth) {
   int day = dateOfBirth[2];
 
   List<String> months = [
-    '', // Index 0 placeholder to match 1-based month indexing
+    '', 
     'January',
     'February',
     'March',

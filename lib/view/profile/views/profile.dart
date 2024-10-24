@@ -47,12 +47,15 @@ class Profile extends StatelessWidget {
                                             fit: BoxFit.cover,
                                             width: 50,
                                             height: 50)
-                                        : profileImage(
-                                            profile: userController
-                                                .currentUser.value.profile,
-                                                
-                                            height: 50,
-                                            width: 50)),
+                                        : GestureDetector(
+                                          onTap: () => Services.showFullScreenImage(context, userController.currentUser.value.profile),
+                                          child: profileImage(
+                                              profile: userController
+                                                  .currentUser.value.profile,
+                                                  
+                                              height: 50,
+                                              width: 50),
+                                        )),
                                   ),
                                   Text(
                                       'Hi! ${userController.currentUser.value.username} \n${Timegetter.getGreeting()}',

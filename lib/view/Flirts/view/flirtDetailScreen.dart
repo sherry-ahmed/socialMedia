@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/services/imports.dart';
+import 'package:socialmedia/view/checkedInView/view/checkedinView.dart';
 
 
 class Flirtdetailscreen extends StatelessWidget {
@@ -205,7 +206,7 @@ class Flirtdetailscreen extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  Utils.toastMessage('${data.country}\n ${data.state}\n ${data.city}');
+                  Get.to(() => Checkedinview(userid: data.uid));
                 },
                 child: Card(
                   shape: RoundedRectangleBorder(

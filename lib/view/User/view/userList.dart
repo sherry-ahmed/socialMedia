@@ -136,87 +136,87 @@ class UserList extends StatelessWidget {
                                 else if (searchController.text.isEmpty ||
                                     username.toLowerCase().contains(
                                         searchController.text.toLowerCase())) {
-                                  return InkWell(
-                                    onTap: () {},
-                                    child: Card(
-                                      elevation: 10,
-                                      color: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          children: [
-                                            user.profile.isEmpty
-                                                ? Stack(
-                                                    children: [
-                                                      Container(
-                                                        height: 50,
-                                                        width: 50,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          border: Border.all(
-                                                            width: 2,
-                                                            color: Colors.black,
-                                                          ),
-                                                          shape:
-                                                              BoxShape.circle,
-                                                          image:
-                                                              DecorationImage(
-                                                            image: AssetImage(
-                                                                    Assets
-                                                                        .images
-                                                                        .user
-                                                                        .path)
-                                                                as ImageProvider,
-                                                            fit: BoxFit.cover,
-                                                          ),
+                                  return Card(
+                                    elevation: 10,
+                                    color: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          user.profile.isEmpty
+                                              ? Stack(
+                                                  children: [
+                                                    Container(
+                                                      height: 50,
+                                                      width: 50,
+                                                      decoration:
+                                                          BoxDecoration(
+                                                        border: Border.all(
+                                                          width: 2,
+                                                          color: Colors.black,
+                                                        ),
+                                                        shape:
+                                                            BoxShape.circle,
+                                                        image:
+                                                            DecorationImage(
+                                                          image: AssetImage(
+                                                                  Assets
+                                                                      .images
+                                                                      .user
+                                                                      .path)
+                                                              as ImageProvider,
+                                                          fit: BoxFit.cover,
                                                         ),
                                                       ),
-                                                      Positioned(
-                                                        right: -2,
-                                                        bottom: 2,
-                                                        child: UserStatus(user),
-                                                      ),
-                                                    ],
-                                                  )
-                                                : Stack(
-                                                    children: [
-                                                      profileImage(
+                                                    ),
+                                                    Positioned(
+                                                      right: -2,
+                                                      bottom: 2,
+                                                      child: UserStatus(user),
+                                                    ),
+                                                  ],
+                                                )
+                                              : Stack(
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () => Services.showFullScreenImage(context, user.profile),
+                                                      child: profileImage(
                                                           profile: user.profile,
                                                           height: 50,
                                                           width: 50),
-                                                      Positioned(
-                                                          right: -2,
-                                                          bottom: 2,
-                                                          child:
-                                                              UserStatus(user)),
-                                                    ],
-                                                  ),
-                                            SB.w(20),
-                                            // User Info
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  user.username,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleMedium,
+                                                    ),
+                                                    Positioned(
+                                                        right: -2,
+                                                        bottom: 2,
+                                                        child:
+                                                            UserStatus(user)),
+                                                  ],
                                                 ),
-                                                Text(
-                                                  user.email,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleMedium!
-                                                      .copyWith(fontSize: 12),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
+                                          SB.w(20),
+                                          // User Info
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                user.username,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleMedium,
+                                              ),
+                                              Text(
+                                                user.email,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleMedium!
+                                                    .copyWith(fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   );

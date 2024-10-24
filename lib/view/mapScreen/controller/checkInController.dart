@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -47,7 +50,11 @@ class Checkincontroller extends GetxController {
     address.value = '${placenameController.text.trim()}, ${place!.street}, ${place.subLocality}, ${place.locality}, ${place.country}';
     log(address.value);
     if(imagePath.value!=''){
-      imageUrl.value = (await Services.uploadCheckedinImage(imagePath.value, Sessioncontroller.userid.toString(), timestamp))!;
+      File imageFile = File(imagePath.value);
+      Uint8List imageBytes = await imageFile.readAsBytes();
+      Uint8List? compressedImageBytes =
+          await Services.compressImage(imageBytes);
+      imageUrl.value = (await Services.uploadCheckedinImage(compressedImageBytes!, Sessioncontroller.userid.toString(), timestamp))!;
     }
     CheckedInLocation location = CheckedInLocation(
               userId: Sessioncontroller.userid.toString(),

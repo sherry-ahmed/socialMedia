@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:socialmedia/services/imports.dart';
 import 'package:socialmedia/view/checkedInView/controller/checkedinViewController.dart';
@@ -69,7 +67,7 @@ class Checkedinview extends StatelessWidget {
                         },
                         child: Card(
                           elevation: 20,
-                          color: Color(0xFFF7F29B),
+                          color: const Color(0xFFF7F29B),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
                           child: Padding(
@@ -93,29 +91,32 @@ class Checkedinview extends StatelessWidget {
                                             width: 1, color: Colors.black),
                                         borderRadius:
                                             BorderRadius.circular(20)),
-                                    child: CachedNetworkImage(
-                                      fit: BoxFit.cover,
-                                      imageUrl: checkedInLocation.imageUrl,
-                                      //width: context.width * 0.5,
-                                      placeholder: (context, url) => SizedBox(
-                                          //width: context.width * 0.5,
-                                          child: Shimmer.fromColors(
-                                        baseColor: Colors.grey,
-                                        highlightColor: Colors.greenAccent,
-                                        child: Container(
-                                          //width: context.width * 0.5,
-                                          height: 100,
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(
-                                                8.0), // Adjust as needed
+                                    child: GestureDetector(
+                                      onTap: () => Services.showFullScreenImage(context, checkedInLocation.imageUrl),
+                                      child: CachedNetworkImage(
+                                        fit: BoxFit.cover,
+                                        imageUrl: checkedInLocation.imageUrl,
+                                        //width: context.width * 0.5,
+                                        placeholder: (context, url) => SizedBox(
+                                            //width: context.width * 0.5,
+                                            child: Shimmer.fromColors(
+                                          baseColor: Colors.grey,
+                                          highlightColor: Colors.greenAccent,
+                                          child: Container(
+                                            //width: context.width * 0.5,
+                                            height: 100,
+                                            width: 100,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.circular(
+                                                  8.0), // Adjust as needed
+                                            ),
                                           ),
-                                        ),
-                                      )),
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error,
-                                              color: Colors.red), // Error icon
+                                        )),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error,
+                                                color: Colors.red), // Error icon
+                                      ),
                                     )),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),

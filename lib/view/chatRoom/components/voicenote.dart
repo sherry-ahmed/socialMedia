@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/baseComponents/app_text_field.dart';
 import 'package:socialmedia/services/imports.dart';
 import 'package:voice_message_package/voice_message_package.dart';
 
@@ -25,42 +24,51 @@ class _VoicenoteState extends State<Voicenote> {
       crossAxisAlignment:
           widget.isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
-        VoiceMessageView(
-          backgroundColor: widget.isSender? Colors.blue: Colors.white,
-          activeSliderColor: widget.isSender? Colors.amber: Colors.black,
-          circlesColor: widget.isSender? Colors.amber: Colors.black,
-          stopDownloadingIcon: Icon(Icons.pause),
-          counterTextStyle: TextStyle(color: widget.isSender? Colors.amber: Colors.black),
-          size: 30,
-          cornerRadius: 15,
-          
-          
-  controller: VoiceController (
-    noiseCount: 25,
-    
-    audioSrc: widget.message.content.toString(), // Ensure this is a valid audio source
-    onComplete: () {
-      // Handle completion
-      log('Audio playback completed');
-    },
-    onPause: () {
-      // Handle pause
-      log('Audio playback paused');
-    },
-    onPlaying: () {
-      // Handle playing
-      log('Audio playback started');
-    },
-    onError: (err) {
-      // Handle error
-      log('Error occurred: $err');
-    },
-    maxDuration: const Duration(seconds: 300), // Set a valid max duration
-    isFile: false, // Set to true if audioSrc is a file
-  ),
-  
-  
-),
+        Container(
+          height: 60,
+          child: VoiceMessageView(
+            
+            backgroundColor: widget.isSender? Colors.blue: Colors.white,
+            activeSliderColor: widget.isSender? Colors.amber: Colors.black,
+            circlesColor: widget.isSender? Colors.amber: Colors.black,
+            stopDownloadingIcon: const Icon(Icons.pause),
+            counterTextStyle: TextStyle(color: widget.isSender? Colors.amber: Colors.black, fontSize: 8),
+            size: 30,
+            cornerRadius: 15,
+            innerPadding: 15,
+            
+            
+            
+            
+            
+            controller: VoiceController (
+              noiseCount: 20,
+             
+              
+              audioSrc: widget.message.content.toString(), // Ensure this is a valid audio source
+              onComplete: () {
+                // Handle completion
+                log('Audio playback completed');
+              },
+              onPause: () {
+                // Handle pause
+                log('Audio playback paused');
+              },
+              onPlaying: () {
+                // Handle playing
+                log('Audio playback started');
+              },
+              onError: (err) {
+                // Handle error
+                log('Error occurred: $err');
+              },
+              maxDuration: const Duration(seconds: 300), // Set a valid max duration
+              isFile: false, // Set to true if audioSrc is a file
+            ),
+            
+            
+          ),
+        ),
         Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: widget.isSender

@@ -97,26 +97,29 @@ class _ImageBoxContentState extends State<ImageBoxContent> {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: widget.imageUrl,
-      width: context.width * 0.5,
-      placeholder: (context, url) => SizedBox(
+    return GestureDetector(
+      onTap: () => Services.showFullScreenImage(context, widget.imageUrl),
+      child: CachedNetworkImage(
+        imageUrl: widget.imageUrl,
         width: context.width * 0.5,
-        child: Shimmer.fromColors(
-          baseColor: Colors.blue,
-          highlightColor: Colors.white,
-          child: Container(
-            width: context.width * 0.5,
-            height: 150,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.0), // Adjust as needed
+        placeholder: (context, url) => SizedBox(
+          width: context.width * 0.5,
+          child: Shimmer.fromColors(
+            baseColor: Colors.blue,
+            highlightColor: Colors.white,
+            child: Container(
+              width: context.width * 0.5,
+              height: 150,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.0), // Adjust as needed
+              ),
             ),
-          ),
-        )
+          )
+        ),
+        errorWidget: (context, url, error) =>
+            const Icon(Icons.error, color: Colors.red), // Error icon
       ),
-      errorWidget: (context, url, error) =>
-          const Icon(Icons.error, color: Colors.red), // Error icon
     );
   }
 }

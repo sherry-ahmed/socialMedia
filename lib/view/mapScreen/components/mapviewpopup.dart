@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:socialmedia/services/imports.dart';
 import 'package:socialmedia/view/checkedInView/view/checkedinView.dart';
-import 'package:socialmedia/view/home/view/friendRequests.dart';
 
 class Mapviewpopup extends StatelessWidget {
   const Mapviewpopup({

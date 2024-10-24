@@ -81,6 +81,11 @@ export 'package:socialmedia/view/home/controller/homeController.dart';
 export 'package:socialmedia/baseModel/appLifeCycle.dart';
 export 'package:socialmedia/services/UserStatus.dart';
 export 'package:socialmedia/view/home/components/popUpmenu.dart';
+export 'package:flutter_image_compress/flutter_image_compress.dart';
+export 'package:geocoding/geocoding.dart';
+export 'package:geolocator/geolocator.dart';
+export 'package:firebase_storage/firebase_storage.dart';
+export 'dart:typed_data';
 
 
 
