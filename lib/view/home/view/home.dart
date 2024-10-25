@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:socialmedia/services/imports.dart';
+import 'package:socialmedia/view/story/addStoryPage.dart';
+import 'package:socialmedia/view/story/storyview.dart';
 
 class Home extends StatelessWidget {
   final searchController = TextEditingController();
@@ -83,11 +85,14 @@ class Home extends StatelessWidget {
                             child: Row(
                               children: [
                                 SB.w(12),
-                                Text(
-                                  'Friends',
-                                  style: Theme.of(context)
-                                      .appBarTheme
-                                      .titleTextStyle,
+                                GestureDetector(
+                                  onTap: () => Get.to(()=> AddStoryPage()),
+                                  child: Text(
+                                    'Friends',
+                                    style: Theme.of(context)
+                                        .appBarTheme
+                                        .titleTextStyle,
+                                  ),
                                 ),
                                 const Spacer(),
                                 Row(
